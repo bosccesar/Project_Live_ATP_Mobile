@@ -238,19 +238,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewThirdSetJ2" />
 
-    <TextView
-        android:id="@+id/textScore"
-        android:layout_width="1008dp"
-        android:layout_height="231dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="172dp"
-        android:text="00    —    00"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="200dp"
-        app:layout_constraintStart_toEndOf="@+id/buttonChallengeJ1"
-        app:layout_constraintTop_toBottomOf="@+id/textTemps" />
-
     <ImageButton
         android:id="@+id/imageButtonPause"
         android:layout_width="wrap_content"
@@ -265,10 +252,10 @@
         android:id="@+id/imageButtonModifPointJ1"
         android:layout_width="72dp"
         android:layout_height="68dp"
-        android:layout_marginStart="19dp"
+        android:layout_marginStart="34dp"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toEndOf="@+id/buttonAceJ1"
-        app:layout_constraintTop_toBottomOf="@+id/textScore"
+        app:layout_constraintTop_toBottomOf="@+id/textScoreJ1"
         app:layout_constraintVertical_chainStyle="spread_inside"
         app:srcCompat="@mipmap/bouton_plus_moins" />
 
@@ -279,7 +266,7 @@
         android:layout_marginEnd="19dp"
         android:layout_marginTop="30dp"
         app:layout_constraintEnd_toStartOf="@+id/buttonAceJ2"
-        app:layout_constraintTop_toBottomOf="@+id/textScore"
+        app:layout_constraintTop_toBottomOf="@+id/textScoreJ2"
         app:layout_constraintVertical_chainStyle="spread_inside"
         app:srcCompat="@mipmap/bouton_plus_moins" />
 
@@ -287,7 +274,7 @@
         android:id="@+id/buttonOutJ1"
         android:layout_width="95dp"
         android:layout_height="38dp"
-        android:layout_marginStart="201dp"
+        android:layout_marginStart="215dp"
         android:layout_marginTop="10dp"
         android:text="Out"
         app:layout_constraintStart_toStartOf="parent"
@@ -307,7 +294,7 @@
         android:id="@+id/buttonFiletJ1"
         android:layout_width="95dp"
         android:layout_height="38dp"
-        android:layout_marginStart="201dp"
+        android:layout_marginStart="215dp"
         android:layout_marginTop="3dp"
         android:text="Filet"
         app:layout_constraintStart_toStartOf="parent"
@@ -396,5 +383,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonPause"
         app:srcCompat="@mipmap/ball_service" />
+
+    <TextView
+        android:id="@+id/textScoreJ1"
+        android:layout_width="255dp"
+        android:layout_height="230dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="34dp"
+        android:gravity="center"
+        android:text="00"
+        android:textColor="@android:color/black"
+        android:textSize="200dp"
+        app:layout_constraintStart_toEndOf="@+id/buttonChallengeJ1"
+        app:layout_constraintTop_toBottomOf="@+id/textJ1" />
+
+    <TextView
+        android:id="@+id/textScoreCadratin"
+        android:layout_width="173dp"
+        android:layout_height="231dp"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="172dp"
+        android:gravity="center"
+        android:text="—"
+        android:textColor="@android:color/black"
+        android:textSize="200dp"
+        app:layout_constraintStart_toEndOf="@+id/textScoreJ1"
+        app:layout_constraintTop_toBottomOf="@+id/textTemps" />
+
+    <TextView
+        android:id="@+id/textScoreJ2"
+        android:layout_width="255dp"
+        android:layout_height="230dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginTop="34dp"
+        android:gravity="center"
+        android:text="00"
+        android:textColor="@android:color/black"
+        android:textSize="200dp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChallengeJ2"
+        app:layout_constraintTop_toBottomOf="@+id/textJ2" />
 
 </android.support.constraint.ConstraintLayout>
