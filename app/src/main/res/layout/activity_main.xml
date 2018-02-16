@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:background="@mipmap/background"
     tools:context="com.atp.project_live_atp.MainActivity">
 
     <ImageButton
@@ -58,6 +59,7 @@
         android:gravity="center"
         android:textSize="100dp"
         android:visibility="visible"
+        android:textColor="@android:color/black"
         app:layout_constraintStart_toEndOf="@+id/imageButtonAdvertissement"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,6 +73,8 @@
         android:textAlignment="center"
         android:gravity="center"
         android:textSize="40dp"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTemps" />
 
@@ -84,6 +88,8 @@
         android:textAlignment="center"
         android:gravity="center"
         android:textSize="40dp"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTemps" />
 
@@ -94,6 +100,8 @@
         android:layout_marginStart="162dp"
         android:layout_marginTop="5dp"
         android:text="1er set"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
 
@@ -104,6 +112,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="5dp"
         android:text="2e set"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintStart_toEndOf="@+id/textViewFirstSetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
 
@@ -114,6 +124,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="5dp"
         android:text="3e set"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintStart_toEndOf="@+id/textViewSecondSetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
 
@@ -124,6 +136,8 @@
         android:layout_marginEnd="32dp"
         android:layout_marginTop="5dp"
         android:text="1er set"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintEnd_toStartOf="@+id/textViewSecondSetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
 
@@ -134,6 +148,8 @@
         android:layout_marginEnd="32dp"
         android:layout_marginTop="5dp"
         android:text="2e set"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintEnd_toStartOf="@+id/textViewThirdSetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textJ2"
         app:layout_constraintVertical_chainStyle="spread_inside" />
@@ -145,28 +161,22 @@
         android:layout_marginEnd="162dp"
         android:layout_marginTop="5dp"
         android:text="3e set"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
 
     <TextView
-        android:id="@+id/textViewScore3SetJ1"
+        android:id="@+id/textViewScore1SetJ1"
         android:layout_width="0dp"
         android:layout_height="19dp"
         android:layout_marginStart="180dp"
         android:layout_marginTop="10dp"
         android:text="6"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFirstSetJ1" />
-
-    <TextView
-        android:id="@+id/textViewScore3SetJ1"
-        android:layout_width="8dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="618dp"
-        android:layout_marginTop="10dp"
-        android:text="3"
-        app:layout_constraintEnd_toStartOf="@+id/textViewScore1SetJ2"
-        app:layout_constraintTop_toBottomOf="@+id/textViewThirdSetJ1" />
 
     <TextView
         android:id="@+id/textViewScore2SetJ1"
@@ -175,8 +185,22 @@
         android:layout_marginEnd="63dp"
         android:layout_marginTop="10dp"
         android:text="0"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintEnd_toStartOf="@+id/textViewScore3SetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textViewSecondSetJ1" />
+
+    <TextView
+        android:id="@+id/textViewScore3SetJ1"
+        android:layout_width="8dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="618dp"
+        android:layout_marginTop="10dp"
+        android:text="3"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
+        app:layout_constraintEnd_toStartOf="@+id/textViewScore1SetJ2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewThirdSetJ1" />
 
     <TextView
         android:id="@+id/textViewScore1SetJ2"
@@ -185,6 +209,8 @@
         android:layout_marginEnd="64dp"
         android:layout_marginTop="10dp"
         android:text="3"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintEnd_toStartOf="@+id/textViewScore2SetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textViewFirstSetJ2" />
 
@@ -195,6 +221,8 @@
         android:layout_marginEnd="63dp"
         android:layout_marginTop="10dp"
         android:text="6"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintEnd_toStartOf="@+id/textViewScore3SetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textViewSecondSetJ2" />
 
@@ -205,17 +233,20 @@
         android:layout_marginEnd="178dp"
         android:layout_marginTop="10dp"
         android:text="0"
+        android:textColor="@android:color/black"
+        android:background="#dfffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewThirdSetJ2" />
 
     <TextView
         android:id="@+id/textScore"
-        android:layout_width="789dp"
+        android:layout_width="1008dp"
         android:layout_height="231dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="172dp"
-        android:text="00 — 00"
+        android:text="00    —    00"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         android:textSize="200dp"
         app:layout_constraintStart_toEndOf="@+id/buttonChallengeJ1"
         app:layout_constraintTop_toBottomOf="@+id/textTemps" />
@@ -256,7 +287,7 @@
         android:id="@+id/buttonOutJ1"
         android:layout_width="95dp"
         android:layout_height="38dp"
-        android:layout_marginStart="372dp"
+        android:layout_marginStart="201dp"
         android:layout_marginTop="10dp"
         android:text="Out"
         app:layout_constraintStart_toStartOf="parent"
@@ -266,7 +297,7 @@
         android:id="@+id/buttonOutJ2"
         android:layout_width="95dp"
         android:layout_height="38dp"
-        android:layout_marginEnd="372dp"
+        android:layout_marginEnd="201dp"
         android:layout_marginTop="10dp"
         android:text="Out"
         app:layout_constraintEnd_toEndOf="parent"
@@ -276,7 +307,7 @@
         android:id="@+id/buttonFiletJ1"
         android:layout_width="95dp"
         android:layout_height="38dp"
-        android:layout_marginStart="372dp"
+        android:layout_marginStart="201dp"
         android:layout_marginTop="3dp"
         android:text="Filet"
         app:layout_constraintStart_toStartOf="parent"
@@ -286,7 +317,7 @@
         android:id="@+id/buttonFiletJ2"
         android:layout_width="95dp"
         android:layout_height="38dp"
-        android:layout_marginEnd="372dp"
+        android:layout_marginEnd="201dp"
         android:layout_marginTop="3dp"
         android:text="Filet"
         app:layout_constraintEnd_toEndOf="parent"
@@ -297,7 +328,7 @@
         android:layout_width="88dp"
         android:layout_height="48dp"
         android:layout_marginBottom="105dp"
-        android:layout_marginStart="277dp"
+        android:layout_marginStart="105dp"
         android:text="Ace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -307,7 +338,7 @@
         android:layout_width="88dp"
         android:layout_height="48dp"
         android:layout_marginBottom="105dp"
-        android:layout_marginEnd="277dp"
+        android:layout_marginEnd="105dp"
         android:text="Ace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -317,7 +348,7 @@
         android:layout_width="103dp"
         android:layout_height="48dp"
         android:layout_marginBottom="254dp"
-        android:layout_marginEnd="126dp"
+        android:layout_marginEnd="20dp"
         android:text="Challenge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -327,7 +358,7 @@
         android:layout_width="103dp"
         android:layout_height="48dp"
         android:layout_marginBottom="254dp"
-        android:layout_marginStart="126dp"
+        android:layout_marginStart="20dp"
         android:text="Challenge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -337,8 +368,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:layout_marginStart="174dp"
+        android:layout_marginStart="68dp"
+        android:background="#dfffffff"
         android:text="2"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/buttonChallengeJ1"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -347,8 +380,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:layout_marginEnd="174dp"
+        android:layout_marginEnd="68dp"
+        android:background="#dfffffff"
         android:text="0"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/buttonChallengeJ2"
         app:layout_constraintEnd_toEndOf="parent" />
 
