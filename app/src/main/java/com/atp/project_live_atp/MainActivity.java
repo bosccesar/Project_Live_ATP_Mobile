@@ -16,6 +16,58 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final ImageButton buttonJ1 = findViewById(R.id.imageButtonModifPointJ1);
+        final ImageButton buttonJ2 = findViewById(R.id.imageButtonModifPointJ2);
+        TextView tvScore=findViewById(R.id.textScoreJ1);
+        TextView tvScoreAdv=findViewById(R.id.textScoreJ2);
+
+        onClickButtonScoreUp(buttonJ1, tvScore, tvScoreAdv);
+        onClickButtonScoreUp(buttonJ2, tvScoreAdv, tvScore);
+    }
+
+    public void onClickButtonScoreUp(ImageButton button, final TextView tvScore, final TextView tvScoreAdv){
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int presentIntVal;
+                int presentIntValAdv;
+                String presentValStr=tvScore.getText().toString();
+                String presentValStrAdv=tvScoreAdv.getText().toString();
+                if (presentValStr != "AV") {
+                    presentIntVal = Integer.parseInt(presentValStr);
+                    if (presentValStrAdv == "AV"){ //Condition permettant d'éviter que le string parsé en int juste à la sortie du if ne se fasse pas tel quel. AV en int n'est pas possible
+                        presentValStrAdv = "-1";
+                    }
+                    presentIntValAdv = Integer.parseInt(presentValStrAdv);
+                }else{
+                    presentIntVal = -1;
+                    presentIntValAdv = -1;
+                }
+                for (int pos = 0; pos < 5; ++pos) {
+                    if (tabPoint[pos] == presentIntVal && pos < 3) {
+                        tvScore.setText(String.valueOf(tabPoint[pos + 1]));
+                    }else if (tabPoint[pos] == presentIntVal && pos == 3){
+                        if (presentIntValAdv == -1){ //Le joueur met un point alors que l'adversaire avait un avantage -> remise à 40 pour les 2
+                            tvScore.setText(String.valueOf(presentIntVal)); //Remise à 40 pour le joueur
+                            tvScoreAdv.setText(String.valueOf(presentIntVal)); //Remise à 40 pour l'adversaire en utilisant la valeur du joueur
+                        }else if(presentIntValAdv == 40){ //Le joueur met un point alors qu'ils sont à égalité -> avantage pour lui
+                            tvScore.setText("AV"); //Avantage pour le joueur
+                            //Incrémenter dans la bdd la statistique avantage pour le joueur
+                        }else{ //Le joueur adverse n'a ni 40 ni avantage (0 ou 15 ou 30) donc le joueur gagne le point
+                            tvScore.setText("00");
+                            //Incrémenter le jeu du set correspondant car le jeu est gagné
+                            tvScoreAdv.setText("00");
+                        }
+                    }else if (tabPoint[pos] == presentIntVal && pos == 4){
+                        tvScore.setText("00");
+                        //Incrémenter le jeu du set correspondant car le jeu est gagné
+                        tvScoreAdv.setText("00");
+                    }
+                }
+            }
+        });
+    }
+
+    /*public void onClickJ2(){
         final ImageButton button = findViewById(R.id.imageButtonModifPointJ1);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -42,13 +94,15 @@ public class MainActivity extends AppCompatActivity {
                         }else{ //Le joueur adverse n'a ni 40 ni avantage (0 ou 15 ou 30) donc le joueur gagne le point
                             tvScore.setText("00");
                             //Incrémenter le jeu du set correspondant car le jeu est gagné
+                            tvScoreAdv.setText("00");
                         }
                     }else if (tabPoint[pos] == presentIntVal && pos == 4){
                         tvScore.setText("00");
                         //Incrémenter le jeu du set correspondant car le jeu est gagné
+                        tvScoreAdv.setText("00");
                     }
                 }
             }
         });
-    }
+    }*/
 }
