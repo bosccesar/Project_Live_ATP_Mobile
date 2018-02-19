@@ -7,5 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="AppTheme.CustomTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        //A modifier pour qu'elle s'enlève après quelques secondes de manière fondu
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
 
 </resources>

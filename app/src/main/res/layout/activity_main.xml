@@ -36,7 +36,7 @@
         android:layout_marginTop="60dp"
         android:text="2eme service"
         app:layout_constraintStart_toEndOf="@+id/textJ1"
-        app:layout_constraintTop_toBottomOf="@+id/textTemps" />
+        app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
     <Button
         android:id="@+id/buttonLet"
@@ -47,21 +47,6 @@
         android:text="LET"
         app:layout_constraintStart_toEndOf="@+id/textJ1"
         app:layout_constraintTop_toBottomOf="@+id/button2emeService" />
-
-    <TextView
-        android:id="@+id/textTemps"
-        android:layout_width="689dp"
-        android:layout_height="114dp"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="1dp"
-        android:text="00:00:00"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="100dp"
-        android:visibility="visible"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toEndOf="@+id/imageButtonAdvertissement"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textJ1"
@@ -76,7 +61,7 @@
         android:textColor="@android:color/black"
         android:background="#dfffffff"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTemps" />
+        app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
     <TextView
         android:id="@+id/textJ2"
@@ -91,7 +76,7 @@
         android:textColor="@android:color/black"
         android:background="#dfffffff"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTemps" />
+        app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
     <TextView
         android:id="@+id/textViewFirstSetJ1"
@@ -172,7 +157,7 @@
         android:layout_height="19dp"
         android:layout_marginStart="180dp"
         android:layout_marginTop="10dp"
-        android:text="6"
+        android:text="0"
         android:textColor="@android:color/black"
         android:background="#dfffffff"
         app:layout_constraintStart_toStartOf="parent"
@@ -196,7 +181,7 @@
         android:layout_height="19dp"
         android:layout_marginEnd="618dp"
         android:layout_marginTop="10dp"
-        android:text="3"
+        android:text="0"
         android:textColor="@android:color/black"
         android:background="#dfffffff"
         app:layout_constraintEnd_toStartOf="@+id/textViewScore1SetJ2"
@@ -408,7 +393,7 @@
         android:textColor="@android:color/black"
         android:textSize="200dp"
         app:layout_constraintStart_toEndOf="@+id/textScoreJ1"
-        app:layout_constraintTop_toBottomOf="@+id/textTemps" />
+        app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
     <TextView
         android:id="@+id/textScoreJ2"
@@ -423,4 +408,28 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonChallengeJ2"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
 
+    <Chronometer
+        android:id="@+id/chronometerMain"
+        android:layout_width="689dp"
+        android:layout_height="114dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="1dp"
+        android:format="00:00:00"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="100dp"
+        android:visibility="visible"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonAdvertissement"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButtonStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="106dp"
+        app:layout_constraintStart_toEndOf="@+id/buttonLet"
+        app:layout_constraintTop_toBottomOf="@+id/chronometerMain"
+        app:srcCompat="@mipmap/bouton_start" />
 </android.support.constraint.ConstraintLayout>
