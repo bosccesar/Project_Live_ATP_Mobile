@@ -1,4 +1,4 @@
-package com.atp.project_live_atp;
+package com.atp.live_atp_mobile;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="@mipmap/background"
-    tools:context="com.atp.project_live_atp.MainActivity">
+    tools:context="com.atp.live_atp_mobile.MainActivity">
 
     <ImageButton
         android:id="@+id/imageButtonClose"
