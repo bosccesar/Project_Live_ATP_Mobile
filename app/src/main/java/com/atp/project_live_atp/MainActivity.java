@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         text.setText("LE ACE A ETE COMPTABILISE");
 
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 50);
+        toast.setGravity(Gravity.BOTTOM, 10, 50);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
 
