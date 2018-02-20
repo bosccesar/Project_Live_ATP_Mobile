@@ -34,6 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvSet3J1;
     private TextView tvSet4J1;
     private TextView tvSet5J1;
+    private TextView tvSet1J2;
+    private TextView tvSet2J2;
+    private TextView tvSet3J2;
+    private TextView tvSet4J2;
+    private TextView tvSet5J2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.tvSet3J1 = (TextView) findViewById(R.id.textViewScore3SetJ1);
         this.tvSet4J1 = (TextView) findViewById(R.id.textViewScore4SetJ1);
         this.tvSet5J1 = (TextView) findViewById(R.id.textViewScore5SetJ1);
+        this.tvSet1J2 = (TextView) findViewById(R.id.textViewScore1SetJ2);
+        this.tvSet2J2 = (TextView) findViewById(R.id.textViewScore2SetJ2);
+        this.tvSet3J2 = (TextView) findViewById(R.id.textViewScore3SetJ2);
+        this.tvSet4J2 = (TextView) findViewById(R.id.textViewScore4SetJ2);
+        this.tvSet5J2 = (TextView) findViewById(R.id.textViewScore5SetJ2);
 
         //Interaction impossible sur les boutons
         buttonJ1.setEnabled(false);
@@ -93,16 +103,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Score
         if (view == buttonJ1){
-            onClickButtonScoreUp(tvScore, tvScoreAdv);
+            onClickButtonScoreUp(tvScore, tvScoreAdv, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
         }
         if (view == buttonJ2){
-            onClickButtonScoreUp(tvScoreAdv, tvScore);
+            onClickButtonScoreUp(tvScoreAdv, tvScore, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
         }
         if (view == buttonAceJ1){
-            onClickButtonAce(tvScore, tvScoreAdv);
+            onClickButtonAce(tvScore, tvScoreAdv, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
         }
         if (view == buttonAceJ2){
-            onClickButtonAce(tvScoreAdv, tvScore);
+            onClickButtonAce(tvScoreAdv, tvScore, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
         }
         //Challenge
         if (view == buttonChallengeJ1){
@@ -126,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonStart.setVisibility(View.INVISIBLE); //Fais disparaitre le bouton start
     }
 
-    public void onClickButtonScoreUp(TextView tvScore, TextView tvScoreAdv){
+    public void onClickButtonScoreUp(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){
         int presentIntVal;
         int presentIntValAdv;
         String presentValStr=tvScore.getText().toString();
@@ -153,20 +163,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //Incrémenter dans la bdd la statistique avantage pour le joueur
                 }else{ //Le joueur adverse n'a ni 40 ni avantage (0 ou 15 ou 30) donc le joueur gagne le point
                     tvScore.setText("00");
-                    //Incrémenter le nombre de jeu du set correspondant car le jeu est gagné
-                    onClickButtonIncrementationSet();
+                        onClickButtonIncrementationSet(tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
                     tvScoreAdv.setText("00");
                 }
             }else if (tabPoint[pos] == presentIntVal && pos == 4){
                 tvScore.setText("00");
-                //Incrémenter le nombre de jeu du set correspondant car le jeu est gagné
-                onClickButtonIncrementationSet();
+                onClickButtonIncrementationSet(tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
                 tvScoreAdv.setText("00");
             }
         }
     }
 
-    public void onClickButtonAce(TextView tvScore, TextView tvScoreAdv){ //Clique sur Ace pour ajouter des points sur le service sans touche de la part de l'adversaire
+    public void onClickButtonAce(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Clique sur Ace pour ajouter des points sur le service sans touche de la part de l'adversaire
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.pop_ace,
                 (ViewGroup) findViewById(R.id.custom_toast_container));
@@ -179,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
 
-        onClickButtonScoreUp(tvScore, tvScoreAdv);
+        onClickButtonScoreUp(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv);
         //Incrémentation des Ace dans la table Statistique de la base de données associé à l'Id du joueur correspondant
         toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
     }
@@ -196,32 +204,73 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void onClickButtonIncrementationSet(){ //Compte le nombre de jeu gagné par joueur
+    public void onClickButtonIncrementationSet(TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Compte le nombre de jeu gagné par joueur
         int IntValSet1;
         int IntValSet2;
         int IntValSet3;
         int IntValSet4;
         int IntValSet5;
-        String ValStrSet1=tvSet1J1.getText().toString();
-        String ValStrSet2=tvSet2J1.getText().toString();
-        String ValStrSet3=tvSet3J1.getText().toString();
-        String ValStrSet4=tvSet4J1.getText().toString();
-        String ValStrSet5=tvSet5J1.getText().toString();
+        int IntValSet1Adv;
+        int IntValSet2Adv;
+        int IntValSet3Adv;
+        int IntValSet4Adv;
+        int IntValSet5Adv;
+        String ValStrSet1=tvScoreSet1.getText().toString();
+        String ValStrSet2=tvScoreSet2.getText().toString();
+        String ValStrSet3=tvScoreSet3.getText().toString();
+        String ValStrSet4=tvScoreSet4.getText().toString();
+        String ValStrSet5=tvScoreSet5.getText().toString();
+        String ValStrSet1Adv=tvScoreSet1Adv.getText().toString();
+        String ValStrSet2Adv=tvScoreSet2Adv.getText().toString();
+        String ValStrSet3Adv=tvScoreSet3Adv.getText().toString();
+        String ValStrSet4Adv=tvScoreSet4Adv.getText().toString();
+        String ValStrSet5Adv=tvScoreSet5Adv.getText().toString();
         IntValSet1 = Integer.parseInt(ValStrSet1);
         IntValSet2 = Integer.parseInt(ValStrSet2);
         IntValSet3 = Integer.parseInt(ValStrSet3);
         IntValSet4 = Integer.parseInt(ValStrSet4);
         IntValSet5 = Integer.parseInt(ValStrSet5);
+        IntValSet1Adv = Integer.parseInt(ValStrSet1Adv);
+        IntValSet2Adv = Integer.parseInt(ValStrSet2Adv);
+        IntValSet3Adv = Integer.parseInt(ValStrSet3Adv);
+        IntValSet4Adv = Integer.parseInt(ValStrSet4Adv);
+        IntValSet5Adv = Integer.parseInt(ValStrSet5Adv);
+
         if (IntValSet1 < 6) {
-            tvSet1J1.setText(String.valueOf(IntValSet1 + 1)); //Incrémente le set 1
+            tvScoreSet1.setText(String.valueOf(IntValSet1 + 1)); //Incrémente le set 1
+            IntValSet1 += 1;
+            if (IntValSet1 == 6 && IntValSet1Adv == 6){
+                //Méthode transformant les points classique en tie-break avec en paramètre IntValSet et IntValSetAdv
+                //A mettre à la fin de la méthode juste au dessus : tvScoreSet1.setText(String.valueOf(IntValSet1 + 1)); //Incrémente le set à 7
+            }
         }else if (IntValSet2 < 6){
-            tvSet2J1.setText(String.valueOf(IntValSet2 + 1)); //Incrémente le set 2
+            tvScoreSet2.setText(String.valueOf(IntValSet2 + 1)); //Incrémente le set 2
+            IntValSet2 += 1;
+            if (IntValSet2 == 6 && IntValSet2Adv == 6){
+                //Méthode transformant les points classique en tie-break avec en paramètre IntValSet et IntValSetAdv
+                //A mettre à la fin de la méthode juste au dessus : tvScoreSet2.setText(String.valueOf(IntValSet2 + 1)); //Incrémente le set à 7
+            }
         }else if (IntValSet3 < 6){
-            tvSet3J1.setText(String.valueOf(IntValSet3 + 1)); //Incrémente le set 3
+            tvScoreSet3.setText(String.valueOf(IntValSet3 + 1)); //Incrémente le set 3
+            IntValSet3 += 1;
+            if (IntValSet3 == 6 && IntValSet3Adv == 6){
+                //Méthode transformant les points classique en tie-break avec en paramètre IntValSet et IntValSetAdv
+                //A mettre à la fin de la méthode juste au dessus : tvScoreSet3.setText(String.valueOf(IntValSet3 + 1)); //Incrémente le set à 7
+            }
         }else if (IntValSet4 < 6){
-            tvSet4J1.setText(String.valueOf(IntValSet4 + 1)); //Incrémente le set 3
+            tvScoreSet4.setText(String.valueOf(IntValSet4 + 1)); //Incrémente le set 3
+            IntValSet4 += 1;
+            if (IntValSet4 == 6 && IntValSet4Adv == 6){
+                //Méthode transformant les points classique en tie-break avec en paramètre IntValSet et IntValSetAdv
+                //A mettre à la fin de la méthode juste au dessus : tvScoreSet4.setText(String.valueOf(IntValSet4 + 1)); //Incrémente le set à 7
+            }
         }else if (IntValSet5 < 6){
-            tvSet5J1.setText(String.valueOf(IntValSet5 + 1)); //Incrémente le set 3
+            tvScoreSet5.setText(String.valueOf(IntValSet5 + 1)); //Incrémente le set 3
+            IntValSet5 += 1;
+            if (IntValSet5 == 6 && IntValSet5Adv == 6){
+                //Méthode transformant les points classique en tie-break avec en paramètre IntValSet et IntValSetAdv
+                //A mettre à la fin de la méthode juste au dessus : tvScoreSet5.setText(String.valueOf(IntValSet5 + 1)); //Incrémente le set à 7
+            }
         }
     }
 }
