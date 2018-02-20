@@ -1,10 +1,8 @@
 package com.atp.project_live_atp;
 
-import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.StaticLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvSet1J1;
     private TextView tvSet2J1;
     private TextView tvSet3J1;
+    private TextView tvSet4J1;
+    private TextView tvSet5J1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,29 +42,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Initialisation des éléments
         //Chronomètre
-        this.buttonStart = findViewById(R.id.imageButtonStart);
-        this.timer = findViewById(R.id.chronometerMain);
+        this.buttonStart = (ImageButton) findViewById(R.id.imageButtonStart);
+        this.timer = (Chronometer) findViewById(R.id.chronometerMain);
 
         //Score
-        this.buttonJ1 = findViewById(R.id.imageButtonModifPointJ1);
-        this.buttonJ2 = findViewById(R.id.imageButtonModifPointJ2);
-        this.tvScore=findViewById(R.id.textScoreJ1);
-        this.tvScoreAdv=findViewById(R.id.textScoreJ2);
+        this.buttonJ1 = (ImageButton) findViewById(R.id.imageButtonModifPointJ1);
+        this.buttonJ2 = (ImageButton) findViewById(R.id.imageButtonModifPointJ2);
+        this.tvScore= (TextView) findViewById(R.id.textScoreJ1);
+        this.tvScoreAdv= (TextView) findViewById(R.id.textScoreJ2);
 
         //Challenge
-        this.buttonChallengeJ1 = findViewById(R.id.buttonChallengeJ1);
-        this.buttonChallengeJ2 = findViewById(R.id.buttonChallengeJ2);
-        this.tvChallengeJ1=findViewById(R.id.textViewNbChallengeJ1);
-        this.tvChallengeJ2=findViewById(R.id.textViewNbChallengeJ2);
+        this.buttonChallengeJ1 = (Button) findViewById(R.id.buttonChallengeJ1);
+        this.buttonChallengeJ2 = (Button) findViewById(R.id.buttonChallengeJ2);
+        this.tvChallengeJ1= (TextView) findViewById(R.id.textViewNbChallengeJ1);
+        this.tvChallengeJ2= (TextView) findViewById(R.id.textViewNbChallengeJ2);
 
         //Ace
-        this.buttonAceJ1 = findViewById(R.id.buttonAceJ1);
-        this.buttonAceJ2 = findViewById(R.id.buttonAceJ2);
+        this.buttonAceJ1 = (Button) findViewById(R.id.buttonAceJ1);
+        this.buttonAceJ2 = (Button) findViewById(R.id.buttonAceJ2);
 
         //Jeu
-        this.tvSet1J1 = findViewById(R.id.textViewScore1SetJ1);
-        this.tvSet2J1 = findViewById(R.id.textViewScore2SetJ1);
-        this.tvSet3J1 = findViewById(R.id.textViewScore3SetJ1);
+        this.tvSet1J1 = (TextView) findViewById(R.id.textViewScore1SetJ1);
+        this.tvSet2J1 = (TextView) findViewById(R.id.textViewScore2SetJ1);
+        this.tvSet3J1 = (TextView) findViewById(R.id.textViewScore3SetJ1);
+        this.tvSet4J1 = (TextView) findViewById(R.id.textViewScore4SetJ1);
+        this.tvSet5J1 = (TextView) findViewById(R.id.textViewScore5SetJ1);
 
         //Interaction impossible sur les boutons
         buttonJ1.setEnabled(false);
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         //Démarrage du match
         if (view == buttonStart){
-            startChronometer(buttonStart, timer, buttonJ1, buttonJ2, buttonChallengeJ1, buttonChallengeJ2, buttonAceJ1, buttonAceJ2);
+            startChronometer();
         }
         //Score
         if (view == buttonJ1){
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void startChronometer(ImageButton buttonStart, Chronometer timer, ImageButton buttonJ1, ImageButton buttonJ2, Button buttonChallengeJ1, Button buttonChallengeJ2, Button buttonAceJ1, Button buttonAceJ2){
+    public void startChronometer(){
         buttonJ1.setEnabled(true);
         buttonJ2.setEnabled(true);
         buttonChallengeJ1.setEnabled(true);
@@ -119,8 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonAceJ1.setEnabled(true);
         buttonAceJ2.setEnabled(true);
 
+        timer.setBase(SystemClock.elapsedRealtime()); //Intialisation du chronomètre
         timer.start(); //Démarre le chronomètre
-        buttonStart.setVisibility(View.INVISIBLE);
+        buttonStart.setVisibility(View.INVISIBLE); //Fais disparaitre le bouton start
     }
 
     public void onClickButtonScoreUp(TextView tvScore, TextView tvScoreAdv){
@@ -168,11 +171,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View layout = inflater.inflate(R.layout.pop_ace,
                 (ViewGroup) findViewById(R.id.custom_toast_container));
 
-        TextView text = layout.findViewById(R.id.textViewComptabilise);
+        TextView text = (TextView) layout.findViewById(R.id.textViewComptabilise);
         text.setText("LE ACE A ETE COMPTABILISE");
 
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 10, 50);
+        toast.setGravity(Gravity.BOTTOM, 0, 60);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
 
@@ -197,18 +200,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int IntValSet1;
         int IntValSet2;
         int IntValSet3;
+        int IntValSet4;
+        int IntValSet5;
         String ValStrSet1=tvSet1J1.getText().toString();
         String ValStrSet2=tvSet2J1.getText().toString();
         String ValStrSet3=tvSet3J1.getText().toString();
+        String ValStrSet4=tvSet4J1.getText().toString();
+        String ValStrSet5=tvSet5J1.getText().toString();
         IntValSet1 = Integer.parseInt(ValStrSet1);
         IntValSet2 = Integer.parseInt(ValStrSet2);
         IntValSet3 = Integer.parseInt(ValStrSet3);
+        IntValSet4 = Integer.parseInt(ValStrSet4);
+        IntValSet5 = Integer.parseInt(ValStrSet5);
         if (IntValSet1 < 6) {
             tvSet1J1.setText(String.valueOf(IntValSet1 + 1)); //Incrémente le set 1
         }else if (IntValSet2 < 6){
             tvSet2J1.setText(String.valueOf(IntValSet2 + 1)); //Incrémente le set 2
         }else if (IntValSet3 < 6){
             tvSet3J1.setText(String.valueOf(IntValSet3 + 1)); //Incrémente le set 3
+        }else if (IntValSet4 < 6){
+            tvSet4J1.setText(String.valueOf(IntValSet4 + 1)); //Incrémente le set 3
+        }else if (IntValSet5 < 6){
+            tvSet5J1.setText(String.valueOf(IntValSet5 + 1)); //Incrémente le set 3
         }
     }
 }

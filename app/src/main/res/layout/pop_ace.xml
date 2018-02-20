@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:gravity="center"
-        android:textSize="50dp"
+        android:textSize="47dp"
         android:textColor="@android:color/black"/>
 </RelativeLayout>
