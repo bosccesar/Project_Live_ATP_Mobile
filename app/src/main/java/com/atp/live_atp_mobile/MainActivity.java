@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static int[] tabPoint = {0, 15, 30, 40, -1};
 
-    private ImageButton buttonStart;
+    private Button buttonStart;
     private Chronometer timer;
     private ImageButton buttonJ1;
     private ImageButton buttonJ2;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvSet3J2;
     private TextView tvSet4J2;
     private TextView tvSet5J2;
+    private TextView tvTieBreak;
     private boolean tieBreakFalse;
 
     @Override
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Initialisation des éléments
         //Chronomètre
-        this.buttonStart = (ImageButton) findViewById(R.id.imageButtonStart);
+        this.buttonStart = (Button) findViewById(R.id.buttonStart);
         this.timer = (Chronometer) findViewById(R.id.chronometerMain);
 
         //Score
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.tvSet5J2 = (TextView) findViewById(R.id.textViewScore5SetJ2);
 
         //Tie-Break
+        this.tvTieBreak = (TextView) findViewById(R.id.textViewTieBreak);
+        tvTieBreak.setVisibility(View.INVISIBLE);
         this.tieBreakFalse = false;
 
         //Interaction impossible sur les boutons
@@ -121,10 +124,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         if (view == buttonAceJ1){
-            onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+            if (!tieBreakFalse) {
+                onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+            }else {
+                onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+            }
         }
         if (view == buttonAceJ2){
-            onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+            if (!tieBreakFalse) {
+                onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+            }else {
+                onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+            }
         }
         //Challenge
         if (view == buttonChallengeJ1){
@@ -177,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }else{ //Le joueur adverse n'a ni 40 ni avantage (0 ou 15 ou 30) donc le joueur gagne le point
                     tvScore.setText("00");
                     tvScoreAdv.setText("00");
+                    tvTieBreak.setVisibility(View.INVISIBLE);
                     onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
                 }
             }else if (tabPoint[pos] == presentIntVal && pos == 4){
@@ -188,27 +200,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onClickButtonAce(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Clique sur Ace pour ajouter des points sur le service sans touche de la part de l'adversaire
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.pop_ace,
-                (ViewGroup) findViewById(R.id.custom_toast_container));
-
-        TextView text = (TextView) layout.findViewById(R.id.textViewComptabilise);
-        text.setText("LE ACE A ETE COMPTABILISE");
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 60);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
-
         onClickButtonScoreUp(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv);
+        toastAce();
         //Incrémentation des Ace dans la table Statistique de la base de données associé à l'Id du joueur correspondant
-        toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
     }
 
     public void onClickButtonIncrementationChallenge(Button button, TextView tvChallenge){ //Compte le nombre de challenge effectué par joueur. 3 challenge max par joueur
-        int presentIntVal;
-        String presentValStr=tvChallenge.getText().toString();
-        presentIntVal = Integer.parseInt(presentValStr);
+        String presentValStr = tvChallenge.getText().toString();
+        int presentIntVal = Integer.parseInt(presentValStr);
         if (presentIntVal < 3) {
             tvChallenge.setText(String.valueOf(presentIntVal + 1)); //Incrémente le nombre de challenge (replay demandé par un joueur pour valider ou non le point)
             if ((presentIntVal == 2)){ //A partir du 3eme click le bouton se grise pour éviter de compter des challenge en trop
@@ -275,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void transformTieBreak(TextView tvScore, TextView tvScoreAdv) {
         tvScore.setText("0");
         tvScoreAdv.setText("0");
-        //idImageTieBreak.enabled(true)
+        tvTieBreak.setVisibility(View.VISIBLE);
         tieBreakFalse = true;
     }
 
@@ -293,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvScoreSet.setText(String.valueOf(7)); //Incrémente le set à 7 points
                 tvScoreJ1.setText("00");
                 tvScoreJ2.setText("00");
-                //idImageTieBreak.enabled(false)
+                tvTieBreak.setVisibility(View.INVISIBLE);
                 tieBreakFalse = false;
             }else {
                 tvScore.setText(String.valueOf(intVal + 1));
@@ -303,9 +302,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScoreSet.setText(String.valueOf(intVal + 1)); //Incrémente le set à 7 points
             tvScoreJ1.setText("00");
             tvScoreJ2.setText("00");
-            //idImageTieBreak.enabled(false)
+            tvTieBreak.setVisibility(View.INVISIBLE);
             tieBreakFalse = false;
         }
+        toastAce();
     }
 
     public TextView verifSetFinish(TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5){
@@ -333,5 +333,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScoreSet = tvScoreSet5;
         }
         return tvScoreSet;
+    }
+
+    public void toastAce(){
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.pop_ace,
+                (ViewGroup) findViewById(R.id.custom_toast_container));
+
+        TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
+        text.setText("LE ACE A ETE COMPTABILISE");
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM, 0, 60);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
     }
 }
