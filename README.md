@@ -34,4 +34,7 @@ Tools -> Android -> Sdk Manager
 <br/>$ git commit - m "message"
 <br/>$ git push origin master
 
-# 5 - Enjoy
+# 5 - Création de boutons personnalisés
+[Personnalisation](http://angrytools.com/android/button/)
+
+# 6 - Enjoy
