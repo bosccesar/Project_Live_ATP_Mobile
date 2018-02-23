@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvSet4J2;
     private TextView tvSet5J2;
     private TextView tvTieBreak;
+    private ImageView ballServiceJ1;
+    private ImageView ballServiceJ2;
+
+    private int countNbService;
     private boolean tieBreakFalse;
 
     @Override
@@ -85,6 +90,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvTieBreak.setVisibility(View.INVISIBLE);
         this.tieBreakFalse = false;
 
+        //Changement de service
+        this.ballServiceJ1 = (ImageView) findViewById(R.id.imageViewBallServiceJ1);
+        this.ballServiceJ2 = (ImageView) findViewById(R.id.imageViewBallServiceJ2);
+        //Service
+        this.countNbService = 0;
+        this.ballServiceJ2.setVisibility(View.INVISIBLE);
+
         //Interaction impossible sur les boutons
         buttonJ1.setEnabled(false);
         buttonJ2.setEnabled(false);
@@ -126,15 +138,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonAceJ1){
             if (!tieBreakFalse) {
                 onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                toastAce();
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                toastAce();
             }
         }
         if (view == buttonAceJ2){
             if (!tieBreakFalse) {
                 onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                toastAce();
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                toastAce();
             }
         }
         //Challenge
@@ -201,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onClickButtonAce(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Clique sur Ace pour ajouter des points sur le service sans touche de la part de l'adversaire
         onClickButtonScoreUp(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv);
-        toastAce();
         //Incrémentation des Ace dans la table Statistique de la base de données associé à l'Id du joueur correspondant
     }
 
@@ -269,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 transformTieBreak(tvScore, tvScoreAdv);
             }
         }
+        serviceChange();
     }
 
     public void transformTieBreak(TextView tvScore, TextView tvScoreAdv) {
@@ -294,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvScoreJ2.setText("00");
                 tvTieBreak.setVisibility(View.INVISIBLE);
                 tieBreakFalse = false;
+                serviceChange();
             }else {
                 tvScore.setText(String.valueOf(intVal + 1));
             }
@@ -304,8 +321,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScoreJ2.setText("00");
             tvTieBreak.setVisibility(View.INVISIBLE);
             tieBreakFalse = false;
+            serviceChange();
         }
-        toastAce();
     }
 
     public TextView verifSetFinish(TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5){
@@ -335,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return tvScoreSet;
     }
 
-    public void toastAce(){
+    public void toastAce(){ //Fais apparaitre la po-pup a chaque ace inscrit
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.pop_ace,
                 (ViewGroup) findViewById(R.id.custom_toast_container));
@@ -348,5 +365,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
+    }
+
+    public void serviceChange(){ //Vérification pour changement de service
+        countNbService++;
+        if (countNbService % 2 == 0){ //Chaque 2 jeux, l'image du service du joueur actuel disparait au profit du joueur adverse
+            if (ballServiceJ1.getVisibility() == View.VISIBLE){
+                ballServiceJ1.setVisibility(View.INVISIBLE);
+                ballServiceJ2.setVisibility(View.VISIBLE);
+            }else if (ballServiceJ1.getVisibility() == View.INVISIBLE){
+                ballServiceJ1.setVisibility(View.VISIBLE);
+                ballServiceJ2.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 }
