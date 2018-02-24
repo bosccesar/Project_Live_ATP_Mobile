@@ -167,19 +167,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonAceJ1){
             if (!tieBreakFalse) {
                 onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                toastAce();
+                toast(view);
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                toastAce();
+                toast(view);
             }
         }
         if (view == buttonAceJ2){
             if (!tieBreakFalse) {
                 onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                toastAce();
+                toast(view);
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                toastAce();
+                toast(view);
             }
         }
         //Challenge
@@ -193,37 +193,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonOutJ1){
             if (!tieBreakFalse) {
                 onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                toastOut();
+                toast(view);
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                toastOut();
+                toast(view);
             }
         }
         if (view == buttonOutJ2){
             if (!tieBreakFalse) {
                 onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                toastOut();
+                toast(view);
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                toastOut();
+                toast(view);
             }
         }
         if (view == buttonNetJ1){
             if (!tieBreakFalse) {
                 onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                toastNet();
+                toast(view);
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                toastNet();
+                toast(view);
             }
         }
         if (view == buttonNetJ2){
             if (!tieBreakFalse) {
                 onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                toastNet();
+                toast(view);
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                toastNet();
+                toast(view);
             }
         }
     }
@@ -424,51 +424,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return tvScoreSet;
     }
 
-    public void toastAce(){ //Fais apparaitre la po-pup a chaque ace inscrit
+    public void toast(View view){ //Fais apparaitre une po-pup a chaque ace/out/filet inscrit
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.pop_ace,
                 (ViewGroup) findViewById(R.id.custom_toast_container));
 
         TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
-        text.setText("LE ACE A ETE COMPTABILISE");
+        if (view == buttonAceJ1 || view == buttonAceJ2){
+            text.setText("LE ACE A ETE COMPTABILISE");
+        }else if (view == buttonOutJ1 || view == buttonOutJ2){
+            text.setText("LE OUT A ETE COMPTABILISE");
+        }else if (view == buttonNetJ1 || view == buttonNetJ2){
+            text.setText("LE FILET A ETE COMPTABILISE");
+            text.setTextSize(40);
+            text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        }
 
         Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.BOTTOM, 0, 60);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
-    }
-
-    public void toastOut(){ //Fais apparaitre la po-pup a chaque out
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.pop_ace,
-                (ViewGroup) findViewById(R.id.custom_toast_container));
-
-        TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
-        text.setText("LE OUT A ETE COMPTABILISE");
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 60);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
-        toast.show(); //Notification sur la vue attestant bien que la faute a été prise en compte
-    }
-
-    public void toastNet(){ //Fais apparaitre la po-pup a chaque faute au filet
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.pop_ace,
-                (ViewGroup) findViewById(R.id.custom_toast_container));
-
-        TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
-        text.setText("LE FILET A ETE COMPTABILISE");
-        text.setTextSize(40);
-        text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 60);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
-        toast.show(); //Notification sur la vue attestant bien que la faute a été prise en compte
     }
 
     public void serviceChange(){ //Vérification pour changement de service
