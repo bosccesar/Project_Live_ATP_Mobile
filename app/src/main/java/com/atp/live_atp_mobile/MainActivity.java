@@ -43,6 +43,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvTieBreak;
     private ImageView ballServiceJ1;
     private ImageView ballServiceJ2;
+    private Button button2emeServiceJ1;
+    private Button button2emeServiceJ2;
+    private Button buttonLetJ1;
+    private Button buttonLetJ2;
+    private Button buttonOutJ1;
+    private Button buttonOutJ2;
+    private Button buttonNetJ1;
+    private Button buttonNetJ2;
 
     private int countNbService;
     private boolean tieBreakFalse;
@@ -73,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.buttonAceJ1 = (Button) findViewById(R.id.buttonAceJ1);
         this.buttonAceJ2 = (Button) findViewById(R.id.buttonAceJ2);
 
+        //Faute
+        this.buttonOutJ1 = (Button) findViewById(R.id.buttonOutJ1);
+        this.buttonOutJ2 = (Button) findViewById(R.id.buttonOutJ2);
+        this.buttonNetJ1 = (Button) findViewById(R.id.buttonFiletJ1);
+        this.buttonNetJ2 = (Button) findViewById(R.id.buttonFiletJ2);
+
         //Jeu
         this.tvSet1J1 = (TextView) findViewById(R.id.textViewScore1SetJ1);
         this.tvSet2J1 = (TextView) findViewById(R.id.textViewScore2SetJ1);
@@ -93,9 +107,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Changement de service
         this.ballServiceJ1 = (ImageView) findViewById(R.id.imageViewBallServiceJ1);
         this.ballServiceJ2 = (ImageView) findViewById(R.id.imageViewBallServiceJ2);
+        this.button2emeServiceJ1 = (Button) findViewById(R.id.button2emeServiceJ1);
+        this.button2emeServiceJ2 = (Button) findViewById(R.id.button2emeServiceJ2);
+        this.buttonLetJ1 = (Button) findViewById(R.id.buttonLetJ1);
+        this.buttonLetJ2 = (Button) findViewById(R.id.buttonLetJ2);
         //Service
         this.countNbService = 0;
         this.ballServiceJ2.setVisibility(View.INVISIBLE);
+        this.button2emeServiceJ2.setVisibility(View.INVISIBLE);
+        this.buttonLetJ2.setVisibility(View.INVISIBLE);
 
         //Interaction impossible sur les boutons
         buttonJ1.setEnabled(false);
@@ -105,13 +125,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonAceJ1.setEnabled(false);
         buttonAceJ2.setEnabled(false);
 
+        //Activation du click de chaque bouton
         buttonStart.setOnClickListener(this);
         buttonJ1.setOnClickListener(this);
         buttonJ2.setOnClickListener(this);
-        buttonAceJ1.setOnClickListener(this);
-        buttonAceJ2.setOnClickListener(this);
         buttonChallengeJ1.setOnClickListener(this);
         buttonChallengeJ2.setOnClickListener(this);
+        buttonAceJ1.setOnClickListener(this);
+        buttonAceJ2.setOnClickListener(this);
+        buttonOutJ1.setOnClickListener(this);
+        buttonOutJ2.setOnClickListener(this);
+        buttonNetJ1.setOnClickListener(this);
+        buttonNetJ2.setOnClickListener(this);
+        button2emeServiceJ1.setOnClickListener(this);
+        button2emeServiceJ2.setOnClickListener(this);
+        buttonLetJ1.setOnClickListener(this);
+        buttonLetJ2.setOnClickListener(this);
     }
 
     @Override
@@ -159,6 +188,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view == buttonChallengeJ2){
             onClickButtonIncrementationChallenge(buttonChallengeJ2, tvChallengeJ2);
+        }
+        //Faute
+        if (view == buttonOutJ1){
+            if (!tieBreakFalse) {
+                onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                toastOut();
+            }else {
+                onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                toastOut();
+            }
+        }
+        if (view == buttonOutJ2){
+            if (!tieBreakFalse) {
+                onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                toastOut();
+            }else {
+                onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                toastOut();
+            }
+        }
+        if (view == buttonNetJ1){
+            if (!tieBreakFalse) {
+                onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                toastNet();
+            }else {
+                onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                toastNet();
+            }
+        }
+        if (view == buttonNetJ2){
+            if (!tieBreakFalse) {
+                onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                toastNet();
+            }else {
+                onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                toastNet();
+            }
         }
     }
 
@@ -218,6 +284,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClickButtonAce(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Clique sur Ace pour ajouter des points sur le service sans touche de la part de l'adversaire
         onClickButtonScoreUp(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv);
         //Incrémentation des Ace dans la table Statistique de la base de données associé à l'Id du joueur correspondant
+    }
+
+    public void onClickButtonFaute(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Clique sur Ace pour ajouter des points sur le service sans touche de la part de l'adversaire
+        onClickButtonScoreUp(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv);
+        //Incrémentation des out dans la table Statistique de la base de données associé à l'Id du joueur correspondant
+        //Incrémentation des filet dans la table Statistique de la base de données associé à l'Id du joueur correspondant
     }
 
     public void onClickButtonIncrementationChallenge(Button button, TextView tvChallenge){ //Compte le nombre de challenge effectué par joueur. 3 challenge max par joueur
@@ -367,15 +439,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
     }
 
+    public void toastOut(){ //Fais apparaitre la po-pup a chaque out
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.pop_ace,
+                (ViewGroup) findViewById(R.id.custom_toast_container));
+
+        TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
+        text.setText("LE OUT A ETE COMPTABILISE");
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM, 0, 60);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show(); //Notification sur la vue attestant bien que la faute a été prise en compte
+    }
+
+    public void toastNet(){ //Fais apparaitre la po-pup a chaque faute au filet
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.pop_ace,
+                (ViewGroup) findViewById(R.id.custom_toast_container));
+
+        TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
+        text.setText("LE FILET A ETE COMPTABILISE");
+        text.setTextSize(40);
+        text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM, 0, 60);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show(); //Notification sur la vue attestant bien que la faute a été prise en compte
+    }
+
     public void serviceChange(){ //Vérification pour changement de service
         countNbService++;
-        if (countNbService % 2 == 0){ //Chaque 2 jeux, l'image du service du joueur actuel disparait au profit du joueur adverse
+        if (countNbService % 2 == 0){ //Chaque 2 jeux, l'image et les boutons du service du joueur actuel disparait au profit du joueur adverse
             if (ballServiceJ1.getVisibility() == View.VISIBLE){
                 ballServiceJ1.setVisibility(View.INVISIBLE);
                 ballServiceJ2.setVisibility(View.VISIBLE);
+                button2emeServiceJ1.setVisibility(View.INVISIBLE);
+                button2emeServiceJ2.setVisibility(View.VISIBLE);
+                buttonLetJ1.setVisibility(View.INVISIBLE);
+                buttonLetJ2.setVisibility(View.VISIBLE);
             }else if (ballServiceJ1.getVisibility() == View.INVISIBLE){
                 ballServiceJ1.setVisibility(View.VISIBLE);
                 ballServiceJ2.setVisibility(View.INVISIBLE);
+                button2emeServiceJ1.setVisibility(View.VISIBLE);
+                button2emeServiceJ2.setVisibility(View.INVISIBLE);
+                buttonLetJ1.setVisibility(View.VISIBLE);
+                buttonLetJ2.setVisibility(View.INVISIBLE);
             }
         }
     }

@@ -29,7 +29,7 @@
         app:srcCompat="@mipmap/advertissement" />
 
     <Button
-        android:id="@+id/button2emeService"
+        android:id="@+id/button2emeServiceJ1"
         android:layout_width="132dp"
         android:layout_height="51dp"
         android:layout_marginStart="10dp"
@@ -39,14 +39,34 @@
         app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
     <Button
-        android:id="@+id/buttonLet"
+        android:id="@+id/buttonLetJ1"
         android:layout_width="76dp"
         android:layout_height="40dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="1dp"
         android:text="LET"
         app:layout_constraintStart_toEndOf="@+id/textJ1"
-        app:layout_constraintTop_toBottomOf="@+id/button2emeService" />
+        app:layout_constraintTop_toBottomOf="@+id/button2emeServiceJ1" />
+
+    <Button
+        android:id="@+id/button2emeServiceJ2"
+        android:layout_width="132dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="52dp"
+        android:text="2eme service"
+        app:layout_constraintEnd_toStartOf="@+id/textJ2"
+        app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
+
+    <Button
+        android:id="@+id/buttonLetJ2"
+        android:layout_width="76dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="1dp"
+        android:text="LET"
+        app:layout_constraintEnd_toStartOf="@+id/textJ2"
+        app:layout_constraintTop_toBottomOf="@+id/button2emeServiceJ2" />
 
     <TextView
         android:id="@+id/textJ1"
@@ -581,7 +601,7 @@
         android:text="START"
         android:textColor="#FFFFFF"
         android:textSize="60sp"
-        app:layout_constraintStart_toEndOf="@+id/buttonLet"
+        app:layout_constraintStart_toEndOf="@+id/buttonLetJ1"
         app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
     <TextView
