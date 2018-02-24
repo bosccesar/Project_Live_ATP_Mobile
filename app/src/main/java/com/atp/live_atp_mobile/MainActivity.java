@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private int countNbService;
     private boolean tieBreakFalse;
+    private int numSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.tvTieBreak = (TextView) findViewById(R.id.textViewTieBreak);
         tvTieBreak.setVisibility(View.INVISIBLE);
         this.tieBreakFalse = false;
+
+        //Set
+        this.numSet = 1;
 
         //Point rejoué
         this.button2emeServiceJ1 = (Button) findViewById(R.id.button2emeServiceJ1);
@@ -343,35 +347,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int intValSet4Adv = Integer.parseInt(valStrSet4Adv);
         int intValSet5Adv = Integer.parseInt(valStrSet5Adv);
 
-        if (intValSet1 < 6) {
+        if (intValSet1 < 6 && numSet == 1) {
             tvScoreSet1.setText(String.valueOf(intValSet1 + 1)); //Incrémente le set 1
             intValSet1 += 1;
             if (intValSet1 == 6 && intValSet1Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
+            }else if (intValSet1 == 6 && intValSet1Adv < 5){
+                numSet++;
             }
-        }else if (intValSet2 < 6){
+        }else if (intValSet2 < 6 && numSet == 2){
             tvScoreSet2.setText(String.valueOf(intValSet2 + 1)); //Incrémente le set 2
             intValSet2 += 1;
             if (intValSet2 == 6 && intValSet2Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
+            }else if (intValSet2 == 6 && intValSet2Adv < 5){
+                numSet++;
             }
-        }else if (intValSet3 < 6){
+        }else if (intValSet3 < 6 && numSet == 3){
             tvScoreSet3.setText(String.valueOf(intValSet3 + 1)); //Incrémente le set 3
             intValSet3 += 1;
             if (intValSet3 == 6 && intValSet3Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
+            }else if (intValSet3 == 6 && intValSet3Adv < 5){
+                numSet++;
             }
-        }else if (intValSet4 < 6){
+        }else if (intValSet4 < 6 && numSet == 4){
             tvScoreSet4.setText(String.valueOf(intValSet4 + 1)); //Incrémente le set 3
             intValSet4 += 1;
             if (intValSet4 == 6 && intValSet4Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
+            }else if (intValSet4 == 6 && intValSet4Adv < 5){
+                numSet++;
             }
-        }else if (intValSet5 < 6){
+        }else if (intValSet5 < 6 && numSet == 5){
             tvScoreSet5.setText(String.valueOf(intValSet5 + 1)); //Incrémente le set 3
             intValSet5 += 1;
             if (intValSet5 == 6 && intValSet5Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
+            }else if (intValSet5 == 6 && intValSet5Adv < 5){
+                numSet++;
             }
         }
         serviceChange();
@@ -400,6 +414,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvScoreJ2.setText("00");
                 tvTieBreak.setVisibility(View.INVISIBLE);
                 tieBreakFalse = false;
+                numSet++;
                 serviceChange();
             }else {
                 tvScore.setText(String.valueOf(intVal + 1));
@@ -411,6 +426,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScoreJ2.setText("00");
             tvTieBreak.setVisibility(View.INVISIBLE);
             tieBreakFalse = false;
+            numSet++;
             serviceChange();
         }
     }
@@ -428,15 +444,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int intValSet5 = Integer.parseInt(valStrSet5);
         TextView tvScoreSet = tvScoreSet1;
 
-        if (intValSet1 < 7){
+        if (numSet == 1){
             tvScoreSet = tvScoreSet1;
-        }else if ((intValSet1 == 6 || intValSet1 == 7) && intValSet2 < 7){
+        }else if (numSet == 2){
             tvScoreSet = tvScoreSet2;
-        }else if ((intValSet2 == 6 || intValSet2== 7) && intValSet3 < 7){
+        }else if (numSet == 3){
             tvScoreSet = tvScoreSet3;
-        }else if ((intValSet3 == 6 || intValSet3 == 7) && intValSet4 < 7){
+        }else if (numSet == 4){
             tvScoreSet = tvScoreSet4;
-        }else if ((intValSet4 == 6 || intValSet4 == 7) && intValSet5 < 7){
+        }else if (numSet == 5){
             tvScoreSet = tvScoreSet5;
         }
         return tvScoreSet;
