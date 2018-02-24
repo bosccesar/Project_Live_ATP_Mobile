@@ -104,13 +104,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvTieBreak.setVisibility(View.INVISIBLE);
         this.tieBreakFalse = false;
 
-        //Changement de service
-        this.ballServiceJ1 = (ImageView) findViewById(R.id.imageViewBallServiceJ1);
-        this.ballServiceJ2 = (ImageView) findViewById(R.id.imageViewBallServiceJ2);
+        //Point rejoué
         this.button2emeServiceJ1 = (Button) findViewById(R.id.button2emeServiceJ1);
         this.button2emeServiceJ2 = (Button) findViewById(R.id.button2emeServiceJ2);
         this.buttonLetJ1 = (Button) findViewById(R.id.buttonLetJ1);
         this.buttonLetJ2 = (Button) findViewById(R.id.buttonLetJ2);
+
+        //Changement de service
+        this.ballServiceJ1 = (ImageView) findViewById(R.id.imageViewBallServiceJ1);
+        this.ballServiceJ2 = (ImageView) findViewById(R.id.imageViewBallServiceJ2);
         //Service
         this.countNbService = 0;
         this.ballServiceJ2.setVisibility(View.INVISIBLE);
@@ -225,6 +227,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 toast(view);
             }
+        }
+        if (view == button2emeServiceJ1){
+            //Incrémenter dans la bdd la statistique 2eme service pour le joueur
+            toast(view);
+        }
+        if (view == button2emeServiceJ2){
+            //Incrémenter dans la bdd la statistique 2eme service pour le joueur
+            toast(view);
+        }
+        if (view == buttonLetJ1){
+            //Incrémenter dans la bdd la statistique Let pour le joueur
+            toast(view);
+        }
+        if (view == buttonLetJ2){
+            //Incrémenter dans la bdd la statistique Let pour le joueur
+            toast(view);
         }
     }
 
@@ -438,6 +456,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             text.setText("LE FILET A ETE COMPTABILISE");
             text.setTextSize(40);
             text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        }else if (view == button2emeServiceJ1 || view == button2emeServiceJ2){
+            text.setText("LE 2eme SERVICE A ETE COMPTABILISE");
+            text.setTextSize(40);
+            text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        }else if (view == buttonLetJ1 || view == buttonLetJ2) {
+            text.setText("LE LET A ETE COMPTABILISE");
         }
 
         Toast toast = new Toast(getApplicationContext());
