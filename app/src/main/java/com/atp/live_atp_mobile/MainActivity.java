@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Chronometer timer;
     private ImageButton buttonJ1;
     private ImageButton buttonJ2;
+    private TextView J1;
+    private TextView J2;
     private TextView tvScoreJ1;
     private TextView tvScoreJ2;
     private Button buttonChallengeJ1;
@@ -51,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonOutJ2;
     private Button buttonNetJ1;
     private Button buttonNetJ2;
+    private ImageView nationalityJ1;
+    private ImageView nationalityJ2;
+    private Button buttonDownJ1;
+    private Button buttonDownJ2;
 
     private int countNbService;
     private boolean tieBreakFalse;
@@ -62,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //Initialisation des éléments
+        //Joueurs
+        this.J1 = (TextView) findViewById(R.id.textJ1);
+        this.J2 = (TextView) findViewById(R.id.textJ2);
+
         //Chronomètre
         this.buttonStart = (Button) findViewById(R.id.buttonStart);
         this.timer = (Chronometer) findViewById(R.id.chronometerMain);
@@ -69,14 +79,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Score
         this.buttonJ1 = (ImageButton) findViewById(R.id.imageButtonModifPointJ1);
         this.buttonJ2 = (ImageButton) findViewById(R.id.imageButtonModifPointJ2);
-        this.tvScoreJ1= (TextView) findViewById(R.id.textScoreJ1);
-        this.tvScoreJ2= (TextView) findViewById(R.id.textScoreJ2);
+        this.tvScoreJ1 = (TextView) findViewById(R.id.textScoreJ1);
+        this.tvScoreJ2 = (TextView) findViewById(R.id.textScoreJ2);
 
         //Challenge
         this.buttonChallengeJ1 = (Button) findViewById(R.id.buttonChallengeJ1);
         this.buttonChallengeJ2 = (Button) findViewById(R.id.buttonChallengeJ2);
-        this.tvChallengeJ1= (TextView) findViewById(R.id.textViewNbChallengeJ1);
-        this.tvChallengeJ2= (TextView) findViewById(R.id.textViewNbChallengeJ2);
+        this.tvChallengeJ1 = (TextView) findViewById(R.id.textViewNbChallengeJ1);
+        this.tvChallengeJ2 = (TextView) findViewById(R.id.textViewNbChallengeJ2);
+        this.buttonDownJ1 = (Button) findViewById(R.id.buttonDownJ1);
+        this.buttonDownJ2 = (Button) findViewById(R.id.buttonDownJ2);
+        this.buttonDownJ1.setVisibility(View.INVISIBLE);
+        this.buttonDownJ2.setVisibility(View.INVISIBLE);
 
         //Ace
         this.buttonAceJ1 = (Button) findViewById(R.id.buttonAceJ1);
@@ -123,13 +137,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.button2emeServiceJ2.setVisibility(View.INVISIBLE);
         this.buttonLetJ2.setVisibility(View.INVISIBLE);
 
+        //Drapeau nationalite
+        this.nationalityJ1 = (ImageView) findViewById(R.id.imageViewNationalityJ1);
+        this.nationalityJ2 = (ImageView) findViewById(R.id.imageViewNationalityJ2);
+        playerNationality();
+
         //Interaction impossible sur les boutons
-        buttonJ1.setEnabled(false);
-        buttonJ2.setEnabled(false);
-        buttonChallengeJ1.setEnabled(false);
-        buttonChallengeJ2.setEnabled(false);
-        buttonAceJ1.setEnabled(false);
-        buttonAceJ2.setEnabled(false);
+        interactionButtonFalse();
 
         //Activation du click de chaque bouton
         buttonStart.setOnClickListener(this);
@@ -147,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button2emeServiceJ2.setOnClickListener(this);
         buttonLetJ1.setOnClickListener(this);
         buttonLetJ2.setOnClickListener(this);
+        buttonDownJ1.setOnClickListener(this);
+        buttonDownJ2.setOnClickListener(this);
     }
 
     @Override
@@ -190,10 +206,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Challenge
         if (view == buttonChallengeJ1){
-            onClickButtonIncrementationChallenge(buttonChallengeJ1, tvChallengeJ1);
+            onClickButtonIncrementationChallenge(buttonChallengeJ1, tvChallengeJ1, buttonDownJ1);
         }
         if (view == buttonChallengeJ2){
-            onClickButtonIncrementationChallenge(buttonChallengeJ2, tvChallengeJ2);
+            onClickButtonIncrementationChallenge(buttonChallengeJ2, tvChallengeJ2, buttonDownJ2);
         }
         //Faute
         if (view == buttonOutJ1){
@@ -248,15 +264,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Incrémenter dans la bdd la statistique Let pour le joueur
             toast(view);
         }
+        if (view == buttonDownJ1){
+            onClickButtonScoreDown(tvScoreJ1, buttonDownJ1, tvChallengeJ1);
+        }
+        if (view == buttonDownJ2){
+            onClickButtonScoreDown(tvScoreJ2, buttonDownJ2, tvChallengeJ2);
+        }
     }
 
-    public void startChronometer(){
+    public void interactionButtonFalse(){
+        buttonJ1.setEnabled(false);
+        buttonJ2.setEnabled(false);
+        buttonChallengeJ1.setEnabled(false);
+        buttonChallengeJ2.setEnabled(false);
+        buttonAceJ1.setEnabled(false);
+        buttonAceJ2.setEnabled(false);
+        button2emeServiceJ1.setEnabled(false);
+        button2emeServiceJ2.setEnabled(false);
+        buttonLetJ1.setEnabled(false);
+        buttonLetJ2.setEnabled(false);
+        buttonOutJ1.setEnabled(false);
+        buttonOutJ2.setEnabled(false);
+        buttonNetJ1.setEnabled(false);
+        buttonNetJ2.setEnabled(false);
+    }
+
+    public void interactionButtonTrue(){
         buttonJ1.setEnabled(true);
         buttonJ2.setEnabled(true);
         buttonChallengeJ1.setEnabled(true);
         buttonChallengeJ2.setEnabled(true);
         buttonAceJ1.setEnabled(true);
         buttonAceJ2.setEnabled(true);
+        button2emeServiceJ1.setEnabled(true);
+        button2emeServiceJ2.setEnabled(true);
+        buttonLetJ1.setEnabled(true);
+        buttonLetJ2.setEnabled(true);
+        buttonOutJ1.setEnabled(true);
+        buttonOutJ2.setEnabled(true);
+        buttonNetJ1.setEnabled(true);
+        buttonNetJ2.setEnabled(true);
+    }
+
+    public void startChronometer(){
+        interactionButtonTrue();
 
         timer.setBase(SystemClock.elapsedRealtime()); //Intialisation du chronomètre
         timer.start(); //Démarre le chronomètre
@@ -314,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Incrémentation des filet dans la table Statistique de la base de données associé à l'Id du joueur correspondant
     }
 
-    public void onClickButtonIncrementationChallenge(Button button, TextView tvChallenge){ //Compte le nombre de challenge effectué par joueur. 3 challenge max par joueur
+    public void onClickButtonIncrementationChallenge(Button button, TextView tvChallenge, Button buttonDown){ //Compte le nombre de challenge effectué par joueur. 3 challenge max par joueur
         String presentValStr = tvChallenge.getText().toString();
         int presentIntVal = Integer.parseInt(presentValStr);
         if (presentIntVal < 3) {
@@ -322,6 +373,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if ((presentIntVal == 2)){ //A partir du 3eme click le bouton se grise pour éviter de compter des challenge en trop
                 button.setEnabled(false); //Bouton devient incliquable
             }
+            //Ajouter un bouton "-" pour enlever un point
+            buttonDown.setVisibility(View.VISIBLE);
+            interactionButtonFalse();
         }
     }
 
@@ -432,16 +486,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public TextView verifSetFinish(TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5){
-        String valStrSet1=tvScoreSet1.getText().toString();
-        String valStrSet2=tvScoreSet2.getText().toString();
-        String valStrSet3=tvScoreSet3.getText().toString();
-        String valStrSet4=tvScoreSet4.getText().toString();
-        String valStrSet5=tvScoreSet5.getText().toString();
-        int intValSet1 = Integer.parseInt(valStrSet1);
-        int intValSet2 = Integer.parseInt(valStrSet2);
-        int intValSet3 = Integer.parseInt(valStrSet3);
-        int intValSet4 = Integer.parseInt(valStrSet4);
-        int intValSet5 = Integer.parseInt(valStrSet5);
         TextView tvScoreSet = tvScoreSet1;
 
         if (numSet == 1){
@@ -506,5 +550,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 buttonLetJ2.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+    public void playerNationality(){ //Récupération du drapeau associé à l'id du joueur en bdd
+        //Test en attendant l'accès à la bdd
+        String player1 = J1.getText().toString();
+        String player2 = J2.getText().toString();
+        //Méthodes get récupérant le drapeau en fonction du nom des joueurs
+        nationalityJ1.setImageResource(R.mipmap.france);
+        nationalityJ2.setImageResource(R.mipmap.italy);
+        //nationalityJ1.setImageDrawable(drapeau récupéré de la bdd);
+        //nationalityJ2.setImageDrawable(drapeau récupéré de la bdd);
+    }
+
+    public void onClickButtonScoreDown(TextView tvScore, Button buttonDown, TextView tvChallenge){ //Decrementation du score adverse suite à une demande de challenge de la part d'un joueur s'il a raison
+        String tvScoreStr = tvScore.getText().toString();
+        String tvChallengeStr = tvChallenge.getText().toString();
+        int intChallenge = Integer.parseInt(tvChallengeStr);
+        if (tvScoreStr.equals("15")){
+            tvScore.setText(String.valueOf("00"));
+        }else if (tvScoreStr.equals("30")){
+            tvScore.setText(String.valueOf("15"));
+        }else if (tvScoreStr.equals("40")){
+            tvScore.setText(String.valueOf("30"));
+        }else if (tvScoreStr.equals("AV")){
+            tvScore.setText(String.valueOf("40"));
+        }else { //Problème lorsque le tie-break est à 0 il faudrait retourner au score du point précédent
+            int intScore = Integer.parseInt(tvScoreStr);
+            tvScore.setText(String.valueOf(intScore - 1)); //Décrémente le score du tie break
+        }
+        interactionButtonTrue();
+        if (buttonDown == buttonDownJ1 && intChallenge == 3){
+            buttonChallengeJ1.setEnabled(false);
+        }else if (buttonDown == buttonDownJ2 && intChallenge == 3){
+            buttonChallengeJ2.setEnabled(false);
+        }
+        buttonDown.setVisibility(View.INVISIBLE);
     }
 }
