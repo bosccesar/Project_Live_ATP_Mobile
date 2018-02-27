@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.atp.live_atp_mobile.Login">
+
+    <TextView
+        android:id="@+id/textViewTournament"
+        android:layout_width="482dp"
+        android:layout_height="97dp"
+        android:layout_marginStart="396dp"
+        android:layout_marginTop="44dp"
+        android:background="#dfffffff"
+        android:gravity="top"
+        android:text="Open d'Australie"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="242dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="65dp"
+        android:text="10 - 28 janvier 2018"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/textViewTournament"
+        app:layout_constraintTop_toTopOf="@+id/textViewTournament" />
+
+    <TextView
+        android:id="@+id/textViewLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="414dp"
+        android:layout_marginTop="148dp"
+        android:text="Login :"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTournament" />
+
+    <TextView
+        android:id="@+id/textViewPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="375dp"
+        android:layout_marginTop="81dp"
+        android:text="Password :"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogin" />
+
+    <EditText
+        android:id="@+id/editTextLogin"
+        android:layout_width="269dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="96dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:imeOptions="actionNext"
+        app:layout_constraintStart_toEndOf="@+id/textViewLogin"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTournament" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="269dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:imeOptions="actionDone"
+        app:layout_constraintStart_toEndOf="@+id/textViewPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLogin" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="537dp"
+        android:layout_marginTop="88dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+        app:srcCompat="@mipmap/submit" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="987dp"
+        tools:layout_editor_absoluteY="109dp" />
+
+</android.support.constraint.ConstraintLayout>

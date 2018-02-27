@@ -9,7 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name="com.atp.live_atp_mobile.MainActivity">
+        </activity>
+
+        <activity
+            android:name="com.atp.live_atp_mobile.Login"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,8 +24,8 @@
         </activity>
 
         <activity android:name="com.atp.live_atp_mobile.Pop"
-            android:theme="@style/AppTheme.CustomTheme"
-            ></activity>
+            android:theme="@style/AppTheme.CustomTheme">
+        </activity>
     </application>
 
 </manifest>
