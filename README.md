@@ -1,4 +1,7 @@
-﻿# 0 - Hardware lié au projet
+﻿Project_Live_ATP_Mobile
+ The score tracking andoid app for the tennis referee
+ 
+# 0 - Hardware lié au projet
 **Galaxy Tab A 10.1"**
 <br/>[Lien pour les specs nécessaires à la création de l'émulateur de la tablette](https://www.samsung.com/us/mobile/tablets/all-other-tablets/sm-t580nzkaxar-sm-t580nzkaxar/)
 
