@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.atp.live_atp_mobile.Login">
+    tools:context="com.atp.live_atp_mobile.Authentication">
 
     <TextView
         android:id="@+id/textViewTournament"
@@ -96,13 +96,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
         app:srcCompat="@mipmap/submit" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="987dp"
-        tools:layout_editor_absoluteY="109dp" />
 
 </android.support.constraint.ConstraintLayout>

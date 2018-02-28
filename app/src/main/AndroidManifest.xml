@@ -14,7 +14,7 @@
         </activity>
 
         <activity
-            android:name="com.atp.live_atp_mobile.Login"
+            android:name="com.atp.live_atp_mobile.Authentication"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
