@@ -1,5 +1,7 @@
 package com.atp.live_atp_mobile;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,20 +20,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static int[] tabPoint = {0, 15, 30, 40, -1};
 
-    private Button buttonStart;
-    private Chronometer timer;
-    private ImageButton buttonJ1;
-    private ImageButton buttonJ2;
-    private TextView J1;
-    private TextView J2;
+    private TextView tvJ1;
+    private TextView tvJ2;
     private TextView tvScoreJ1;
     private TextView tvScoreJ2;
-    private Button buttonChallengeJ1;
-    private Button buttonChallengeJ2;
     private TextView tvChallengeJ1;
     private TextView tvChallengeJ2;
-    private Button buttonAceJ1;
-    private Button buttonAceJ2;
     private TextView tvSet1J1;
     private TextView tvSet2J1;
     private TextView tvSet3J1;
@@ -45,6 +39,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvTieBreak;
     private ImageView ballServiceJ1;
     private ImageView ballServiceJ2;
+    private ImageView nationalityJ1;
+    private ImageView nationalityJ2;
+    private Button buttonStart;
+    private Button buttonChallengeJ1;
+    private Button buttonChallengeJ2;
+    private Button buttonAceJ1;
+    private Button buttonAceJ2;
     private Button button2emeServiceJ1;
     private Button button2emeServiceJ2;
     private Button buttonLetJ1;
@@ -53,10 +54,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonOutJ2;
     private Button buttonNetJ1;
     private Button buttonNetJ2;
-    private ImageView nationalityJ1;
-    private ImageView nationalityJ2;
     private Button buttonDownJ1;
     private Button buttonDownJ2;
+    private ImageButton buttonJ1;
+    private ImageButton buttonJ2;
+    private Chronometer timer;
 
     private int countNbService;
     private boolean tieBreakFalse;
@@ -69,8 +71,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Initialisation des éléments
         //Joueurs
-        this.J1 = (TextView) findViewById(R.id.textJ1);
-        this.J2 = (TextView) findViewById(R.id.textJ2);
+        this.tvJ1 = (TextView) findViewById(R.id.textJ1);
+        this.tvJ2 = (TextView) findViewById(R.id.textJ2);
+        //Drapeau nationalite
+        this.nationalityJ1 = (ImageView) findViewById(R.id.imageViewNationalityJ1);
+        this.nationalityJ2 = (ImageView) findViewById(R.id.imageViewNationalityJ2);
+        playerNationality();
 
         //Chronomètre
         this.buttonStart = (Button) findViewById(R.id.buttonStart);
@@ -136,11 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.ballServiceJ2.setVisibility(View.INVISIBLE);
         this.button2emeServiceJ2.setVisibility(View.INVISIBLE);
         this.buttonLetJ2.setVisibility(View.INVISIBLE);
-
-        //Drapeau nationalite
-        this.nationalityJ1 = (ImageView) findViewById(R.id.imageViewNationalityJ1);
-        this.nationalityJ2 = (ImageView) findViewById(R.id.imageViewNationalityJ2);
-        playerNationality();
 
         //Interaction impossible sur les boutons
         interactionButtonFalse();
@@ -553,9 +554,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void playerNationality(){ //Récupération du drapeau associé à l'id du joueur en bdd
-        //Test en attendant l'accès à la bdd
-        String player1 = J1.getText().toString();
-        String player2 = J2.getText().toString();
+        tvJ1.setText(ServiceActivity.sharedpreferences.getString(ServiceActivity.Player1, null));
+        tvJ2.setText(ServiceActivity.sharedpreferences.getString(ServiceActivity.Player2, null));
         //Méthodes get récupérant le drapeau en fonction du nom des joueurs
         nationalityJ1.setImageResource(R.mipmap.france);
         nationalityJ2.setImageResource(R.mipmap.italy);
