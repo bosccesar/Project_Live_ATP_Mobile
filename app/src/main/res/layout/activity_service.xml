@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.atp.live_atp_mobile.ServiceActivity">
+
+    <TextView
+        android:id="@+id/textViewTournament"
+        android:layout_width="482dp"
+        android:layout_height="97dp"
+        android:layout_marginStart="396dp"
+        android:layout_marginTop="44dp"
+        android:background="#dfffffff"
+        android:gravity="top"
+        android:text="Open d'Australie"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewStateTournament"
+        android:layout_width="242dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="65dp"
+        android:text="32e de finale"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textViewTournament"
+        app:layout_constraintTop_toTopOf="@+id/textViewTournament" />
+
+    <TextView
+        android:id="@+id/textViewSubTitle"
+        android:layout_width="600dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="337dp"
+        android:layout_marginTop="80dp"
+        android:text="Sélection du service pour le premier jeu de la partie :"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="25sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTournament" />
+
+    <TextView
+        android:id="@+id/textJ1"
+        android:layout_width="300dp"
+        android:layout_height="82dp"
+        android:layout_marginEnd="94dp"
+        android:layout_marginTop="104dp"
+        android:background="@drawable/flat_textviewwhite"
+        android:gravity="center"
+        android:text="R.NADAL"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        android:onClick="onClick"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonSubmit"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubTitle" />
+
+    <TextView
+        android:id="@+id/textJ2"
+        android:layout_width="300dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="104dp"
+        android:background="@drawable/flat_textviewwhite"
+        android:gravity="center"
+        android:text="R.FEDERER"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        android:onClick="onClick"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonSubmit"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubTitle" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="537dp"
+        android:layout_marginTop="277dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubTitle"
+        app:srcCompat="@mipmap/submit" />
+
+</android.support.constraint.ConstraintLayout>

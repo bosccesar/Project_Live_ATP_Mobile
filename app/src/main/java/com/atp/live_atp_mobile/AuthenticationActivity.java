@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by cesar on 27/02/2018.
  */
 
-public class Authentication extends AppCompatActivity implements View.OnClickListener{
+public class AuthenticationActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView tvTournament;
     private TextView tvDate;
@@ -26,7 +26,7 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.authentication);
+        setContentView(R.layout.activity_authentication);
 
         //Initialisation des éléments
         this.tvTournament = (TextView) findViewById(R.id.textViewTournament);
@@ -59,13 +59,13 @@ public class Authentication extends AppCompatActivity implements View.OnClickLis
     public void verifIdent(){
         String login=editLogin.getText().toString();
         String password=editPassword.getText().toString();
-        //Comparaison à la bdd du authentication renseigné
+        //Comparaison à la bdd de l'autentification renseigné
         //boolean loginRenseigné = résultat de la requete à la bdd
         //Comparaison à la bdd du password renseigné
         //boolean passwordRenseigné = résultat de la requete à la bdd
         if (login.equals("admin")){ //Remplacer par loginRenseigné == true
             if (password.equals("admin")){ //Remplacer par loginRenseigné == true
-                Intent intent = new Intent(Authentication.this, MainActivity.class); //A remplacer par l'activity du choix du service quand il sera créé
+                Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
                 startActivity(intent);
             }else {
                 editPassword.setText("");

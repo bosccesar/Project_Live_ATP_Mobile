@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.atp.live_atp_mobile.Authentication">
+    tools:context="com.atp.live_atp_mobile.AuthenticationActivity">
 
     <TextView
         android:id="@+id/textViewTournament"
@@ -20,7 +20,7 @@
         android:text="Open d'Australie"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="40dp"
+        android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
         android:layout_marginTop="65dp"
         android:text="10 - 28 janvier 2018"
         android:textAlignment="center"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/textViewTournament"
         app:layout_constraintTop_toTopOf="@+id/textViewTournament" />
 
@@ -45,7 +45,7 @@
         android:text="Login :"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTournament" />
 
@@ -58,7 +58,7 @@
         android:text="Password :"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLogin" />
 
@@ -69,8 +69,9 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="96dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:imeOptions="actionNext"
+        android:inputType="textPersonName"
+        android:text="admin"
         app:layout_constraintStart_toEndOf="@+id/textViewLogin"
         app:layout_constraintTop_toBottomOf="@+id/textViewTournament" />
 
@@ -81,8 +82,9 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:inputType="textPassword"
         android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:text="admin"
         app:layout_constraintStart_toEndOf="@+id/textViewPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextLogin" />
 

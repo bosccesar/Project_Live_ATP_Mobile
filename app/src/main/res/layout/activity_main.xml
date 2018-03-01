@@ -77,7 +77,7 @@
         android:text="R.NADAL"
         android:textAlignment="center"
         android:gravity="center"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:textColor="@android:color/black"
         android:background="#dfffffff"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +92,7 @@
         android:text="R.FEDERER"
         android:textAlignment="center"
         android:gravity="center"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:textColor="@android:color/black"
         android:background="#dfffffff"
         app:layout_constraintEnd_toEndOf="parent"
@@ -230,7 +230,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFirstSetJ1" />
 
@@ -245,7 +245,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintStart_toEndOf="@+id/textViewScore1SetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textViewSecondSetJ1" />
 
@@ -260,7 +260,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintStart_toEndOf="@+id/textViewScore2SetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textViewThirdSetJ1" />
 
@@ -275,7 +275,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintStart_toEndOf="@+id/textViewScore3SetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textViewFourSetJ1" />
 
@@ -290,7 +290,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintStart_toEndOf="@+id/textViewScore4SetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textViewFiveSetJ1" />
 
@@ -305,7 +305,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewScore2SetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textViewFirstSetJ2" />
 
@@ -320,7 +320,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewScore3SetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textViewSecondSetJ2" />
 
@@ -335,7 +335,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewScore4SetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textViewThirdSetJ2" />
 
@@ -350,7 +350,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewScore5SetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textViewForSetJ2" />
 
@@ -365,7 +365,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFiveSetJ2" />
 
@@ -448,7 +448,7 @@
         android:layout_marginBottom="105dp"
         android:layout_marginStart="83dp"
         android:text="Ace"
-        android:textSize="30dp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -459,7 +459,7 @@
         android:layout_marginBottom="105dp"
         android:layout_marginEnd="83dp"
         android:text="Ace"
-        android:textSize="30dp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -493,7 +493,7 @@
         android:text="0"
         android:textAlignment="center"
         android:gravity="center"
-        android:textSize="23dp"
+        android:textSize="23sp"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/buttonChallengeJ1"
         app:layout_constraintStart_toStartOf="parent" />
@@ -509,7 +509,7 @@
         android:text="0"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23dp"
+        android:textSize="23sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonChallengeJ2"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -542,7 +542,7 @@
         android:gravity="center"
         android:text="00"
         android:textColor="@android:color/black"
-        android:textSize="200dp"
+        android:textSize="200sp"
         app:layout_constraintStart_toEndOf="@+id/buttonChallengeJ1"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
 
@@ -555,7 +555,7 @@
         android:gravity="center"
         android:text="—"
         android:textColor="@android:color/black"
-        android:textSize="200dp"
+        android:textSize="200sp"
         app:layout_constraintStart_toEndOf="@+id/textScoreJ1"
         app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
@@ -568,7 +568,7 @@
         android:gravity="center"
         android:text="00"
         android:textColor="@android:color/black"
-        android:textSize="200dp"
+        android:textSize="200sp"
         app:layout_constraintEnd_toStartOf="@+id/buttonChallengeJ2"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
 
@@ -582,7 +582,7 @@
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="100dp"
+        android:textSize="100sp"
         android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/imageButtonAdvertissement"
         app:layout_constraintTop_toTopOf="parent" />

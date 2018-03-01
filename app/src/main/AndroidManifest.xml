@@ -14,13 +14,16 @@
         </activity>
 
         <activity
-            android:name="com.atp.live_atp_mobile.Authentication"
+            android:name="com.atp.live_atp_mobile.AuthenticationActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name="com.atp.live_atp_mobile.ServiceActivity">
         </activity>
 
         <activity android:name="com.atp.live_atp_mobile.Pop"
