@@ -15,12 +15,14 @@ import android.widget.TextView;
 
 public class ServiceActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private TextView tvTournament;
+    private TextView tvStateTournament;
     private TextView tvJ1;
     private TextView tvJ2;
     private ImageButton submit;
     private String player;
 
-    public static final String PLAYERS = "Players" ;
+    public static final String PLAYERS = "Players";
     public static final String Player1 = "player1";
     public static final String Player2 = "player2";
     public static SharedPreferences sharedpreferences;
@@ -29,6 +31,8 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
 
+        this.tvTournament = (TextView) findViewById(R.id.textViewTournament);
+        this.tvStateTournament = (TextView) findViewById(R.id.textViewStateTournament);
         this.tvJ1 = (TextView) findViewById(R.id.textJ1);
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
@@ -39,17 +43,21 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         submit.setOnClickListener(this);
 
         sharedpreferences = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
+
+        //Méthodes
+        displayTournament();
+        displayStateTournament();
     }
 
     @Override
     public void onClick(View v) {
         if (v == tvJ1){
-            player = "player1";
+            player = Player1;
             tvJ2.setBackgroundResource(R.drawable.flat_textviewwhite); //0xffffffff
             tvJ1.setBackgroundResource(R.drawable.flat_textviewgreen); //0xff00ff00
         }
         if (v == tvJ2){
-            player = "player2";
+            player = Player2;
             tvJ1.setBackgroundResource(R.drawable.flat_textviewwhite);
             tvJ2.setBackgroundResource(R.drawable.flat_textviewgreen);
         }
@@ -72,5 +80,18 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    public void displayTournament(){
+        //Récupérer le nom du tournoi depuis l'activity précédente
+        tvTournament.setText(AuthenticationActivity.sharedpreferences.getString(AuthenticationActivity.Tournament, null));
+    }
+
+    public void displayStateTournament(){
+        //Appel get de la date en fonction du tournoi
+        //GetString du résultat de la bdd
+        //Exemple
+        String resultBdd = "22 - 30 janvier 2018";
+        tvStateTournament.setText(resultBdd);
     }
 }

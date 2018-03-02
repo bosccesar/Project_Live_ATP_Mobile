@@ -2,6 +2,7 @@ package com.atp.live_atp_mobile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,6 +24,10 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private View vue;
     private ImageButton submit;
 
+    public static final String RECUPBDD = "RecupBdd";
+    public static final String Tournament = "openAustralia";
+    public static SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,8 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         //Activation de l'intéraction
         vue.setOnClickListener(this);
         submit.setOnClickListener(this);
+
+        sharedpreferences = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
 
         //Méthodes
         displayTournament();
@@ -79,7 +86,10 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         //Appel get du tournoi en fonction du jour et de l'horaire
         //GetString du résultat de la bdd
         //Exemple
+        SharedPreferences.Editor editor = sharedpreferences.edit();
         String resultBdd = "Open de France";
+        editor.putString(Tournament, resultBdd); //Insertion du resultat de la requete dans la sauvegarde
+        editor.commit();
         tvTournament.setText(resultBdd);
     }
 

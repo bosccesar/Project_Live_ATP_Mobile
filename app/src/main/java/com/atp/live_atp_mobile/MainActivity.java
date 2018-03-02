@@ -553,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void playerNationality(){ //Récupération du drapeau associé à l'id du joueur en bdd
+    public void playerNationality(){ //Placement des joueurs et récupération du drapeau associé à l'id du joueur en bdd
         tvJ1.setText(ServiceActivity.sharedpreferences.getString(ServiceActivity.Player1, null));
         tvJ2.setText(ServiceActivity.sharedpreferences.getString(ServiceActivity.Player2, null));
         //Méthodes get récupérant le drapeau en fonction du nom des joueurs
