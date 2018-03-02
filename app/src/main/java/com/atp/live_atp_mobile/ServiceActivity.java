@@ -36,7 +36,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         this.tvJ1 = (TextView) findViewById(R.id.textJ1);
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
-        this.player = "player1";
+        this.player = "";
 
         tvJ1.setOnClickListener(this);
         tvJ2.setOnClickListener(this);
@@ -71,14 +71,16 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                 editor.putString(Player1, valJ1);
                 editor.putString(Player2, valJ2);
                 editor.commit();
+                Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
+                startActivity(intent);
             }
             else if (player.equals("player2")){
                 editor.putString(Player1, valJ2);
                 editor.putString(Player2, valJ1);
                 editor.commit();
+                Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
+                startActivity(intent);
             }
-            Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
-            startActivity(intent);
         }
     }
 
