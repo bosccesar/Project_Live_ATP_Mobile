@@ -1,7 +1,5 @@
 package com.atp.live_atp_mobile;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -180,6 +178,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonJ1){
             if (!tieBreakFalse){
                 onClickButtonScoreUp(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0")){
+                    buttonChallengeJ2.setEnabled(false);
+                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0")){
+                    buttonChallengeJ1.setEnabled(false);
+                }
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
             }
@@ -187,6 +190,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonJ2){
             if (!tieBreakFalse){
                 onClickButtonScoreUp(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0")){
+                    buttonChallengeJ2.setEnabled(false);
+                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0")){
+                    buttonChallengeJ1.setEnabled(false);
+                }
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
             }
@@ -195,6 +203,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!tieBreakFalse) {
                 onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
                 toast(view);
+                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0")){
+                    buttonChallengeJ2.setEnabled(false);
+                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0")){
+                    buttonChallengeJ1.setEnabled(false);
+                }
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 toast(view);
@@ -204,6 +217,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!tieBreakFalse) {
                 onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
                 toast(view);
+                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0")){
+                    buttonChallengeJ2.setEnabled(false);
+                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0")){
+                    buttonChallengeJ1.setEnabled(false);
+                }
             }else {
                 onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                 toast(view);
@@ -313,6 +331,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void startChronometer(){
         interactionButtonTrue();
+        buttonChallengeJ1.setEnabled(false);
+        buttonChallengeJ2.setEnabled(false);
 
         timer.setBase(SystemClock.elapsedRealtime()); //Intialisation du chronomètre
         timer.start(); //Démarre le chronomètre
@@ -338,6 +358,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (int pos = 0; pos < 5; ++pos) {
             if (tabPoint[pos] == presentIntVal && pos < 3) {
                 tvScore.setText(String.valueOf(tabPoint[pos + 1]));
+                if (tvScoreJ1.getText().toString().equals("15") && tvSet1J1.getText().toString().equals("0")) {
+                    buttonChallengeJ2.setEnabled(true);
+                }
+                if (tvScoreJ2.getText().toString().equals("15") && tvSet1J2.getText().toString().equals("0")){
+                    buttonChallengeJ1.setEnabled(true);
+                }
             }else if (tabPoint[pos] == presentIntVal && pos == 3){
                 if (presentIntValAdv == -1){ //Le joueur met un point alors que l'adversaire avait un avantage -> remise à 40 pour les 2
                     tvScore.setText(String.valueOf(presentIntVal)); //Remise à 40 pour le joueur
@@ -622,7 +648,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScore.setText(String.valueOf("40"));
         }else { //Problème lorsque le tie-break est à 0 il faudrait retourner au score du point précédent
             int intScore = Integer.parseInt(tvScoreStr);
-            tvScore.setText(String.valueOf(intScore - 1)); //Décrémente le score du tie break
+            if (tvScoreStr.equals("0")){
+                tvScore.setText(String.valueOf(tvPreviousScore));
+                tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
+                tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
+                countNbService--;
+                serviceChangeDown();
+                tieBreakFalse = false;
+                tvTieBreak.setVisibility(View.INVISIBLE);
+            }else {
+                tvScore.setText(String.valueOf(intScore - 1)); //Décrémente le score du tie break
+            }
         }
         interactionButtonTrue();
         if (buttonDown == buttonDownJ2 && intChallenge == 3){
