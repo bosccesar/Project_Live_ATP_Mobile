@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonCancelDownJ2;
     private ImageButton buttonJ1;
     private ImageButton buttonJ2;
+    private ImageButton buttonPause;
+    private ImageButton buttonAdvertissement;
+    private ImageButton buttonClose;
     private Chronometer timer;
 
     private boolean tieBreak;
@@ -153,6 +156,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.button2emeServiceJ2.setVisibility(View.INVISIBLE);
         this.buttonLetJ2.setVisibility(View.INVISIBLE);
 
+        //Pause
+        this.buttonPause = (ImageButton) findViewById(R.id.imageButtonPause);
+
+        //Advertissement
+        this.buttonAdvertissement = (ImageButton) findViewById(R.id.imageButtonAdvertissement);
+
+        //Close
+        this.buttonClose = (ImageButton) findViewById(R.id.imageButtonClose);
+
         //Interaction impossible sur les boutons
         interactionButtonFalse();
 
@@ -174,6 +186,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonLetJ2.setOnClickListener(this);
         buttonDownJ1.setOnClickListener(this);
         buttonDownJ2.setOnClickListener(this);
+        buttonCancelDownJ1.setOnClickListener(this);
+        buttonCancelDownJ2.setOnClickListener(this);
+        buttonPause.setOnClickListener(this);
+        buttonAdvertissement.setOnClickListener(this);
+        buttonClose.setOnClickListener(this);
     }
 
     @Override
@@ -181,6 +198,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Démarrage du match
         if (view == buttonStart){
             startChronometer();
+        }
+        if (view == buttonPause){
+
+        }
+        if (view == buttonAdvertissement){
+
+        }
+        if (view == buttonClose){
+
         }
         //Score
         if (view == buttonJ1){
@@ -296,16 +322,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             toast(view);
         }
         if (view == buttonDownJ1){
-            onClickButtonScoreDown(tvScoreJ1, tvScoreJ2, buttonDownJ1, tvChallengeJ2, tvChallengeJ1, buttonChallengeJ2, buttonChallengeJ1, tvPreviousScoreJ1, tvPreviousScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+            onClickButtonScoreDown(tvScoreJ1, tvScoreJ2, buttonDownJ1, buttonCancelDownJ1, tvChallengeJ2, tvChallengeJ1, buttonChallengeJ2, buttonChallengeJ1, tvPreviousScoreJ1, tvPreviousScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
         }
         if (view == buttonDownJ2){
-            onClickButtonScoreDown(tvScoreJ2, tvScoreJ1, buttonDownJ2, tvChallengeJ1, tvChallengeJ2, buttonChallengeJ1, buttonChallengeJ2, tvPreviousScoreJ2, tvPreviousScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+            onClickButtonScoreDown(tvScoreJ2, tvScoreJ1, buttonDownJ2, buttonCancelDownJ2, tvChallengeJ1, tvChallengeJ2, buttonChallengeJ1, buttonChallengeJ2, tvPreviousScoreJ2, tvPreviousScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
         }
         if (view == buttonCancelDownJ1){
-            onClickButtonScoreCancelDown();
+            onClickButtonScoreCancelDown(buttonCancelDownJ1, buttonDownJ1, tvChallengeJ2, tvChallengeJ1, buttonChallengeJ2, buttonChallengeJ1);
         }
         if (view == buttonCancelDownJ2){
-            onClickButtonScoreCancelDown();
+            onClickButtonScoreCancelDown(buttonCancelDownJ2, buttonDownJ2, tvChallengeJ1, tvChallengeJ2, buttonChallengeJ1, buttonChallengeJ2);
         }
     }
 
@@ -324,6 +350,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonOutJ2.setEnabled(false);
         buttonNetJ1.setEnabled(false);
         buttonNetJ2.setEnabled(false);
+        buttonPause.setEnabled(false);
+        buttonAdvertissement.setEnabled(false);
+        buttonClose.setEnabled(false);
     }
 
     public void interactionButtonTrue(){
@@ -339,6 +368,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonOutJ2.setEnabled(true);
         buttonNetJ1.setEnabled(true);
         buttonNetJ2.setEnabled(true);
+        buttonPause.setEnabled(true);
+        buttonAdvertissement.setEnabled(true);
+        buttonClose.setEnabled(true);
     }
 
     public void startChronometer(){
@@ -632,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //nationalityJ2.setImageDrawable(drapeau récupéré de la bdd);
     }
 
-    public void onClickButtonScoreDown(TextView tvScore, TextView tvScoreAdv, Button buttonDown, TextView tvChallenge, TextView tvChallengeAdv, Button buttonChallenge, Button buttonChallengeAdv, String tvPreviousScore, String tvPreviousScoreAdv, TextView tvScoreSet){ //Decrementation du score adverse suite à une demande de challenge de la part d'un joueur s'il a raison
+    public void onClickButtonScoreDown(TextView tvScore, TextView tvScoreAdv, Button buttonDown, Button buttonCancel, TextView tvChallenge, TextView tvChallengeAdv, Button buttonChallenge, Button buttonChallengeAdv, String tvPreviousScore, String tvPreviousScoreAdv, TextView tvScoreSet){ //Decrementation du score adverse suite à une demande de challenge de la part d'un joueur s'il a raison
         String tvScoreStr = tvScore.getText().toString();
         String tvChallengeStr = tvChallenge.getText().toString();
         String tvChallengeAdvStr = tvChallengeAdv.getText().toString();
@@ -698,9 +730,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttonChallengeAdv.setEnabled(true);
         }
         buttonDown.setVisibility(View.INVISIBLE);
+        buttonCancel.setVisibility(View.INVISIBLE);
     }
 
-    public void onClickButtonScoreCancelDown(){
-
+    public void onClickButtonScoreCancelDown(Button buttonCancel, Button buttonDown, TextView tvChallenge, TextView tvChallengeAdv, Button buttonChallenge, Button buttonChallengeAdv){
+        String tvChallengeStr = tvChallenge.getText().toString();
+        String tvChallengeAdvStr = tvChallengeAdv.getText().toString();
+        int intChallenge = Integer.parseInt(tvChallengeStr);
+        int intChallengeAdv = Integer.parseInt(tvChallengeAdvStr);
+        interactionButtonTrue();
+        if (intChallenge < 3){
+            buttonChallenge.setEnabled(true);
+        }
+        if (intChallengeAdv < 3){
+            buttonChallengeAdv.setEnabled(true);
+        }
+        buttonCancel.setVisibility(View.INVISIBLE);
+        buttonDown.setVisibility(View.INVISIBLE);
     }
 }

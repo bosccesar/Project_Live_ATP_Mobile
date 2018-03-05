@@ -22,8 +22,9 @@
         android:id="@+id/imageButtonAdvertissement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="42dp"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toEndOf="@+id/imageButtonPause"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/advertissement" />
@@ -371,10 +372,11 @@
 
     <ImageButton
         android:id="@+id/imageButtonPause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+        android:layout_height="70dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="40dp"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/bouton_pause" />
@@ -518,7 +520,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="83dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonPause"
         app:srcCompat="@mipmap/ball_service" />
@@ -576,8 +578,7 @@
         android:id="@+id/chronometerMain"
         android:layout_width="689dp"
         android:layout_height="114dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginStart="56dp"
         android:format="00:00:00"
         android:gravity="center"
         android:textAlignment="center"
@@ -626,7 +627,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="83dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonPause" />
 
