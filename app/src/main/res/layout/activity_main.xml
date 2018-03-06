@@ -78,6 +78,7 @@
         android:layout_marginStart="123dp"
         android:layout_marginTop="56dp"
         android:background="#dfffffff"
+        android:text="@string/valDefaultMainJ1"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -92,6 +93,7 @@
         android:layout_marginEnd="126dp"
         android:layout_marginTop="56dp"
         android:background="#dfffffff"
+        android:text="@string/valDefaultMainJ2"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -219,6 +221,21 @@
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
+
+    <TextView
+        android:id="@+id/textViewScoreSetTotalJ1"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/valDefaultSet"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="bold"
+        android:textSize="23sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFirstSetJ1" />
 
     <TextView
         android:id="@+id/textViewScore1SetJ1"
@@ -366,6 +383,21 @@
         android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFiveSetJ2" />
+
+    <TextView
+        android:id="@+id/textViewScoreSetTotalJ2"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="85dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/valDefaultSet"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="bold"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFiveSetJ2" />

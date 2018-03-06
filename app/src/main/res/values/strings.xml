@@ -2,6 +2,8 @@
     <string name="app_name">Project_Live_ATP</string>
     <string name="valDefaultJ1">A.MURRAY</string>
     <string name="valDefaultJ2">J-W.TSONGA</string>
+    <string name="valDefaultMainJ1">R.NADAL</string>
+    <string name="valDefaultMainJ2">R.FEDERER</string>
     <string name="secondService">2eme service</string>
     <string name="let">LET</string>
     <string name="firstSet">1er set</string>

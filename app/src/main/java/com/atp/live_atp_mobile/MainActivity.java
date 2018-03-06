@@ -1,5 +1,6 @@
 package com.atp.live_atp_mobile;
 
+import android.graphics.Typeface;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvScoreJ2;
     private TextView tvChallengeJ1;
     private TextView tvChallengeJ2;
+    private TextView tvScoreSetTotalJ1;
+    private TextView tvScoreSetTotalJ2;
     private TextView tvSet1J1;
     private TextView tvSet2J1;
     private TextView tvSet3J1;
@@ -121,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.buttonNetJ2 = (Button) findViewById(R.id.buttonFiletJ2);
 
         //Jeu
+        this.tvScoreSetTotalJ1 = (TextView) findViewById(R.id.textViewScoreSetTotalJ1);
+        this.tvScoreSetTotalJ2 = (TextView) findViewById(R.id.textViewScoreSetTotalJ2);
         this.tvSet1J1 = (TextView) findViewById(R.id.textViewScore1SetJ1);
         this.tvSet2J1 = (TextView) findViewById(R.id.textViewScore2SetJ1);
         this.tvSet3J1 = (TextView) findViewById(R.id.textViewScore3SetJ1);
@@ -385,9 +390,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int presentIntValAdv;
         String presentValStr=tvScore.getText().toString();
         String presentValStrAdv=tvScoreAdv.getText().toString();
-        if (presentValStr != "AV") {
+        if (!presentValStr.equals("AV")) {
             presentIntVal = Integer.parseInt(presentValStr);
-            if (presentValStrAdv == "AV"){ //Condition permettant d'éviter que le string parsé en int juste à la sortie du if ne se fasse pas tel quel. AV en int n'est pas possible
+            if (presentValStrAdv.equals("AV")){ //Condition permettant d'éviter que le string parsé en int juste à la sortie du if ne se fasse pas tel quel. AV en int n'est pas possible
                 presentValStrAdv = "-1";
             }
             presentIntValAdv = Integer.parseInt(presentValStrAdv);
@@ -474,49 +479,91 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int intValSet4Adv = Integer.parseInt(valStrSet4Adv);
         int intValSet5Adv = Integer.parseInt(valStrSet5Adv);
 
-        if (intValSet1 < 6 && numSet == 1) {
+        if (intValSet1 < 7 && numSet == 1) {
             tvScoreSet1.setText(String.valueOf(intValSet1 + 1)); //Incrémente le set 1
             intValSet1 += 1;
             if (intValSet1 == 6 && intValSet1Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet1 == 6 && intValSet1Adv < 5){
+            }else if (intValSet1 == 6 && intValSet1Adv < 5 || intValSet1 == 7 && intValSet1Adv == 5){
+                tvScoreSet1.setTypeface(null, Typeface.BOLD);
+                incremementationSetTotal(tvScore);
                 numSet++;
             }
-        }else if (intValSet2 < 6 && numSet == 2){
+        }else if (intValSet2 < 7 && numSet == 2){
             tvScoreSet2.setText(String.valueOf(intValSet2 + 1)); //Incrémente le set 2
             intValSet2 += 1;
             if (intValSet2 == 6 && intValSet2Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet2 == 6 && intValSet2Adv < 5){
+            }else if (intValSet2 == 6 && intValSet2Adv < 5 || intValSet2 == 7 && intValSet2Adv == 5){
+                tvScoreSet2.setTypeface(null, Typeface.BOLD);
+                incremementationSetTotal(tvScore);
                 numSet++;
             }
-        }else if (intValSet3 < 6 && numSet == 3){
+        }else if (intValSet3 < 7 && numSet == 3){
             tvScoreSet3.setText(String.valueOf(intValSet3 + 1)); //Incrémente le set 3
             intValSet3 += 1;
             if (intValSet3 == 6 && intValSet3Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet3 == 6 && intValSet3Adv < 5){
+            }else if (intValSet3 == 6 && intValSet3Adv < 5 || intValSet3 == 7 && intValSet3Adv == 5){
+                tvScoreSet3.setTypeface(null, Typeface.BOLD);
+                incremementationSetTotal(tvScore);
                 numSet++;
             }
-        }else if (intValSet4 < 6 && numSet == 4){
+        }else if (intValSet4 < 7 && numSet == 4){
             tvScoreSet4.setText(String.valueOf(intValSet4 + 1)); //Incrémente le set 3
             intValSet4 += 1;
             if (intValSet4 == 6 && intValSet4Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet4 == 6 && intValSet4Adv < 5){
+            }else if (intValSet4 == 6 && intValSet4Adv < 5 || intValSet4 == 7 && intValSet4Adv == 5){
+                tvScoreSet4.setTypeface(null, Typeface.BOLD);
+                incremementationSetTotal(tvScore);
                 numSet++;
             }
-        }else if (intValSet5 < 6 && numSet == 5){
+        }else if (intValSet5 < 7 && numSet == 5){
             tvScoreSet5.setText(String.valueOf(intValSet5 + 1)); //Incrémente le set 3
             intValSet5 += 1;
             if (intValSet5 == 6 && intValSet5Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet5 == 6 && intValSet5Adv < 5){
+            }else if (intValSet5 == 6 && intValSet5Adv < 5 || intValSet5 == 7 && intValSet5Adv == 5){
+                tvScoreSet5.setTypeface(null, Typeface.BOLD);
+                incremementationSetTotal(tvScore);
                 numSet++;
             }
         }
         countNbService++;
         serviceChange();
+    }
+
+    public void incremementationSetTotal(TextView tvScore){ //Incrémente le nombre de set gagnés du joueur
+        String StrSetTotal;
+        int intSetTotal;
+        if (tvScore == tvScoreJ1){
+            StrSetTotal=tvScoreSetTotalJ1.getText().toString();
+            intSetTotal = Integer.parseInt(StrSetTotal);
+            tvScoreSetTotalJ1.setText(String.valueOf(intSetTotal + 1));
+        }else if (tvScore == tvScoreJ2){
+            StrSetTotal=tvScoreSetTotalJ2.getText().toString();
+            intSetTotal = Integer.parseInt(StrSetTotal);
+            tvScoreSetTotalJ2.setText(String.valueOf(intSetTotal + 1));
+        }
+    }
+
+    public void decremementationSetTotal(Button buttonDown){ //Décrémente le nombre de set gagnés du joueur
+        String StrSetTotal;
+        int intSetTotal;
+        if (buttonDown == buttonDownJ1){
+            StrSetTotal=tvScoreSetTotalJ1.getText().toString();
+            intSetTotal = Integer.parseInt(StrSetTotal);
+            if (intSetTotal > 0) {
+                tvScoreSetTotalJ1.setText(String.valueOf(intSetTotal - 1));
+            }
+        }else if (buttonDown == buttonDownJ2){
+            StrSetTotal=tvScoreSetTotalJ2.getText().toString();
+            intSetTotal = Integer.parseInt(StrSetTotal);
+            if (intSetTotal > 0) {
+                tvScoreSetTotalJ2.setText(String.valueOf(intSetTotal - 1));
+            }
+        }
     }
 
     public void transformTieBreak(TextView tvScore, TextView tvScoreAdv) {
@@ -546,6 +593,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvTieBreak.setVisibility(View.INVISIBLE);
                 tieBreak = false;
                 previousTieBreak = true;
+                tvScoreSet.setTypeface(null, Typeface.BOLD);
+                incremementationSetTotal(tvScore);
                 numSet++;
                 countNbService++;
                 serviceChange();
@@ -562,6 +611,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvTieBreak.setVisibility(View.INVISIBLE);
             tieBreak = false;
             previousTieBreak = true;
+            tvScoreSet.setTypeface(null, Typeface.BOLD);
+            incremementationSetTotal(tvScore);
             numSet++;
             countNbService++;
             serviceChange();
@@ -615,6 +666,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void serviceChange(){ //Vérification pour changement de service
+        if (ballServiceJ1.getVisibility() == View.VISIBLE){
+            ballServiceJ1.setVisibility(View.INVISIBLE);
+            ballServiceJ2.setVisibility(View.VISIBLE);
+            button2emeServiceJ1.setVisibility(View.INVISIBLE);
+            button2emeServiceJ2.setVisibility(View.VISIBLE);
+            buttonLetJ1.setVisibility(View.INVISIBLE);
+            buttonLetJ2.setVisibility(View.VISIBLE);
+        }else if (ballServiceJ1.getVisibility() == View.INVISIBLE){
+            ballServiceJ1.setVisibility(View.VISIBLE);
+            ballServiceJ2.setVisibility(View.INVISIBLE);
+            button2emeServiceJ1.setVisibility(View.VISIBLE);
+            button2emeServiceJ2.setVisibility(View.INVISIBLE);
+            buttonLetJ1.setVisibility(View.VISIBLE);
+            buttonLetJ2.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void serviceChangeTieBreak(){ //Vérification pour changement de service
         if (countNbService % 2 == 0){ //Chaque 2 jeux, l'image et les boutons du service du joueur actuel disparait au profit du joueur adverse
             if (ballServiceJ1.getVisibility() == View.VISIBLE){
                 ballServiceJ1.setVisibility(View.INVISIBLE);
@@ -634,9 +703,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void serviceChangeDown() { //Vérification pour changement de service
-        if (countNbService % 2 != 0) { //Si on revient au point d'avant le changement de service ne compte pas
-            if (ballServiceJ1.getVisibility() == View.VISIBLE) {
+    public void serviceChangeDownTieBreak() { //Vérification pour changement de service
+        if (countNbService % 2 != 0) {
+            if (ballServiceJ1.getVisibility() == View.VISIBLE) { //Si on revient au point d'avant le changement de service ne compte pas
                 ballServiceJ1.setVisibility(View.INVISIBLE);
                 ballServiceJ2.setVisibility(View.VISIBLE);
                 button2emeServiceJ1.setVisibility(View.INVISIBLE);
@@ -668,34 +737,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String tvScoreStr = tvScore.getText().toString();
         String tvChallengeStr = tvChallenge.getText().toString();
         String tvChallengeAdvStr = tvChallengeAdv.getText().toString();
-        String tvScoreSetStr = tvScoreSet.getText().toString();
         int intChallenge = Integer.parseInt(tvChallengeStr);
         int intChallengeAdv = Integer.parseInt(tvChallengeAdvStr);
-        int intScoreSet = Integer.parseInt(tvScoreSetStr);
         if (tvScoreStr.equals("00") && !previousTieBreak){
             tvScore.setText(String.valueOf(tvPreviousScore));
             tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
+            decremementationSetTotal(buttonDown);
+            if (numSet > 1) { //Problème avec le numSet
+                numSet -= 1;
+            }
+            if (buttonDown == buttonDownJ1){
+                tvScoreSet = verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+            }else if (buttonDown == buttonDownJ2){
+                tvScoreSet = verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+            }
+            String tvScoreSetStr = tvScoreSet.getText().toString();
+            int intScoreSet = Integer.parseInt(tvScoreSetStr);
             tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
             countNbService--;
-            serviceChangeDown();
+            serviceChange();
         }else if (tvScoreStr.equals("00") && previousTieBreak) {
             tvScore.setText(String.valueOf(tvPreviousScore));
             tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
             if (buttonDown == buttonDownJ1){
+                decremementationSetTotal(buttonDown);
                 numSet -= 1;
                 tvScoreSet = verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                tvScoreSetStr = tvScoreSet.getText().toString();
-                intScoreSet = Integer.parseInt(tvScoreSetStr);
+                String tvScoreSetStr = tvScoreSet.getText().toString();
+                int intScoreSet = Integer.parseInt(tvScoreSetStr);
                 tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
             }else if (buttonDown == buttonDownJ2){
+                decremementationSetTotal(buttonDown);
                 numSet -= 1;
                 tvScoreSet = verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                tvScoreSetStr = tvScoreSet.getText().toString();
-                intScoreSet = Integer.parseInt(tvScoreSetStr);
+                String tvScoreSetStr = tvScoreSet.getText().toString();
+                int intScoreSet = Integer.parseInt(tvScoreSetStr);
                 tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
             }
             countNbService--;
-            serviceChangeDown();
+            serviceChange();
             tieBreak = true;
             previousTieBreak = false;
             tvTieBreak.setVisibility(View.VISIBLE);
@@ -712,9 +792,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (tvScoreStr.equals("0")){
                 tvScore.setText(String.valueOf(tvPreviousScore));
                 tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
+                if (buttonDown == buttonDownJ1){
+                    tvScoreSet = verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                }else if (buttonDown == buttonDownJ2){
+                    tvScoreSet = verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                }
+                String tvScoreSetStr = tvScoreSet.getText().toString();
+                int intScoreSet = Integer.parseInt(tvScoreSetStr);
                 tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
                 countNbService--;
-                serviceChangeDown();
+                serviceChange();
                 tieBreak = false;
                 previousTieBreak = true;
                 tvTieBreak.setVisibility(View.INVISIBLE);
