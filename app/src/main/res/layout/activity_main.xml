@@ -10,6 +10,7 @@
 
     <ImageButton
         android:id="@+id/imageButtonClose"
+        android:contentDescription="@string/close"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginEnd="1dp"
@@ -20,6 +21,7 @@
 
     <ImageButton
         android:id="@+id/imageButtonAdvertissement"
+        android:contentDescription="@string/advertissement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="65dp"
@@ -35,7 +37,7 @@
         android:layout_height="51dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="52dp"
-        android:text="2eme service"
+        android:text="@string/secondService"
         app:layout_constraintStart_toEndOf="@+id/textJ1"
         app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
@@ -45,7 +47,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="1dp"
-        android:text="LET"
+        android:text="@string/let"
         app:layout_constraintStart_toEndOf="@+id/textJ1"
         app:layout_constraintTop_toBottomOf="@+id/button2emeServiceJ1" />
 
@@ -55,7 +57,7 @@
         android:layout_height="51dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="52dp"
-        android:text="2eme service"
+        android:text="@string/secondService"
         app:layout_constraintEnd_toStartOf="@+id/textJ2"
         app:layout_constraintTop_toBottomOf="@+id/chronometerMain" />
 
@@ -65,7 +67,7 @@
         android:layout_height="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginTop="1dp"
-        android:text="LET"
+        android:text="@string/let"
         app:layout_constraintEnd_toStartOf="@+id/textJ2"
         app:layout_constraintTop_toBottomOf="@+id/button2emeServiceJ2" />
 
@@ -77,7 +79,6 @@
         android:layout_marginTop="56dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="R.NADAL"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="40sp"
@@ -92,7 +93,6 @@
         android:layout_marginTop="56dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="R.FEDERER"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="40sp"
@@ -106,7 +106,7 @@
         android:layout_marginStart="123dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="1er set"
+        android:text="@string/firstSet"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
@@ -118,7 +118,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="2e set"
+        android:text="@string/secondSet"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toEndOf="@+id/textViewFirstSetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
@@ -130,7 +130,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="3e set"
+        android:text="@string/thirdSet"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toEndOf="@+id/textViewSecondSetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
@@ -142,7 +142,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="4e set"
+        android:text="@string/fourSet"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toEndOf="@+id/textViewThirdSetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
@@ -154,7 +154,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="5e set"
+        android:text="@string/fiveSet"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toEndOf="@+id/textViewFourSetJ1"
         app:layout_constraintTop_toBottomOf="@+id/textJ1" />
@@ -166,7 +166,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="1er set"
+        android:text="@string/firstSet"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toStartOf="@+id/textViewSecondSetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
@@ -178,7 +178,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="2e set"
+        android:text="@string/secondSet"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toStartOf="@+id/textViewThirdSetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
@@ -190,7 +190,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="3e set"
+        android:text="@string/thirdSet"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toStartOf="@+id/textViewForSetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
@@ -202,7 +202,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="4e set"
+        android:text="@string/fourSet"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toStartOf="@+id/textViewFiveSetJ2"
         app:layout_constraintTop_toBottomOf="@+id/textJ2"
@@ -215,7 +215,7 @@
         android:layout_marginEnd="126dp"
         android:layout_marginTop="5dp"
         android:background="#dfffffff"
-        android:text="5e set"
+        android:text="@string/fiveSet"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textJ2" />
@@ -228,7 +228,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -243,7 +243,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -258,7 +258,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -273,7 +273,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -288,7 +288,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -303,7 +303,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -318,7 +318,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -333,7 +333,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -348,7 +348,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -363,7 +363,7 @@
         android:layout_marginTop="10dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultSet"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -372,6 +372,7 @@
 
     <ImageButton
         android:id="@+id/imageButtonPause"
+        android:contentDescription="@string/pause"
         android:layout_width="65dp"
         android:layout_height="70dp"
         android:layout_marginStart="44dp"
@@ -383,6 +384,7 @@
 
     <ImageButton
         android:id="@+id/imageButtonModifPointJ1"
+        android:contentDescription="@string/modifPoint"
         android:layout_width="106dp"
         android:layout_height="83dp"
         android:layout_marginStart="17dp"
@@ -394,6 +396,7 @@
 
     <ImageButton
         android:id="@+id/imageButtonModifPointJ2"
+        android:contentDescription="@string/modifPoint"
         android:layout_width="106dp"
         android:layout_height="83dp"
         android:layout_marginEnd="17dp"
@@ -409,7 +412,7 @@
         android:layout_height="45dp"
         android:layout_marginStart="208dp"
         android:layout_marginTop="2dp"
-        android:text="Out"
+        android:text="@string/out"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonModifPointJ1" />
 
@@ -419,7 +422,7 @@
         android:layout_height="45dp"
         android:layout_marginEnd="208dp"
         android:layout_marginTop="2dp"
-        android:text="Out"
+        android:text="@string/out"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonModifPointJ2" />
 
@@ -429,7 +432,7 @@
         android:layout_height="45dp"
         android:layout_marginStart="208dp"
         android:layout_marginTop="3dp"
-        android:text="Filet"
+        android:text="@string/filet"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonOutJ1" />
 
@@ -439,7 +442,7 @@
         android:layout_height="45dp"
         android:layout_marginEnd="208dp"
         android:layout_marginTop="3dp"
-        android:text="Filet"
+        android:text="@string/filet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonOutJ2" />
 
@@ -449,7 +452,7 @@
         android:layout_height="65dp"
         android:layout_marginBottom="105dp"
         android:layout_marginStart="83dp"
-        android:text="Ace"
+        android:text="@string/ace"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -460,7 +463,7 @@
         android:layout_height="65dp"
         android:layout_marginBottom="105dp"
         android:layout_marginEnd="83dp"
-        android:text="Ace"
+        android:text="@string/ace"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -471,7 +474,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="254dp"
         android:layout_marginEnd="20dp"
-        android:text="Challenge"
+        android:text="@string/challenge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -481,7 +484,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="254dp"
         android:layout_marginStart="20dp"
-        android:text="Challenge"
+        android:text="@string/challenge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -492,7 +495,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginStart="53dp"
         android:background="#dfffffff"
-        android:text="0"
+        android:text="@string/valDefaultChallenge"
         android:textAlignment="center"
         android:gravity="center"
         android:textSize="23sp"
@@ -508,7 +511,7 @@
         android:layout_marginEnd="56dp"
         android:background="#dfffffff"
         android:gravity="center"
-        android:text="0"
+        android:text="@string/valDefaultChallenge"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="23sp"
@@ -517,6 +520,7 @@
 
     <ImageView
         android:id="@+id/imageViewBallServiceJ1"
+        android:contentDescription="@string/service"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"
@@ -527,6 +531,7 @@
 
     <ImageView
         android:id="@+id/imageViewBallServiceJ2"
+        android:contentDescription="@string/service"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="20dp"
@@ -542,7 +547,7 @@
         android:layout_marginStart="9dp"
         android:layout_marginTop="34dp"
         android:gravity="center"
-        android:text="00"
+        android:text="@string/valDefaultScore"
         android:textColor="@android:color/black"
         android:textSize="200sp"
         app:layout_constraintStart_toEndOf="@+id/buttonChallengeJ1"
@@ -555,7 +560,7 @@
         android:layout_marginStart="161dp"
         android:layout_marginTop="171dp"
         android:gravity="center"
-        android:text="—"
+        android:text="@string/cadratin"
         android:textColor="@android:color/black"
         android:textSize="200sp"
         app:layout_constraintStart_toEndOf="@+id/textScoreJ1"
@@ -568,7 +573,7 @@
         android:layout_marginEnd="9dp"
         android:layout_marginTop="34dp"
         android:gravity="center"
-        android:text="00"
+        android:text="@string/valDefaultScore"
         android:textColor="@android:color/black"
         android:textSize="200sp"
         app:layout_constraintEnd_toStartOf="@+id/buttonChallengeJ2"
@@ -599,7 +604,7 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:text="START"
+        android:text="@string/start"
         android:textColor="#FFFFFF"
         android:textSize="60sp"
         app:layout_constraintStart_toEndOf="@+id/textScoreJ1"
@@ -616,7 +621,7 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:text="Tie-break"
+        android:text="@string/tieBreak"
         android:textColor="#FFFFFF"
         android:textSize="60sp"
         app:layout_constraintStart_toEndOf="@+id/textScoreJ1"
@@ -624,6 +629,7 @@
 
     <ImageView
         android:id="@+id/imageViewNationalityJ1"
+        android:contentDescription="@string/nationality"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="70dp"
@@ -633,6 +639,7 @@
 
     <ImageView
         android:id="@+id/imageViewNationalityJ2"
+        android:contentDescription="@string/nationality"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="70dp"
@@ -651,7 +658,7 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:text="-"
+        android:text="@string/down"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
@@ -669,7 +676,7 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:text="-"
+        android:text="@string/down"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
@@ -687,7 +694,7 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:text="X"
+        android:text="@string/cancel"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
@@ -705,10 +712,11 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:text="X"
+        android:text="@string/cancel"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
         app:layout_constraintEnd_toStartOf="@+id/textScoreJ2"
         app:layout_constraintTop_toBottomOf="@+id/buttonLetJ2" />
+
 </android.support.constraint.ConstraintLayout>
