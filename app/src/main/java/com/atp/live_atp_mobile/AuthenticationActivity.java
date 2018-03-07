@@ -25,7 +25,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private ImageButton submit;
 
     public static final String RECUPBDD = "RecupBdd";
-    public static final String Tournament = "openAustralia";
+    public static final String Tournament = "Open Australia";
     public static SharedPreferences sharedpreferences;
 
     @Override
@@ -56,6 +56,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         if (v == vue){
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.hideSoftInputFromWindow(vue.getWindowToken(), 0);
         }
         if (v == submit){

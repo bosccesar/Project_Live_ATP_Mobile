@@ -68,10 +68,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean tieBreak;
     private boolean previousTieBreak;
+    private boolean isBreak;
     private int countNbService;
     private int numSet;
     private String tvPreviousScoreJ1;
     private String tvPreviousScoreJ2;
+    private String firstServiceTieBreak;
+    private String tournament;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //Initialisation des éléments
+        //Element recupéré d'autres activity
+        this.tournament = "";
+
         //Joueurs
         this.tvJ1 = (TextView) findViewById(R.id.textJ1);
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
@@ -157,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.ballServiceJ2 = (ImageView) findViewById(R.id.imageViewBallServiceJ2);
         //Service
         this.countNbService = 0;
+        this.isBreak = false;
+        this.firstServiceTieBreak = "";
         this.ballServiceJ2.setVisibility(View.INVISIBLE);
         this.button2emeServiceJ2.setVisibility(View.INVISIBLE);
         this.buttonLetJ2.setVisibility(View.INVISIBLE);
@@ -532,6 +540,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         countNbService++;
         serviceChange();
+        breaker(tvScore);
     }
 
     public void incremementationSetTotal(TextView tvScore){ //Incrémente le nombre de set gagnés du joueur
@@ -546,6 +555,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intSetTotal = Integer.parseInt(StrSetTotal);
             tvScoreSetTotalJ2.setText(String.valueOf(intSetTotal + 1));
         }
+        tvChallengeJ1.setText(String.valueOf(0)); //A la fin de chaque set remise à 0 des challenges
+        tvChallengeJ2.setText(String.valueOf(0)); //A la fin de chaque set remise à 0 des challenges
+        buttonChallengeJ1.setEnabled(true);
+        buttonChallengeJ2.setEnabled(true);
     }
 
     public void decremementationSetTotal(Button buttonDown){ //Décrémente le nombre de set gagnés du joueur
@@ -581,6 +594,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int intValAdv = Integer.parseInt(valStrAdv);
 
         if (intVal < 6){
+            if (intVal == 0 && intValAdv == 0){
+                countNbService = 0;
+                serviceChange();
+            }else {
+                serviceChangeTieBreak();
+                countNbService++;
+            }
             tvScore.setText(String.valueOf(intVal + 1));
         }else if (intVal > 5 && intValAdv > 5){
             if (intVal == intValAdv + 1){ //Si on a une différence de 2 points
@@ -597,9 +617,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 incremementationSetTotal(tvScore);
                 numSet++;
                 countNbService++;
-                serviceChange();
+                if (firstServiceTieBreak.equals("J1")){
+                    ballServiceJ1.setVisibility(View.VISIBLE);
+                    serviceChange();
+                }else if (firstServiceTieBreak.equals("J2")){
+                    ballServiceJ2.setVisibility(View.VISIBLE);
+                    serviceChange();
+                }
             }else {
                 tvScore.setText(String.valueOf(intVal + 1));
+                serviceChangeTieBreak();
             }
         }else {
             tvScoreSet.setText(String.valueOf(7)); //Incrémente le set à 7 points
@@ -615,7 +642,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             incremementationSetTotal(tvScore);
             numSet++;
             countNbService++;
-            serviceChange();
+            serviceChangeTieBreak();
         }
     }
 
@@ -665,8 +692,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
     }
 
-    public void serviceChange(){ //Vérification pour changement de service
+    public void serviceChange(){ //Vérification pour changement de service et initialisation du service au joueur n'ayant pas servit au jeu precedent le tie-break
         if (ballServiceJ1.getVisibility() == View.VISIBLE){
+            firstServiceTieBreak = "J2";
             ballServiceJ1.setVisibility(View.INVISIBLE);
             ballServiceJ2.setVisibility(View.VISIBLE);
             button2emeServiceJ1.setVisibility(View.INVISIBLE);
@@ -674,6 +702,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttonLetJ1.setVisibility(View.INVISIBLE);
             buttonLetJ2.setVisibility(View.VISIBLE);
         }else if (ballServiceJ1.getVisibility() == View.INVISIBLE){
+            firstServiceTieBreak = "J1";
             ballServiceJ1.setVisibility(View.VISIBLE);
             ballServiceJ2.setVisibility(View.INVISIBLE);
             button2emeServiceJ1.setVisibility(View.VISIBLE);
@@ -684,7 +713,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void serviceChangeTieBreak(){ //Vérification pour changement de service
-        if (countNbService % 2 == 0){ //Chaque 2 jeux, l'image et les boutons du service du joueur actuel disparait au profit du joueur adverse
+        if (countNbService % 2 != 0){ //Chaque 2 jeux, l'image et les boutons du service du joueur actuel disparait au profit du joueur adverse
             if (ballServiceJ1.getVisibility() == View.VISIBLE){
                 ballServiceJ1.setVisibility(View.INVISIBLE);
                 ballServiceJ2.setVisibility(View.VISIBLE);
@@ -705,6 +734,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void serviceChangeDownTieBreak() { //Vérification pour changement de service
         if (countNbService % 2 != 0) {
+            if (ballServiceJ1.getVisibility() == View.VISIBLE) { //Si on revient au point d'avant le changement de service ne compte pas
+                ballServiceJ1.setVisibility(View.INVISIBLE);
+                ballServiceJ2.setVisibility(View.VISIBLE);
+                button2emeServiceJ1.setVisibility(View.INVISIBLE);
+                button2emeServiceJ2.setVisibility(View.VISIBLE);
+                buttonLetJ1.setVisibility(View.INVISIBLE);
+                buttonLetJ2.setVisibility(View.VISIBLE);
+            } else if (ballServiceJ1.getVisibility() == View.INVISIBLE) {
+                ballServiceJ1.setVisibility(View.VISIBLE);
+                ballServiceJ2.setVisibility(View.INVISIBLE);
+                button2emeServiceJ1.setVisibility(View.VISIBLE);
+                button2emeServiceJ2.setVisibility(View.INVISIBLE);
+                buttonLetJ1.setVisibility(View.VISIBLE);
+                buttonLetJ2.setVisibility(View.INVISIBLE);
+            }
+        }else if (countNbService % 2 == 0) {
             if (ballServiceJ1.getVisibility() == View.VISIBLE) { //Si on revient au point d'avant le changement de service ne compte pas
                 ballServiceJ1.setVisibility(View.INVISIBLE);
                 ballServiceJ2.setVisibility(View.VISIBLE);
@@ -757,7 +802,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intScoreSet = Integer.parseInt(tvScoreSetStr);
             tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
             countNbService--;
-            serviceChange();
+            serviceChangeDownTieBreak();
         }else if (tvScoreStr.equals("00") && previousTieBreak) {
             tvScore.setText(String.valueOf(tvPreviousScore));
             tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
@@ -777,7 +822,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
             }
             countNbService--;
-            serviceChange();
+            serviceChangeDownTieBreak();
             tieBreak = true;
             previousTieBreak = false;
             tvTieBreak.setVisibility(View.VISIBLE);
@@ -803,7 +848,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intScoreSet = Integer.parseInt(tvScoreSetStr);
                 tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
                 countNbService--;
-                serviceChange();
+                serviceChangeDownTieBreak();
                 tieBreak = false;
                 previousTieBreak = true;
                 tvTieBreak.setVisibility(View.INVISIBLE);
@@ -836,5 +881,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         buttonCancel.setVisibility(View.INVISIBLE);
         buttonDown.setVisibility(View.INVISIBLE);
+    }
+
+    private void breaker(TextView tvScore){
+        if (tvScore == tvScoreJ1 && ballServiceJ2.isShown()){
+            isBreak = true;
+            //Incrémentation du break dans la table Joueur de la base de données associé à l'Id du joueur correspondant
+        }else if (tvScore == tvScoreJ2 && ballServiceJ1.isShown() && isBreak){
+            //Incrémentation du debreak dans la table Joueur de la base de données associé à l'Id du joueur correspondant
+            isBreak = false;
+        }
+        if (tvScore == tvScoreJ2 && ballServiceJ1.isShown()){
+            isBreak = true;
+            //Incrémentation du break dans la table Joueur de la base de données associé à l'Id du joueur correspondant
+        }else if (tvScore == tvScoreJ1 && ballServiceJ2.isShown() && isBreak){
+            //Incrémentation du debreak dans la table Joueur de la base de données associé à l'Id du joueur correspondant
+            isBreak = false;
+        }
+    }
+
+    private void rulesAccordingTournament(){ //En fonction du tournoi, si grand chelem 3 set gagnant sinon 2 set gagnant
+        tournament = AuthenticationActivity.sharedpreferences.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du grand chelem
+        if (tournament.equals(Tournament.OPEN_AUSTRALIA.toString()) || tournament.equals(Tournament.ROLAND_GARROS.toString()) || tournament.equals(Tournament.WIMBELDON.toString()) || tournament.equals(Tournament.US_OPEN.toString())){ //Si tournoi du grand chelem
+            if (tournament.equals(Tournament.US_OPEN.toString()) || tournament.equals(Tournament.COUPE_DAVIS.toString())){
+
+            }
+            if (tournament.equals(Tournament.WIMBELDON.toString())){ //Si (wimbledon et double messieurs bdd == double messieurs enum) ou simple messieurs bdd == simple messieurs enum
+
+            }
+        }else { //Tournoi en dehors du grand chelem
+
+        }
     }
 }
