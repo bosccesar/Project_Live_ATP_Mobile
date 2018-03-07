@@ -900,17 +900,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void rulesAccordingTournament(){ //En fonction du tournoi, si grand chelem 3 set gagnant sinon 2 set gagnant
-        tournament = AuthenticationActivity.sharedpreferences.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du grand chelem
-        if (tournament.equals(Tournament.OPEN_AUSTRALIA.toString()) || tournament.equals(Tournament.ROLAND_GARROS.toString()) || tournament.equals(Tournament.WIMBELDON.toString()) || tournament.equals(Tournament.US_OPEN.toString())){ //Si tournoi du grand chelem
-            if (tournament.equals(Tournament.US_OPEN.toString()) || tournament.equals(Tournament.COUPE_DAVIS.toString())){
-
+    private void rulesAccordingTournament(){ //En fonction du tournoi, si Grand Chelem 3 set gagnant sinon 2 set gagnant
+        tournament = AuthenticationActivity.sharedpreferences.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du Grand Chelem
+        if (tournament.equals(Tournament.OPEN_AUSTRALIA.toString()) || tournament.equals(Tournament.ROLAND_GARROS.toString()) || tournament.equals(Tournament.WIMBELDON.toString()) || tournament.equals(Tournament.US_OPEN.toString())){ //Si tournoi du Grand Chelem
+            if (tournament.equals(Tournament.US_OPEN.toString())){
+                tieBreak = true;
+            }else{
+                tieBreak = false;
             }
             if (tournament.equals(Tournament.WIMBELDON.toString())){ //Si (wimbledon et double messieurs bdd == double messieurs enum) ou simple messieurs bdd == simple messieurs enum
-
+                //Méthode qui détermine 3 set gagnants (5 set max)
+            }else {
+                //Méthode qui détermine 2 set gagnants (3 set max)
             }
-        }else { //Tournoi en dehors du grand chelem
-
+        }else { //Tournoi en dehors du Grand Chelem
+            if (tournament.equals(Tournament.COUPE_DAVIS.toString())) {
+                tieBreak = true;
+            }else {
+                tieBreak = false;
+            }
         }
     }
 }

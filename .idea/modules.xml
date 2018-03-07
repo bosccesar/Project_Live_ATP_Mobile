@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\cebosc\Desktop\Project_Live_ATP_Mobile\Live_ATP_Mobile.iml" filepath="C:\Users\cebosc\Desktop\Project_Live_ATP_Mobile\Live_ATP_Mobile.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Project_Live_ATP_Mobile.iml" filepath="$PROJECT_DIR$/Project_Live_ATP_Mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Live_ATP_Mobile.iml" filepath="$PROJECT_DIR$/Live_ATP_Mobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -8,7 +8,8 @@ public enum Tournament {
     OPEN_AUSTRALIA("Open Australia", 0),
     ROLAND_GARROS("Rolland Garros", 1),
     WIMBELDON("Wimbledon", 2),
-    US_OPEN("US Open", 3);
+    US_OPEN("US Open", 3),
+    COUPE_DAVIS("Coupe Davis", 3);
 
     private String stringValue;
     private int intValue;
