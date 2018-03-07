@@ -217,9 +217,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonJ1){
             if (!tieBreak){
                 onClickButtonScoreUp(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0")){
+                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1){
                     buttonChallengeJ2.setEnabled(false);
-                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0")){
+                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1){
                     buttonChallengeJ1.setEnabled(false);
                 }
             }else {
@@ -229,9 +229,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonJ2){
             if (!tieBreak){
                 onClickButtonScoreUp(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0")){
+                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1){
                     buttonChallengeJ2.setEnabled(false);
-                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0")){
+                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1){
                     buttonChallengeJ1.setEnabled(false);
                 }
             }else {
@@ -242,9 +242,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!tieBreak) {
                 onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
                 toast(view);
-                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0")){
+                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1){
                     buttonChallengeJ2.setEnabled(false);
-                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0")){
+                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1){
                     buttonChallengeJ1.setEnabled(false);
                 }
             }else {
@@ -256,9 +256,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!tieBreak) {
                 onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
                 toast(view);
-                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0")){
+                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1){
                     buttonChallengeJ2.setEnabled(false);
-                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0")){
+                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1){
                     buttonChallengeJ1.setEnabled(false);
                 }
             }else {
@@ -737,13 +737,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String tvScoreStr = tvScore.getText().toString();
         String tvChallengeStr = tvChallenge.getText().toString();
         String tvChallengeAdvStr = tvChallengeAdv.getText().toString();
+        String tvScoreSetStr = tvScoreSet.getText().toString();
         int intChallenge = Integer.parseInt(tvChallengeStr);
         int intChallengeAdv = Integer.parseInt(tvChallengeAdvStr);
+        int intScoreSet = Integer.parseInt(tvScoreSetStr);
         if (tvScoreStr.equals("00") && !previousTieBreak){
             tvScore.setText(String.valueOf(tvPreviousScore));
             tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
             decremementationSetTotal(buttonDown);
-            if (numSet > 1) { //Problème avec le numSet
+            if ((numSet > 1 && intScoreSet == 0)) { //Permet de revenir au set précédent pour le décrémenter après qu'un jeu ait été gagné sans tie-break
                 numSet -= 1;
             }
             if (buttonDown == buttonDownJ1){
@@ -751,8 +753,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }else if (buttonDown == buttonDownJ2){
                 tvScoreSet = verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
             }
-            String tvScoreSetStr = tvScoreSet.getText().toString();
-            int intScoreSet = Integer.parseInt(tvScoreSetStr);
+            tvScoreSetStr = tvScoreSet.getText().toString();
+            intScoreSet = Integer.parseInt(tvScoreSetStr);
             tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
             countNbService--;
             serviceChange();
@@ -763,15 +765,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 decremementationSetTotal(buttonDown);
                 numSet -= 1;
                 tvScoreSet = verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                String tvScoreSetStr = tvScoreSet.getText().toString();
-                int intScoreSet = Integer.parseInt(tvScoreSetStr);
+                tvScoreSetStr = tvScoreSet.getText().toString();
+                intScoreSet = Integer.parseInt(tvScoreSetStr);
                 tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
             }else if (buttonDown == buttonDownJ2){
                 decremementationSetTotal(buttonDown);
                 numSet -= 1;
                 tvScoreSet = verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                String tvScoreSetStr = tvScoreSet.getText().toString();
-                int intScoreSet = Integer.parseInt(tvScoreSetStr);
+                tvScoreSetStr = tvScoreSet.getText().toString();
+                intScoreSet = Integer.parseInt(tvScoreSetStr);
                 tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
             }
             countNbService--;
@@ -797,8 +799,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }else if (buttonDown == buttonDownJ2){
                     tvScoreSet = verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
                 }
-                String tvScoreSetStr = tvScoreSet.getText().toString();
-                int intScoreSet = Integer.parseInt(tvScoreSetStr);
+                tvScoreSetStr = tvScoreSet.getText().toString();
+                intScoreSet = Integer.parseInt(tvScoreSetStr);
                 tvScoreSet.setText(String.valueOf(intScoreSet - 1)); //Décrémente le set
                 countNbService--;
                 serviceChange();
