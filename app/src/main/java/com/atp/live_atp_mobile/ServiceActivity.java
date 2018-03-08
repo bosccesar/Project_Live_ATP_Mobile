@@ -23,8 +23,10 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     private String player;
 
     public static final String PLAYERS = "Players";
+    public static final String CATEGORY = "Players";
     public static final String Player1 = "player1";
     public static final String Player2 = "player2";
+    public static final String Category = "Double messieurs";
     public static SharedPreferences sharedpreferences;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +45,12 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         submit.setOnClickListener(this);
 
         sharedpreferences = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
+        sharedpreferences = getSharedPreferences(CATEGORY, Context.MODE_PRIVATE);
 
         //Méthodes
         displayTournament();
         displayStateTournament();
+        displayCategory();
     }
 
     @Override
@@ -95,5 +99,16 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         //Exemple
         String resultBdd = "22 - 30 janvier 2018";
         tvStateTournament.setText(resultBdd);
+    }
+
+    public void displayCategory(){ //Faire une textview de la categorie
+        //Appel get du tournoi en fonction du jour et de l'horaire
+        //GetString du résultat de la bdd
+        //Exemple
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        String resultBdd = "Double messieurs";
+        editor.putString(Category, resultBdd); //Insertion du resultat de la requete dans la sauvegarde
+        editor.commit();
+        tvTournament.setText(resultBdd); //id de la tv category
     }
 }
