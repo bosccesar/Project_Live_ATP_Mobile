@@ -67,14 +67,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Chronometer timer;
 
     private boolean tieBreak;
+    private boolean superTieBreak;
     private boolean previousTieBreak;
     private boolean isBreak;
     private int countNbService;
     private int numSet;
+    private boolean setWin;
     private String tvPreviousScoreJ1;
     private String tvPreviousScoreJ2;
     private String firstServiceTieBreak;
     private String tournament;
+    private String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +85,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //Initialisation des éléments
-        //Element recupéré d'autres activity
-        this.tournament = "";
+        //Element recupéré d'autres activity et BDD
+        this.tournament = AuthenticationActivity.sharedpreferences.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du Grand Chelem
+        this.category = ""; //Remplacer par un get à la BDD
 
         //Joueurs
         this.tvJ1 = (TextView) findViewById(R.id.textJ1);
@@ -148,9 +152,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvTieBreak.setVisibility(View.INVISIBLE);
         this.tieBreak = false;
         this.previousTieBreak = false;
+        this.superTieBreak = false;
 
         //Set
         this.numSet = 1;
+        this.setWin = false;
 
         //Point rejoué
         this.button2emeServiceJ1 = (Button) findViewById(R.id.button2emeServiceJ1);
@@ -518,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 numSet++;
             }
         }else if (intValSet4 < 7 && numSet == 4){
-            tvScoreSet4.setText(String.valueOf(intValSet4 + 1)); //Incrémente le set 3
+            tvScoreSet4.setText(String.valueOf(intValSet4 + 1)); //Incrémente le set 4
             intValSet4 += 1;
             if (intValSet4 == 6 && intValSet4Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
@@ -528,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 numSet++;
             }
         }else if (intValSet5 < 7 && numSet == 5){
-            tvScoreSet5.setText(String.valueOf(intValSet5 + 1)); //Incrémente le set 3
+            tvScoreSet5.setText(String.valueOf(intValSet5 + 1)); //Incrémente le set 5
             intValSet5 += 1;
             if (intValSet5 == 6 && intValSet5Adv == 6){
                 transformTieBreak(tvScore, tvScoreAdv);
@@ -580,11 +586,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void transformTieBreak(TextView tvScore, TextView tvScoreAdv) {
-        tvScore.setText("0");
-        tvScoreAdv.setText("0");
-        tvTieBreak.setVisibility(View.VISIBLE);
-        tieBreak = true;
-        previousTieBreak = false;
+        if (numSet == 3 ){
+
+        }else {
+            tvScore.setText("0");
+            tvScoreAdv.setText("0");
+            tvTieBreak.setVisibility(View.VISIBLE);
+            tieBreak = true;
+            previousTieBreak = false;
+        }
     }
 
     public void onClickButtonScoreUpTieBreak(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet) {
@@ -900,18 +910,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void rulesAccordingTournament(){ //En fonction du tournoi, si Grand Chelem 3 set gagnant sinon 2 set gagnant
-        tournament = AuthenticationActivity.sharedpreferences.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du Grand Chelem
-        if (tournament.equals(Tournament.OPEN_AUSTRALIA.toString()) || tournament.equals(Tournament.ROLAND_GARROS.toString()) || tournament.equals(Tournament.WIMBELDON.toString()) || tournament.equals(Tournament.US_OPEN.toString())){ //Si tournoi du Grand Chelem
+    private boolean rulesLastSetTournament(){ //En fonction du tournoi, si Grand Chelem pas de tie break dans le dernier set
+        if (Tournament.getTournamentByName(tournament).grandChelem()){ //Si tournoi du Grand Chelem
             if (tournament.equals(Tournament.US_OPEN.toString())){
                 tieBreak = true;
             }else{
                 tieBreak = false;
-            }
-            if (tournament.equals(Tournament.WIMBELDON.toString())){ //Si (wimbledon et double messieurs bdd == double messieurs enum) ou simple messieurs bdd == simple messieurs enum
-                //Méthode qui détermine 3 set gagnants (5 set max)
-            }else {
-                //Méthode qui détermine 2 set gagnants (3 set max)
             }
         }else { //Tournoi en dehors du Grand Chelem
             if (tournament.equals(Tournament.COUPE_DAVIS.toString())) {
@@ -920,5 +924,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tieBreak = false;
             }
         }
+        return tieBreak;
+    }
+
+    private boolean rulesSetWinTournament(){ //En fonction du tournoi, si Grand Chelem 3 set gagnats, sinon 2
+        if (Tournament.getTournamentByName(tournament).grandChelem()){ //Si tournoi du Grand Chelem
+            if (category.equals(Category.SIMPLE_MESSIEURS.toString()) || (category.equals(Category.DOUBLE_MESSIEURS.toString()) && tournament.equals(Tournament.WIMBELDON.toString()))){  //Si Simple messieurs ou (double messieurs et Wimbledon)
+                //setWin = ; //Méthode qui détermine 3 set gagnants (5 set max) renvoi 0
+            }else{
+                //setWin = ; //Méthode qui détermine 2 set gagnants (3 set max) renvoi 1
+            }
+        }else { //Tournoi en dehors du Grand Chelem
+            if (tournament.equals(Tournament.COUPE_DAVIS.toString()) && (category.equals(Category.SIMPLE_MESSIEURS.toString()) || category.equals(Category.DOUBLE_MESSIEURS.toString()))) {
+                //setWin = ; //Méthode qui détermine 3 set gagnants (5 set max) renvoi 0
+            }else {
+                //setWin = ; //Méthode qui détermine 2 set gagnants (3 set max) renvoi 1
+            }
+        }
+        return setWin;
+    }
+
+    private boolean rulesSuperTieBreak(){
+        if ((Tournament.getTournamentByName(tournament).grandChelem() && category.equals(Category.DOUBLE_MIXTE.toString())) || (!Tournament.getTournamentByName(tournament).grandChelem() && Category.getTypeByName(category).getType() == 2)){ //Super tie break dans le dernier set pour double mixte en Grand Chelem ou tous les doubles hors Grand Chelem
+            superTieBreak = true;
+        }
+        return superTieBreak;
     }
 }

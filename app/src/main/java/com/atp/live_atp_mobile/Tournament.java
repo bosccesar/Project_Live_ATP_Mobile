@@ -5,22 +5,38 @@ package com.atp.live_atp_mobile;
  */
 
 public enum Tournament {
-    OPEN_AUSTRALIA("Open Australia", 0),
-    ROLAND_GARROS("Rolland Garros", 1),
-    WIMBELDON("Wimbledon", 2),
-    US_OPEN("US Open", 3),
-    COUPE_DAVIS("Coupe Davis", 3);
+    OPEN_AUSTRALIA("Open Australia", true),
+    ROLAND_GARROS("Rolland Garros", true),
+    WIMBELDON("Wimbledon", true),
+    US_OPEN("US Open", true),
+    COUPE_DAVIS("Coupe Davis", false);
 
-    private String stringValue;
-    private int intValue;
+    private final String nom;
+    private final boolean grandChelem;
 
-    Tournament(String toString, int value) {
-        stringValue = toString;
-        intValue = value;
+    Tournament(String nom, boolean grandChelem) {
+        this.nom = nom;
+        this.grandChelem = grandChelem;
     }
 
     @Override
     public String toString() {
-        return stringValue;
+        return this.nom;
+    }
+
+    public boolean grandChelem() {
+        return this.grandChelem;
+    }
+
+    public static Tournament getTournamentByName(String nom) { //Parcours tous les tournois
+        Tournament tournament = null;
+        int i = 0;
+        while (i < values().length && tournament == null) {
+            if (values()[i].nom.equals(nom)) {
+                tournament = values()[i];
+            }
+            i++;
+        }
+        return tournament;
     }
 }
