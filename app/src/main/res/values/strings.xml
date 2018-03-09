@@ -37,4 +37,5 @@
     <string name="modifPoint">Augmentation du score</string>
     <string name="service">Joueur possédant le service</string>
     <string name="nationality">Drapeau de nationalité</string>
+    <string name="category">Double dames</string>
 </resources>

@@ -70,9 +70,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean superTieBreak;
     private boolean previousTieBreak;
     private boolean isBreak;
+    private boolean finalTieBreak;
     private int countNbService;
     private int numSet;
-    private boolean setWin;
+    private boolean twoSetWin;
     private String tvPreviousScoreJ1;
     private String tvPreviousScoreJ2;
     private String firstServiceTieBreak;
@@ -146,6 +147,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.tvSet3J2 = (TextView) findViewById(R.id.textViewScore3SetJ2);
         this.tvSet4J2 = (TextView) findViewById(R.id.textViewScore4SetJ2);
         this.tvSet5J2 = (TextView) findViewById(R.id.textViewScore5SetJ2);
+        this.tvSet1J1.setTextColor(0); //Met le texte en transparent
+        this.tvSet2J1.setTextColor(0); //Met le texte en transparent
+        this.tvSet3J1.setTextColor(0); //Met le texte en transparent
+        this.tvSet4J1.setTextColor(0); //Met le texte en transparent
+        this.tvSet5J1.setTextColor(0); //Met le texte en transparent
+        this.tvSet1J2.setTextColor(0); //Met le texte en transparent
+        this.tvSet2J2.setTextColor(0); //Met le texte en transparent
+        this.tvSet3J2.setTextColor(0); //Met le texte en transparent
+        this.tvSet4J2.setTextColor(0); //Met le texte en transparent
+        this.tvSet5J2.setTextColor(0); //Met le texte en transparent
 
         //Tie-Break
         this.tvTieBreak = (TextView) findViewById(R.id.textViewTieBreak);
@@ -153,10 +164,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.tieBreak = false;
         this.previousTieBreak = false;
         this.superTieBreak = false;
+        this.finalTieBreak = rulesLastSetTournament();
 
         //Set
         this.numSet = 1;
-        this.setWin = false;
+        this.twoSetWin = rulesSetWinTournament();
 
         //Point rejoué
         this.button2emeServiceJ1 = (Button) findViewById(R.id.button2emeServiceJ1);
@@ -229,69 +241,100 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Score
         if (view == buttonJ1){
-            if (!tieBreak){
-                onClickButtonScoreUp(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1){
-                    buttonChallengeJ2.setEnabled(false);
-                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1){
-                    buttonChallengeJ1.setEnabled(false);
+            if (twoSetWin){
+                if (tvScoreSetTotalJ1.getText().equals("2") || tvScoreSetTotalJ2.getText().equals("2")){ //A voir pour le mettre en dehors du bouton ou dedans
+
                 }
-            }else if (superTieBreak){
+            }
+            if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
-                onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                if (!tieBreak) {
+                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
+                        onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                    }else {
+                        onClickButtonScoreUp(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                        if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
+                            buttonChallengeJ2.setEnabled(false);
+                        } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
+                            buttonChallengeJ1.setEnabled(false);
+                        }
+                    }
+                } else {
+                    onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                }
             }
         }
         if (view == buttonJ2){
-            if (!tieBreak){
-                onClickButtonScoreUp(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1){
-                    buttonChallengeJ2.setEnabled(false);
-                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1){
-                    buttonChallengeJ1.setEnabled(false);
-                }
-            }else if (superTieBreak){
+            if (superTieBreak){
                 superTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
-                onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                if (!tieBreak) {
+                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
+                        onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                    }else {
+                        onClickButtonScoreUp(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                        if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
+                            buttonChallengeJ2.setEnabled(false);
+                        } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
+                            buttonChallengeJ1.setEnabled(false);
+                        }
+                    }
+                } else {
+                    onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                }
             }
         }
         if (view == buttonAceJ1){
-            if (!tieBreak) {
-                onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                toast(view);
-                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1){
-                    buttonChallengeJ2.setEnabled(false);
-                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1){
-                    buttonChallengeJ1.setEnabled(false);
-                }
-            }else if (superTieBreak){
+            if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 toast(view);
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
-                onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                toast(view);
+                if (!tieBreak) {
+                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
+                        onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                        toast(view);
+                    }else {
+                        onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                        toast(view);
+                        if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
+                            buttonChallengeJ2.setEnabled(false);
+                        } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
+                            buttonChallengeJ1.setEnabled(false);
+                        }
+                    }
+                } else {
+                    onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                    toast(view);
+                }
             }
         }
         if (view == buttonAceJ2){
-            if (!tieBreak) {
-                onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                toast(view);
-                if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1){
-                    buttonChallengeJ2.setEnabled(false);
-                }else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1){
-                    buttonChallengeJ1.setEnabled(false);
-                }
-            }else if (superTieBreak){
+            if (superTieBreak){
                 superTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                 toast(view);
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
-                onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                toast(view);
+                if (!tieBreak) {
+                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
+                        onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                        toast(view);
+                    }else {
+                        onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                        toast(view);
+                        if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
+                            buttonChallengeJ2.setEnabled(false);
+                        } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
+                            buttonChallengeJ1.setEnabled(false);
+                        }
+                    }
+                } else {
+                    onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                    toast(view);
+                }
             }
         }
         //Challenge
@@ -303,55 +346,83 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Faute
         if (view == buttonOutJ1){
-            if (!tieBreak) {
-                onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                toast(view);
-            }else if (superTieBreak){
+            if (superTieBreak){
                 superTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                 toast(view);
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
-                onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                toast(view);
+                if (!tieBreak) {
+                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
+                        onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                        toast(view);
+                    }else {
+                        onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                        toast(view);
+                    }
+                } else {
+                    onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                    toast(view);
+                }
             }
         }
         if (view == buttonOutJ2){
-            if (!tieBreak) {
-                onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                toast(view);
-            }else if (superTieBreak){
+            if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 toast(view);
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
-                onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                toast(view);
+                if (!tieBreak) {
+                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
+                        onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                        toast(view);
+                    }else {
+                        onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                        toast(view);
+                    }
+                } else {
+                    onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                    toast(view);
+                }
             }
         }
         if (view == buttonNetJ1){
-            if (!tieBreak) {
-                onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                toast(view);
-            }else if (superTieBreak){
+            if (superTieBreak){
                 superTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                 toast(view);
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
-                onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                toast(view);
+                if (!tieBreak) {
+                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
+                        onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                        toast(view);
+                    }else {
+                        onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                        toast(view);
+                    }
+                } else {
+                    onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                    toast(view);
+                }
             }
         }
         if (view == buttonNetJ2){
-            if (!tieBreak) {
-                onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                toast(view);
-            }else if (superTieBreak){
+            if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 toast(view);
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
-                onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                toast(view);
+                if (!tieBreak) {
+                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
+                        onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                        toast(view);
+                    }else {
+                        onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                        toast(view);
+                    }
+                } else {
+                    onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                    toast(view);
+                }
             }
         }
         if (view == button2emeServiceJ1){
@@ -524,6 +595,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int intValSet5Adv = Integer.parseInt(valStrSet5Adv);
 
         if (intValSet1 < 7 && numSet == 1) {
+            tvScoreSet1.setTextColor(-16777216); //Met le texte en noir
+            tvScoreSet1Adv.setTextColor(-16777216); //Met le texte en noir
             tvScoreSet1.setText(String.valueOf(intValSet1 + 1)); //Incrémente le set 1
             intValSet1 += 1;
             if (intValSet1 == 6 && intValSet1Adv == 6){
@@ -534,6 +607,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 numSet++;
             }
         }else if (intValSet2 < 7 && numSet == 2){
+            tvScoreSet2.setTextColor(-16777216); //Met le texte en noir
+            tvScoreSet2Adv.setTextColor(-16777216); //Met le texte en noir
             tvScoreSet2.setText(String.valueOf(intValSet2 + 1)); //Incrémente le set 2
             intValSet2 += 1;
             if (intValSet2 == 6 && intValSet2Adv == 6){
@@ -547,6 +622,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 transformSuperTieBreak(tvScore, tvScoreAdv);
             }
         }else if (intValSet3 < 7 && numSet == 3){
+            tvScoreSet3.setTextColor(-16777216); //Met le texte en noir
+            tvScoreSet3Adv.setTextColor(-16777216); //Met le texte en noir
             tvScoreSet3.setText(String.valueOf(intValSet3 + 1)); //Incrémente le set 3
             intValSet3 += 1;
             if (intValSet3 == 6 && intValSet3Adv == 6){
@@ -557,6 +634,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 numSet++;
             }
         }else if (intValSet4 < 7 && numSet == 4){
+            tvScoreSet4.setTextColor(-16777216); //Met le texte en noir
+            tvScoreSet4Adv.setTextColor(-16777216); //Met le texte en noir
             tvScoreSet4.setText(String.valueOf(intValSet4 + 1)); //Incrémente le set 4
             intValSet4 += 1;
             if (intValSet4 == 6 && intValSet4Adv == 6){
@@ -567,6 +646,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 numSet++;
             }
         }else if (intValSet5 < 7 && numSet == 5){
+            tvScoreSet5.setTextColor(-16777216); //Met le texte en noir
+            tvScoreSet5Adv.setTextColor(-16777216); //Met le texte en noir
             tvScoreSet5.setText(String.valueOf(intValSet5 + 1)); //Incrémente le set 5
             intValSet5 += 1;
             if (intValSet5 == 6 && intValSet5Adv == 6){
@@ -942,40 +1023,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean rulesLastSetTournament(){ //En fonction du tournoi, si Grand Chelem pas de tie break dans le dernier set
         if (Tournament.getTournamentByName(tournament).grandChelem()){ //Si tournoi du Grand Chelem
             if (tournament.equals(Tournament.US_OPEN.toString())){
-                tieBreak = true;
+                finalTieBreak = true;
             }else{
-                tieBreak = false;
+                finalTieBreak = false;
             }
         }else { //Tournoi en dehors du Grand Chelem
             if (tournament.equals(Tournament.COUPE_DAVIS.toString())) {
-                tieBreak = true;
+                finalTieBreak = true;
             }else {
-                tieBreak = false;
+                finalTieBreak = false;
             }
         }
-        return tieBreak;
+        return finalTieBreak;
     }
 
-    private boolean rulesSetWinTournament(){ //En fonction du tournoi, si Grand Chelem 3 set gagnats, sinon 2
+    private boolean rulesSetWinTournament(){ //En fonction du tournoi, si Grand Chelem 3 set gagnants, sinon 2
         if (Tournament.getTournamentByName(tournament).grandChelem()){ //Si tournoi du Grand Chelem
             if (category.equals(Category.SIMPLE_MESSIEURS.toString()) || (category.equals(Category.DOUBLE_MESSIEURS.toString()) && tournament.equals(Tournament.WIMBELDON.toString()))){  //Si Simple messieurs ou (double messieurs et Wimbledon)
-                //setWin = ; //Méthode qui détermine 3 set gagnants (5 set max) renvoi 0
+                twoSetWin = false; //3 set gagnants (5 set max) renvoi false
             }else{
-                //setWin = ; //Méthode qui détermine 2 set gagnants (3 set max) renvoi 1
+                twoSetWin = true; //2 set gagnants (3 set max) renvoi true
             }
         }else { //Tournoi en dehors du Grand Chelem
             if (tournament.equals(Tournament.COUPE_DAVIS.toString()) && (category.equals(Category.SIMPLE_MESSIEURS.toString()) || category.equals(Category.DOUBLE_MESSIEURS.toString()))) {
-                //setWin = ; //Méthode qui détermine 3 set gagnants (5 set max) renvoi 0
+                twoSetWin = false; //3 set gagnants (5 set max) renvoi false
             }else {
-                //setWin = ; //Méthode qui détermine 2 set gagnants (3 set max) renvoi 1
+                twoSetWin = true; // 2 set gagnants (3 set max) renvoi true
             }
         }
-        return setWin;
+        return twoSetWin;
     }
 
     private boolean rulesSuperTieBreak(){
         if ((Tournament.getTournamentByName(tournament).grandChelem() && category.equals(Category.DOUBLE_MIXTE.toString())) || (!Tournament.getTournamentByName(tournament).grandChelem() && Category.getTypeByName(category).getType() == 2)){ //Super tie break dans le dernier set pour double mixte en Grand Chelem ou tous les doubles hors Grand Chelem
-            if (tournament.equals(Tournament.COUPE_DAVIS.toString()) || category.equals(Category.DOUBLE_MESSIEURS.toString())) { //sauf la Coupe Davis pour le double messieurs
+            if (tournament.equals(Tournament.COUPE_DAVIS.toString()) && category.equals(Category.DOUBLE_MESSIEURS.toString())) { //sauf la Coupe Davis pour le double messieurs
                 superTieBreak = false;
             }else {
                 superTieBreak = true;
@@ -996,6 +1077,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (intVal == 0 && intValAdv == 0){
                 countNbService = 0;
                 serviceChange();
+                tvSet3J1.setTextColor(-16777216); //Met le texte en noir
+                tvSet3J2.setTextColor(-16777216); //Met le texte en noir
             }else {
                 serviceChangeTieBreak();
                 countNbService++;
@@ -1014,7 +1097,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 superTieBreak = false;
                 tvScoreSet.setTypeface(null, Typeface.BOLD);
                 incremementationSetTotal(tvScore);
+                interactionButtonFalse();
             }else {
+                tvScoreSet.setText(String.valueOf(intValSet + 1));
                 tvScore.setText(String.valueOf(intVal + 1));
                 serviceChangeTieBreak();
             }
@@ -1026,9 +1111,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScoreJ1.setText("--");
             tvScoreJ2.setText("--");
             tvTieBreak.setVisibility(View.INVISIBLE);
-            tieBreak = false;
+            superTieBreak = false;
             tvScoreSet.setTypeface(null, Typeface.BOLD);
             incremementationSetTotal(tvScore);
+            interactionButtonFalse();
         }
     }
 
@@ -1037,6 +1123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvScoreAdv.setText("0");
         tvTieBreak.setVisibility(View.VISIBLE);
         tvTieBreak.setText("Super Tie-break");
+        tvTieBreak.setTextSize(37); //Taille du texte du super tie-break
         superTieBreak = true;
         previousTieBreak = false;
     }

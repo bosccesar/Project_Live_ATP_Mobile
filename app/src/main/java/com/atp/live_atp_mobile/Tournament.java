@@ -9,7 +9,8 @@ public enum Tournament {
     ROLAND_GARROS("Rolland Garros", true),
     WIMBELDON("Wimbledon", true),
     US_OPEN("US Open", true),
-    COUPE_DAVIS("Coupe Davis", false);
+    COUPE_DAVIS("Coupe Davis", false),
+    OPEN_FRANCE("Open de France", false);
 
     private final String nom;
     private final boolean grandChelem;

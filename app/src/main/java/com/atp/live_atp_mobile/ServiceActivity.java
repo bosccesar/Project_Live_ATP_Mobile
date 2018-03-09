@@ -17,6 +17,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
 
     private TextView tvTournament;
     private TextView tvStateTournament;
+    private TextView tvCategory;
     private TextView tvJ1;
     private TextView tvJ2;
     private ImageButton submit;
@@ -26,7 +27,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     public static final String CATEGORY = "Players";
     public static final String Player1 = "player1";
     public static final String Player2 = "player2";
-    public static final String Category = "Double messieurs";
+    public static final String Category = "Double dames";
     public static SharedPreferences sharedpreferences;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
 
         this.tvTournament = (TextView) findViewById(R.id.textViewTournament);
         this.tvStateTournament = (TextView) findViewById(R.id.textViewStateTournament);
+        this.tvCategory = (TextView) findViewById(R.id.textViewCategory);
         this.tvJ1 = (TextView) findViewById(R.id.textJ1);
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
@@ -109,6 +111,6 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         String resultBdd = "Double messieurs";
         editor.putString(Category, resultBdd); //Insertion du resultat de la requete dans la sauvegarde
         editor.commit();
-        tvTournament.setText(resultBdd); //id de la tv category
+        tvCategory.setText(resultBdd); //id de la tv category
     }
 }
