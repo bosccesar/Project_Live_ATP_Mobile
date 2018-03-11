@@ -241,11 +241,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Score
         if (view == buttonJ1){
-            if (twoSetWin){
-                if (tvScoreSetTotalJ1.getText().equals("2") || tvScoreSetTotalJ2.getText().equals("2")){ //A voir pour le mettre en dehors du bouton ou dedans
-
-                }
-            }
             if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
@@ -538,7 +533,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScore.setText("00");
                     tvScoreAdv.setText("00");
                     tvTieBreak.setVisibility(View.INVISIBLE);
-                    onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
+                    if (!finalTieBreak && !twoSetWin && numSet == 5){ //Si le dernier set d'un Grand Chelem n'est pas en tie-break
+                        //Methode pour incrémenter les jeux avec 2 jeux d'écart à partir de 6
+                    }else {
+                        onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
+                    }
                 }
             }else if (tabPoint[pos] == presentIntVal && pos == 4){
                 tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score précédent
@@ -679,6 +678,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvChallengeJ2.setText(String.valueOf(0)); //A la fin de chaque set remise à 0 des challenges
         buttonChallengeJ1.setEnabled(true);
         buttonChallengeJ2.setEnabled(true);
+        gameOver();
     }
 
     public void decremementationSetTotal(Button buttonDown){ //Décrémente le nombre de set gagnés du joueur
@@ -1022,13 +1022,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean rulesLastSetTournament(){ //En fonction du tournoi, si Grand Chelem pas de tie break dans le dernier set
         if (Tournament.getTournamentByName(tournament).grandChelem()){ //Si tournoi du Grand Chelem
-            if (tournament.equals(Tournament.US_OPEN.toString())){
+            if (tournament.equals(Tournament.US_OPEN.toString())) {
                 finalTieBreak = true;
             }else{
                 finalTieBreak = false;
             }
         }else { //Tournoi en dehors du Grand Chelem
-            if (tournament.equals(Tournament.COUPE_DAVIS.toString())) {
+            if (tournament.equals(Tournament.DAVIS_CUP.toString())) { //Coupe Davis n'existe qu'en simple messieurs et double messieurs, et toujours tie break final au cinquieme set
                 finalTieBreak = true;
             }else {
                 finalTieBreak = false;
@@ -1039,13 +1039,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean rulesSetWinTournament(){ //En fonction du tournoi, si Grand Chelem 3 set gagnants, sinon 2
         if (Tournament.getTournamentByName(tournament).grandChelem()){ //Si tournoi du Grand Chelem
-            if (category.equals(Category.SIMPLE_MESSIEURS.toString()) || (category.equals(Category.DOUBLE_MESSIEURS.toString()) && tournament.equals(Tournament.WIMBELDON.toString()))){  //Si Simple messieurs ou (double messieurs et Wimbledon)
+            if (category.equals(Category.SIMPLE_MESSIEURS.toString()) || (category.equals(Category.DOUBLE_MESSIEURS.toString()) && tournament.equals(Tournament.WIMBELDON.toString()))) {  //Si Simple messieurs ou (double messieurs et Wimbledon)
                 twoSetWin = false; //3 set gagnants (5 set max) renvoi false
             }else{
                 twoSetWin = true; //2 set gagnants (3 set max) renvoi true
             }
         }else { //Tournoi en dehors du Grand Chelem
-            if (tournament.equals(Tournament.COUPE_DAVIS.toString()) && (category.equals(Category.SIMPLE_MESSIEURS.toString()) || category.equals(Category.DOUBLE_MESSIEURS.toString()))) {
+            if (tournament.equals(Tournament.DAVIS_CUP.toString()) && (category.equals(Category.SIMPLE_MESSIEURS.toString()) || category.equals(Category.DOUBLE_MESSIEURS.toString()))) {
                 twoSetWin = false; //3 set gagnants (5 set max) renvoi false
             }else {
                 twoSetWin = true; // 2 set gagnants (3 set max) renvoi true
@@ -1056,7 +1056,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean rulesSuperTieBreak(){
         if ((Tournament.getTournamentByName(tournament).grandChelem() && category.equals(Category.DOUBLE_MIXTE.toString())) || (!Tournament.getTournamentByName(tournament).grandChelem() && Category.getTypeByName(category).getType() == 2)){ //Super tie break dans le dernier set pour double mixte en Grand Chelem ou tous les doubles hors Grand Chelem
-            if (tournament.equals(Tournament.COUPE_DAVIS.toString()) && category.equals(Category.DOUBLE_MESSIEURS.toString())) { //sauf la Coupe Davis pour le double messieurs
+            if (tournament.equals(Tournament.DAVIS_CUP.toString()) && category.equals(Category.DOUBLE_MESSIEURS.toString())) { //sauf la Coupe Davis pour le double messieurs
                 superTieBreak = false;
             }else {
                 superTieBreak = true;
@@ -1091,13 +1091,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score pécédent
                 tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score pécédent
                 tvScore.setText(String.valueOf(intVal + 1));
-                tvScoreJ1.setText("--");
-                tvScoreJ2.setText("--");
                 tvTieBreak.setVisibility(View.INVISIBLE);
                 superTieBreak = false;
                 tvScoreSet.setTypeface(null, Typeface.BOLD);
                 incremementationSetTotal(tvScore);
-                interactionButtonFalse();
             }else {
                 tvScoreSet.setText(String.valueOf(intValSet + 1));
                 tvScore.setText(String.valueOf(intVal + 1));
@@ -1108,13 +1105,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score pécédent
             tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score pécédent
             tvScore.setText(String.valueOf(intVal + 1));
-            tvScoreJ1.setText("--");
-            tvScoreJ2.setText("--");
             tvTieBreak.setVisibility(View.INVISIBLE);
             superTieBreak = false;
             tvScoreSet.setTypeface(null, Typeface.BOLD);
             incremementationSetTotal(tvScore);
-            interactionButtonFalse();
         }
     }
 
@@ -1126,5 +1120,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvTieBreak.setTextSize(37); //Taille du texte du super tie-break
         superTieBreak = true;
         previousTieBreak = false;
+    }
+
+    private void gameOver(){
+        if (twoSetWin && (tvScoreSetTotalJ1.getText().equals("2") || tvScoreSetTotalJ2.getText().equals("2"))){ //Si set en 2 manches gagnantes le match s'arrete si un joueur gagne les 2 premieres manches
+            tvScoreJ1.setText("--");
+            tvScoreJ2.setText("--");
+            interactionButtonFalse();
+            //
+        }else if (!twoSetWin && (tvScoreSetTotalJ1.getText().equals("3") || tvScoreSetTotalJ2.getText().equals("3"))){ //Si set en 3 manches gagnantes le match s'arrete si un joueur gagne 3 manches
+            tvScoreJ1.setText("--");
+            tvScoreJ2.setText("--");
+            interactionButtonFalse();
+        }
     }
 }

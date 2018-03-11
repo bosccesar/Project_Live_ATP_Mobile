@@ -96,15 +96,15 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void displayStateTournament(){
-        //Appel get de la date en fonction du tournoi
+        //Appel get du tour en fonction de la rencontre
         //GetString du résultat de la bdd
         //Exemple
-        String resultBdd = "22 - 30 janvier 2018";
+        String resultBdd = "8e de finale";
         tvStateTournament.setText(resultBdd);
     }
 
-    public void displayCategory(){ //Faire une textview de la categorie
-        //Appel get du tournoi en fonction du jour et de l'horaire
+    public void displayCategory(){
+        //Appel get de la categorie en fonction du tableau
         //GetString du résultat de la bdd
         //Exemple
         SharedPreferences.Editor editor = sharedpreferences.edit();

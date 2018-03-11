@@ -5,11 +5,11 @@ package com.atp.live_atp_mobile;
  */
 
 public enum Tournament {
-    OPEN_AUSTRALIA("Open Australia", true),
-    ROLAND_GARROS("Rolland Garros", true),
+    AUSTRALIAN_OPEN("Australian Open", true),
+    ROLAND_GARROS("Roland Garros", true),
     WIMBELDON("Wimbledon", true),
     US_OPEN("US Open", true),
-    COUPE_DAVIS("Coupe Davis", false),
+    DAVIS_CUP("Davis Cup", false),
     OPEN_FRANCE("Open de France", false);
 
     private final String nom;

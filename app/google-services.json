@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "272741883274",
+    "firebase_url": "https://teniscroustillant.firebaseio.com",
+    "project_id": "teniscroustillant",
+    "storage_bucket": "teniscroustillant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272741883274:android:99de97b3c4360110",
+        "android_client_info": {
+          "package_name": "com.atp.project_live_atp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272741883274-a0eor1k3alic7n281pit7vvjhrr78gb9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb2dmX2z1g9L3cGBAQAbzhsHImkiqCbfw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

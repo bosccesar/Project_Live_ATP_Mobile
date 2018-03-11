@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+
 /**
  * Created by cesar on 27/02/2018.
  */
@@ -23,6 +27,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private EditText editPassword;
     private View vue;
     private ImageButton submit;
+    private DatabaseReference mDatabase;
 
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "Open Australia";
@@ -32,6 +37,9 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
+
+        //Instance BDD
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //Initialisation des éléments
         this.tvTournament = (TextView) findViewById(R.id.textViewTournament);
@@ -65,8 +73,8 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     }
 
     public void verifIdent(){
-        String login=editLogin.getText().toString();
-        String password=editPassword.getText().toString();
+        String login = editLogin.getText().toString();
+        String password = editPassword.getText().toString();
         //Comparaison à la bdd de l'autentification renseigné
         //boolean loginRenseigné = résultat de la requete à la bdd
         //Comparaison à la bdd du password renseigné
@@ -84,14 +92,15 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     }
 
     public void displayTournament(){
-        //Appel get du tournoi en fonction du jour et de l'horaire
+        //Appel get du tournoi en fonction du jour et de l'horaire de la rencontre
+        String resultTournoiBdd = mDatabase.child("tournoi/0/nom").getKey();
         //GetString du résultat de la bdd
         //Exemple
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        String resultBdd = "Open de France";
-        editor.putString(Tournament, resultBdd); //Insertion du resultat de la requete dans la sauvegarde
+        //String resultTournoiBdd = "US Open";
+        editor.putString(Tournament, resultTournoiBdd); //Insertion du resultat de la requete dans la sauvegarde
         editor.commit();
-        tvTournament.setText(resultBdd);
+        tvTournament.setText(resultTournoiBdd);
     }
 
     public void displayDate(){
