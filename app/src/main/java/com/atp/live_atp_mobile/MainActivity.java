@@ -1,5 +1,7 @@
 package com.atp.live_atp_mobile;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -79,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String firstServiceTieBreak;
     private String tournament;
     private String category;
+
+    public static final String PLAYERSWINLOST = "PlayersWinLost";
+    public static final String PlayerWin = "playerWin";
+    public static final String ScoreWin = "scoreWin";
+    public static final String ScoreLost = "scoreLost";
+    public static SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Close
         this.buttonClose = (ImageButton) findViewById(R.id.imageButtonClose);
+
+        sharedpreferences = getSharedPreferences(PLAYERSWINLOST, Context.MODE_PRIVATE);
 
         //Interaction impossible sur les boutons
         interactionButtonFalse();
@@ -1122,11 +1132,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScoreJ1.setText("--");
             tvScoreJ2.setText("--");
             interactionButtonFalse();
-            //
+            popEndMatch();
         }else if (!twoSetWin && (tvScoreSetTotalJ1.getText().equals("3") || tvScoreSetTotalJ2.getText().equals("3"))){ //Si set en 3 manches gagnantes le match s'arrete si un joueur gagne 3 manches
             tvScoreJ1.setText("--");
             tvScoreJ2.setText("--");
             interactionButtonFalse();
+            popEndMatch();
         }
+    }
+
+    public void popEndMatch() { //Fais apparaitre une po-pup a la fin du match récapitulant le score
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        String strJ1=tvJ1.getText().toString();
+        String strJ2=tvJ2.getText().toString();
+        String strSetTotalJ1=tvScoreSetTotalJ1.getText().toString();
+        int intSetTotalJ1 = Integer.parseInt(strSetTotalJ1);
+        String strSetTotalJ2=tvScoreSetTotalJ2.getText().toString();
+        int intSetTotalJ2 = Integer.parseInt(strSetTotalJ2);
+
+        if (intSetTotalJ1 > intSetTotalJ2){
+            editor.putString(PlayerWin, strJ1);
+            editor.putString(ScoreWin, strSetTotalJ1);
+            editor.putString(ScoreLost, strSetTotalJ2);
+        }else {
+            editor.putString(PlayerWin, strJ2);
+            editor.putString(ScoreWin, strSetTotalJ2);
+            editor.putString(ScoreLost, strSetTotalJ1);
+        }
+        editor.commit();
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.pop_endofmatch,
+                (ViewGroup) findViewById(R.id.pop_endOfMatch));
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 }

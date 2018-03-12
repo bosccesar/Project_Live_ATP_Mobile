@@ -38,4 +38,7 @@
     <string name="service">Joueur possédant le service</string>
     <string name="nationality">Drapeau de nationalité</string>
     <string name="category">Double dames</string>
+    <string name="player_win">PlayerWin</string>
+    <string name="win">WIN</string>
+    <string name="endMatch">Fin du match</string>
 </resources>

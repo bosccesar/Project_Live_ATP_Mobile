@@ -24,7 +24,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     private String player;
 
     public static final String PLAYERS = "Players";
-    public static final String CATEGORY = "Players";
+    public static final String CATEGORY = "categories";
     public static final String Player1 = "player1";
     public static final String Player2 = "player2";
     public static final String Category = "Double dames";

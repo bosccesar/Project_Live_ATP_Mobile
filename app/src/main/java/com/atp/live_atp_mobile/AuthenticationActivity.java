@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 
 /**
  * Created by cesar on 27/02/2018.

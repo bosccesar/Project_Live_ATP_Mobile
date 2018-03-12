@@ -29,6 +29,7 @@
         <activity android:name="com.atp.live_atp_mobile.Pop"
             android:theme="@style/AppTheme.CustomTheme">
         </activity>
+        <activity android:name=".PopEndMatch" />
     </application>
 
 </manifest>
