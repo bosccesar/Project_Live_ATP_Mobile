@@ -19,7 +19,7 @@
     <string name="valDefaultChallenge">0</string>
     <string name="valDefaultScore">00</string>
     <string name="valDefaultTournament">Open d\'Australie</string>
-    <string name="valDefaultStateTournament">32e de finale</string>
+    <string name="valDefaultStateTournament">Quarts de finale</string>
     <string name="valDefaultDate">10 - 28 janvier 2018</string>
     <string name="cadratin">—</string>
     <string name="start">START</string>
@@ -39,6 +39,14 @@
     <string name="nationality">Drapeau de nationalité</string>
     <string name="category">Double dames</string>
     <string name="player_win">PlayerWin</string>
-    <string name="win">WIN</string>
+    <string name="winner">WINNER :</string>
     <string name="endMatch">Fin du match</string>
+    <string name="advantage">AV</string>
+    <string name="startGame">00</string>
+    <string name="toastAce">LE ACE A ETE COMPTABILISE</string>
+    <string name="toastOut">LE OUT A ETE COMPTABILISE</string>
+    <string name="toastNet">LE FILET A ETE COMPTABILISE</string>
+    <string name="toast2ndService">LE 2eme SERVICE A ETE COMPTABILISE</string>
+    <string name="toastLet">LE LET A ETE COMPTABILISE</string>
+    <string name="fantasticTieBreak">Super Tie-break</string>
 </resources>

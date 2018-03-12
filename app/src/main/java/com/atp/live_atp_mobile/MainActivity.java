@@ -1,6 +1,7 @@
 package com.atp.live_atp_mobile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.SystemClock;
@@ -497,21 +498,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScore.setText(String.valueOf(presentIntVal)); //Remise à 40 pour le joueur
                     tvScoreAdv.setText(String.valueOf(presentIntVal)); //Remise à 40 pour l'adversaire en utilisant la valeur du joueur
                 }else if(presentIntValAdv == 40){ //Le joueur met un point alors qu'ils sont à égalité -> avantage pour lui
-                    tvScore.setText("AV"); //Avantage pour le joueur
+                    tvScore.setText(R.string.advantage); //Avantage pour le joueur
                     //Incrémenter dans la bdd la statistique avantage pour le joueur
                 }else{ //Le joueur adverse n'a ni 40 ni avantage (0 ou 15 ou 30) donc le joueur gagne le point
                     tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score précédent
                     tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score précédent
-                    tvScore.setText("00");
-                    tvScoreAdv.setText("00");
+                    tvScore.setText(R.string.startGame);
+                    tvScoreAdv.setText(R.string.startGame);
                     tvTieBreak.setVisibility(View.INVISIBLE);
                     onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
                 }
             }else if (tabPoint[pos] == presentIntVal && pos == 4){
                 tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score précédent
                 tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score précédent
-                tvScore.setText("00");
-                tvScoreAdv.setText("00");
+                tvScore.setText(R.string.startGame);
+                tvScoreAdv.setText(R.string.startGame);
                 onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
             }
         }
@@ -730,8 +731,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score pécédent
                 tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score pécédent
                 tvScore.setText(String.valueOf(intVal + 1));
-                tvScoreJ1.setText("00");
-                tvScoreJ2.setText("00");
+                tvScoreJ1.setText(R.string.startGame);
+                tvScoreJ2.setText(R.string.startGame);
                 tvTieBreak.setVisibility(View.INVISIBLE);
                 tieBreak = false;
                 previousTieBreak = true;
@@ -755,8 +756,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score pécédent
             tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score pécédent
             tvScore.setText(String.valueOf(intVal + 1));
-            tvScoreJ1.setText("00");
-            tvScoreJ2.setText("00");
+            tvScoreJ1.setText(R.string.startGame);
+            tvScoreJ2.setText(R.string.startGame);
             tvTieBreak.setVisibility(View.INVISIBLE);
             tieBreak = false;
             previousTieBreak = true;
@@ -795,19 +796,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
         if (view == buttonAceJ1 || view == buttonAceJ2){
-            text.setText("LE ACE A ETE COMPTABILISE");
+            text.setText(R.string.toastAce);
         }else if (view == buttonOutJ1 || view == buttonOutJ2){
-            text.setText("LE OUT A ETE COMPTABILISE");
+            text.setText(R.string.toastOut);
         }else if (view == buttonNetJ1 || view == buttonNetJ2){
-            text.setText("LE FILET A ETE COMPTABILISE");
+            text.setText(R.string.toastNet);
             text.setTextSize(40);
             text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }else if (view == button2emeServiceJ1 || view == button2emeServiceJ2){
-            text.setText("LE 2eme SERVICE A ETE COMPTABILISE");
+            text.setText(R.string.toast2ndService);
             text.setTextSize(40);
             text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }else if (view == buttonLetJ1 || view == buttonLetJ2) {
-            text.setText("LE LET A ETE COMPTABILISE");
+            text.setText(R.string.toastNet);
         }
 
         Toast toast = new Toast(getApplicationContext());
@@ -1121,7 +1122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvScore.setText("0");
         tvScoreAdv.setText("0");
         tvTieBreak.setVisibility(View.VISIBLE);
-        tvTieBreak.setText("Super Tie-break");
+        tvTieBreak.setText(R.string.fantasticTieBreak);
         tvTieBreak.setTextSize(37); //Taille du texte du super tie-break
         superTieBreak = true;
         previousTieBreak = false;
@@ -1132,16 +1133,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScoreJ1.setText("--");
             tvScoreJ2.setText("--");
             interactionButtonFalse();
-            popEndMatch();
+            endMatch();
         }else if (!twoSetWin && (tvScoreSetTotalJ1.getText().equals("3") || tvScoreSetTotalJ2.getText().equals("3"))){ //Si set en 3 manches gagnantes le match s'arrete si un joueur gagne 3 manches
             tvScoreJ1.setText("--");
             tvScoreJ2.setText("--");
             interactionButtonFalse();
-            popEndMatch();
+            endMatch();
         }
     }
 
-    public void popEndMatch() { //Fais apparaitre une po-pup a la fin du match récapitulant le score
+    public void endMatch() { //Récupérarion des joueurs gagnant et perdant pour l'activity de fin de match
         SharedPreferences.Editor editor = sharedpreferences.edit();
         String strJ1=tvJ1.getText().toString();
         String strJ2=tvJ2.getText().toString();
@@ -1161,14 +1162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         editor.commit();
 
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.pop_endofmatch,
-                (ViewGroup) findViewById(R.id.pop_endOfMatch));
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
+        Intent intent = new Intent(MainActivity.this, PopEndMatch.class);
+        startActivity(intent);
     }
 }

@@ -16,28 +16,30 @@ public class PopEndMatch extends AppCompatActivity implements View.OnClickListen
     private TextView tvPlayerWin;
     private TextView tvScoreWin;
     private TextView tvScoreLost;
-    private Button matchEnd;
+    private Button buttonMatchEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pop_endofmatch);
+        setContentView(R.layout.pop_end_of_match);
 
         this.tvPlayerWin = (TextView) findViewById(R.id.textViewPlayerWin);
         this.tvScoreWin = (TextView) findViewById(R.id.textViewScorePlayerWin);
         this.tvScoreLost = (TextView) findViewById(R.id.textViewPlayerLost);
-        this.matchEnd = (Button) findViewById(R.id.buttonEndMatch);
+        this.buttonMatchEnd = (Button) findViewById(R.id.buttonEndMatch);
 
         fillTextView();
+
+        buttonMatchEnd.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v == matchEnd){
-            Intent i = getBaseContext().getPackageManager()
-                    .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
+        if (v == buttonMatchEnd){
+            Intent intent = new Intent(PopEndMatch.this, AuthenticationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            startActivity(intent);
         }
     }
 
