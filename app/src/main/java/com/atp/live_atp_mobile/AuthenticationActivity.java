@@ -93,11 +93,10 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
     public void displayTournament(){
         //Appel get du tournoi en fonction du jour et de l'horaire de la rencontre
-        String resultTournoiBdd = mDatabase.child("tournoi/0/nom").getKey();
+        //String resultTournoiBdd = mDatabase.child("tournoi/0/nom").getKey();
         //GetString du résultat de la bdd
-        //Exemple
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        //String resultTournoiBdd = "US Open";
+        String resultTournoiBdd = "Roland Garros";
         editor.putString(Tournament, resultTournoiBdd); //Insertion du resultat de la requete dans la sauvegarde
         editor.commit();
         tvTournament.setText(resultTournoiBdd);

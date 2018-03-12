@@ -246,15 +246,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
-                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
-                        onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                    }else {
-                        onClickButtonScoreUp(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                        if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
-                            buttonChallengeJ2.setEnabled(false);
-                        } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
-                            buttonChallengeJ1.setEnabled(false);
-                        }
+                    onClickButtonScoreUp(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                    if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
+                        buttonChallengeJ2.setEnabled(false);
+                    } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
+                        buttonChallengeJ1.setEnabled(false);
                     }
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
@@ -267,15 +263,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
-                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
-                        onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                    }else {
-                        onClickButtonScoreUp(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                        if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
-                            buttonChallengeJ2.setEnabled(false);
-                        } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
-                            buttonChallengeJ1.setEnabled(false);
-                        }
+                    onClickButtonScoreUp(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                    if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
+                        buttonChallengeJ2.setEnabled(false);
+                    } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
+                        buttonChallengeJ1.setEnabled(false);
                     }
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
@@ -289,17 +281,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
-                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
-                        onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                        toast(view);
-                    }else {
-                        onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                        toast(view);
-                        if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
-                            buttonChallengeJ2.setEnabled(false);
-                        } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
-                            buttonChallengeJ1.setEnabled(false);
-                        }
+                    onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                    toast(view);
+                    if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
+                        buttonChallengeJ2.setEnabled(false);
+                    } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
+                        buttonChallengeJ1.setEnabled(false);
                     }
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
@@ -314,17 +301,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
-                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
-                        onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                        toast(view);
-                    }else {
-                        onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                        toast(view);
-                        if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
-                            buttonChallengeJ2.setEnabled(false);
-                        } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
-                            buttonChallengeJ1.setEnabled(false);
-                        }
+                    onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                    toast(view);
+                    if (tvScoreJ1.getText().toString().equals("00") && tvSet1J1.getText().toString().equals("0") && numSet == 1) {
+                        buttonChallengeJ2.setEnabled(false);
+                    } else if (tvScoreJ2.getText().toString().equals("00") && tvSet1J2.getText().toString().equals("0") && numSet == 1) {
+                        buttonChallengeJ1.setEnabled(false);
                     }
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
@@ -347,13 +329,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
-                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
-                        onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                        toast(view);
-                    }else {
-                        onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                        toast(view);
-                    }
+                    onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                    toast(view);
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                     toast(view);
@@ -367,13 +344,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
-                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
-                        onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                        toast(view);
-                    }else {
-                        onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                        toast(view);
-                    }
+                    onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                    toast(view);
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                     toast(view);
@@ -387,13 +359,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
-                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
-                        onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                        toast(view);
-                    }else {
-                        onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-                        toast(view);
-                    }
+                    onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                    toast(view);
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                     toast(view);
@@ -407,13 +374,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
-                    if ((twoSetWin && finalTieBreak && numSet == 3) || (!twoSetWin && finalTieBreak && numSet == 5)) {
-                        onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                        toast(view);
-                    }else {
-                        onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-                        toast(view);
-                    }
+                    onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                    toast(view);
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                     toast(view);
@@ -533,11 +495,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScore.setText("00");
                     tvScoreAdv.setText("00");
                     tvTieBreak.setVisibility(View.INVISIBLE);
-                    if (!finalTieBreak && !twoSetWin && numSet == 5){ //Si le dernier set d'un Grand Chelem n'est pas en tie-break
-                        //Methode pour incrémenter les jeux avec 2 jeux d'écart à partir de 6
-                    }else {
-                        onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
-                    }
+                    onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
                 }
             }else if (tabPoint[pos] == presentIntVal && pos == 4){
                 tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score précédent
@@ -571,17 +529,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void onClickButtonIncrementationSet(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Compte le nombre de jeu gagné par joueur
-        String valStrSet1=tvScoreSet1.getText().toString();
-        String valStrSet2=tvScoreSet2.getText().toString();
-        String valStrSet3=tvScoreSet3.getText().toString();
-        String valStrSet4=tvScoreSet4.getText().toString();
-        String valStrSet5=tvScoreSet5.getText().toString();
-        String valStrSet1Adv=tvScoreSet1Adv.getText().toString();
-        String valStrSet2Adv=tvScoreSet2Adv.getText().toString();
-        String valStrSet3Adv=tvScoreSet3Adv.getText().toString();
-        String valStrSet4Adv=tvScoreSet4Adv.getText().toString();
-        String valStrSet5Adv=tvScoreSet5Adv.getText().toString();
+    public void onClickButtonIncrementationSet(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv) { //Compte le nombre de jeu gagné par joueur
+        String valStrSet1 = tvScoreSet1.getText().toString();
+        String valStrSet2 = tvScoreSet2.getText().toString();
+        String valStrSet3 = tvScoreSet3.getText().toString();
+        String valStrSet4 = tvScoreSet4.getText().toString();
+        String valStrSet5 = tvScoreSet5.getText().toString();
+        String valStrSet1Adv = tvScoreSet1Adv.getText().toString();
+        String valStrSet2Adv = tvScoreSet2Adv.getText().toString();
+        String valStrSet3Adv = tvScoreSet3Adv.getText().toString();
+        String valStrSet4Adv = tvScoreSet4Adv.getText().toString();
+        String valStrSet5Adv = tvScoreSet5Adv.getText().toString();
         int intValSet1 = Integer.parseInt(valStrSet1);
         int intValSet2 = Integer.parseInt(valStrSet2);
         int intValSet3 = Integer.parseInt(valStrSet3);
@@ -593,73 +551,107 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int intValSet4Adv = Integer.parseInt(valStrSet4Adv);
         int intValSet5Adv = Integer.parseInt(valStrSet5Adv);
 
-        if (intValSet1 < 7 && numSet == 1) {
-            tvScoreSet1.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet1Adv.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet1.setText(String.valueOf(intValSet1 + 1)); //Incrémente le set 1
-            intValSet1 += 1;
-            if (intValSet1 == 6 && intValSet1Adv == 6){
-                transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet1 == 6 && intValSet1Adv < 5 || intValSet1 == 7 && intValSet1Adv == 5){
-                tvScoreSet1.setTypeface(null, Typeface.BOLD);
-                incremementationSetTotal(tvScore);
-                numSet++;
+        if ((twoSetWin && !finalTieBreak && numSet == 3) || (!twoSetWin && !finalTieBreak && numSet == 5)) {
+            if (numSet == 5){
+                tvScoreSet3 = tvScoreSet5;
+                valStrSet5 = tvScoreSet3.getText().toString();
+                intValSet3 = Integer.parseInt(valStrSet5);
+                tvScoreSet3Adv = tvScoreSet5Adv;
+                valStrSet5Adv = tvScoreSet3Adv.getText().toString();
+                intValSet3Adv = Integer.parseInt(valStrSet5Adv);
             }
-        }else if (intValSet2 < 7 && numSet == 2){
-            tvScoreSet2.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet2Adv.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet2.setText(String.valueOf(intValSet2 + 1)); //Incrémente le set 2
-            intValSet2 += 1;
-            if (intValSet2 == 6 && intValSet2Adv == 6){
-                transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet2 == 6 && intValSet2Adv < 5 || intValSet2 == 7 && intValSet2Adv == 5){
-                tvScoreSet2.setTypeface(null, Typeface.BOLD);
-                incremementationSetTotal(tvScore);
-                numSet++;
-            }
-            if ((tvScoreSetTotalJ1.getText().toString().equals("1") && tvScoreSetTotalJ2.getText().toString().equals("1")) && rulesSuperTieBreak()){ //Si un set partout dans les doubles (sauf double messieurs) alors ça déclenche le super tie break
-                transformSuperTieBreak(tvScore, tvScoreAdv);
-            }
-        }else if (intValSet3 < 7 && numSet == 3){
-            tvScoreSet3.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet3Adv.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet3.setText(String.valueOf(intValSet3 + 1)); //Incrémente le set 3
-            intValSet3 += 1;
-            if (intValSet3 == 6 && intValSet3Adv == 6){
-                transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet3 == 6 && intValSet3Adv < 5 || intValSet3 == 7 && intValSet3Adv == 5){
+            if (intValSet3 < 5) {
+                tvScoreSet3.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet3Adv.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet3.setText(String.valueOf(intValSet3 + 1)); //Incrémente le set 3
+            }else if (intValSet3 > 4 && intValSet3Adv > 4) {
+                if (intValSet3 == intValSet3Adv + 1) { //Si on a une différence de 2 points
+                    tvScoreSet3.setText(String.valueOf(intValSet3 + 1));
+                    tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score pécédent
+                    tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score pécédent
+                    tvScoreSet3.setTypeface(null, Typeface.BOLD);
+                    incremementationSetTotal(tvScore);
+                    gameOver();
+                } else {
+                    tvScoreSet3.setText(String.valueOf(intValSet3 + 1));
+                }
+            } else {
+                tvScoreSet3.setText(String.valueOf(intValSet3 + 1));
+                tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score pécédent
+                tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score pécédent
                 tvScoreSet3.setTypeface(null, Typeface.BOLD);
                 incremementationSetTotal(tvScore);
-                numSet++;
+                gameOver();
             }
-        }else if (intValSet4 < 7 && numSet == 4){
-            tvScoreSet4.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet4Adv.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet4.setText(String.valueOf(intValSet4 + 1)); //Incrémente le set 4
-            intValSet4 += 1;
-            if (intValSet4 == 6 && intValSet4Adv == 6){
-                transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet4 == 6 && intValSet4Adv < 5 || intValSet4 == 7 && intValSet4Adv == 5){
-                tvScoreSet4.setTypeface(null, Typeface.BOLD);
-                incremementationSetTotal(tvScore);
-                numSet++;
+        } else {
+            if (intValSet1 < 7 && numSet == 1) {
+                tvScoreSet1.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet1Adv.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet1.setText(String.valueOf(intValSet1 + 1)); //Incrémente le set 1
+                intValSet1 += 1;
+                if (intValSet1 == 6 && intValSet1Adv == 6) {
+                    transformTieBreak(tvScore, tvScoreAdv);
+                } else if (intValSet1 == 6 && intValSet1Adv < 5 || intValSet1 == 7 && intValSet1Adv == 5) {
+                    tvScoreSet1.setTypeface(null, Typeface.BOLD);
+                    incremementationSetTotal(tvScore);
+                    numSet++;
+                }
+            } else if (intValSet2 < 7 && numSet == 2) {
+                tvScoreSet2.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet2Adv.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet2.setText(String.valueOf(intValSet2 + 1)); //Incrémente le set 2
+                intValSet2 += 1;
+                if (intValSet2 == 6 && intValSet2Adv == 6) {
+                    transformTieBreak(tvScore, tvScoreAdv);
+                } else if (intValSet2 == 6 && intValSet2Adv < 5 || intValSet2 == 7 && intValSet2Adv == 5) {
+                    tvScoreSet2.setTypeface(null, Typeface.BOLD);
+                    incremementationSetTotal(tvScore);
+                    numSet++;
+                }
+                if ((tvScoreSetTotalJ1.getText().toString().equals("1") && tvScoreSetTotalJ2.getText().toString().equals("1")) && rulesSuperTieBreak()) { //Si un set partout dans les doubles (sauf double messieurs) alors ça déclenche le super tie break
+                    transformSuperTieBreak(tvScore, tvScoreAdv);
+                }
+            } else if (intValSet3 < 7 && numSet == 3) {
+                tvScoreSet3.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet3Adv.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet3.setText(String.valueOf(intValSet3 + 1)); //Incrémente le set 3
+                intValSet3 += 1;
+                if (intValSet3 == 6 && intValSet3Adv == 6) {
+                    transformTieBreak(tvScore, tvScoreAdv);
+                } else if (intValSet3 == 6 && intValSet3Adv < 5 || intValSet3 == 7 && intValSet3Adv == 5) {
+                    tvScoreSet3.setTypeface(null, Typeface.BOLD);
+                    incremementationSetTotal(tvScore);
+                    numSet++;
+                }
+            } else if (intValSet4 < 7 && numSet == 4) {
+                tvScoreSet4.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet4Adv.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet4.setText(String.valueOf(intValSet4 + 1)); //Incrémente le set 4
+                intValSet4 += 1;
+                if (intValSet4 == 6 && intValSet4Adv == 6) {
+                    transformTieBreak(tvScore, tvScoreAdv);
+                } else if (intValSet4 == 6 && intValSet4Adv < 5 || intValSet4 == 7 && intValSet4Adv == 5) {
+                    tvScoreSet4.setTypeface(null, Typeface.BOLD);
+                    incremementationSetTotal(tvScore);
+                    numSet++;
+                }
+            } else if (intValSet5 < 7 && numSet == 5) {
+                tvScoreSet5.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet5Adv.setTextColor(-16777216); //Met le texte en noir
+                tvScoreSet5.setText(String.valueOf(intValSet5 + 1)); //Incrémente le set 5
+                intValSet5 += 1;
+                if (intValSet5 == 6 && intValSet5Adv == 6) {
+                    transformTieBreak(tvScore, tvScoreAdv);
+                } else if (intValSet5 == 6 && intValSet5Adv < 5 || intValSet5 == 7 && intValSet5Adv == 5) {
+                    tvScoreSet5.setTypeface(null, Typeface.BOLD);
+                    incremementationSetTotal(tvScore);
+                    numSet++;
+                }
             }
-        }else if (intValSet5 < 7 && numSet == 5){
-            tvScoreSet5.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet5Adv.setTextColor(-16777216); //Met le texte en noir
-            tvScoreSet5.setText(String.valueOf(intValSet5 + 1)); //Incrémente le set 5
-            intValSet5 += 1;
-            if (intValSet5 == 6 && intValSet5Adv == 6){
-                transformTieBreak(tvScore, tvScoreAdv);
-            }else if (intValSet5 == 6 && intValSet5Adv < 5 || intValSet5 == 7 && intValSet5Adv == 5){
-                tvScoreSet5.setTypeface(null, Typeface.BOLD);
-                incremementationSetTotal(tvScore);
-                numSet++;
-            }
+            countNbService++;
+            serviceChange();
+            breaker(tvScore);
         }
-        countNbService++;
-        serviceChange();
-        breaker(tvScore);
     }
 
     public void incremementationSetTotal(TextView tvScore){ //Incrémente le nombre de set gagnés du joueur
@@ -763,6 +755,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             numSet++;
             countNbService++;
             serviceChangeTieBreak();
+        }
+        if (twoSetWin){
+            gameOver();
         }
     }
 

@@ -108,7 +108,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         //GetString du résultat de la bdd
         //Exemple
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        String resultBdd = "Double messieurs";
+        String resultBdd = "Simple messieurs";
         editor.putString(Category, resultBdd); //Insertion du resultat de la requete dans la sauvegarde
         editor.commit();
         tvCategory.setText(resultBdd); //id de la tv category
