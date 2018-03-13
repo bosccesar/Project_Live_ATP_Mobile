@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +8,7 @@
     tools:context="com.atp.live_atp_mobile.SanctionActivity">
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/relativeLayoutSanction"
         android:layout_width="839dp"
         android:layout_height="316dp"
         android:layout_marginStart="220dp"
@@ -73,13 +74,13 @@
         android:textColor="@android:color/black"
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutSanction" />
 
     <TextView
         android:id="@+id/textSanctionJ2"
         android:layout_width="300dp"
         android:layout_height="82dp"
-        android:layout_marginEnd="150dp"
+        android:layout_marginStart="380dp"
         android:layout_marginTop="73dp"
         android:background="@drawable/flat_textviewwhite"
         android:clickable="true"
@@ -90,8 +91,8 @@
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+        app:layout_constraintStart_toEndOf="@+id/textSanctionJ1"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutSanction" />
 
     <ImageButton
         android:id="@+id/imageButtonSubmitSanction"
@@ -102,7 +103,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/submit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutSanction"
         app:srcCompat="@mipmap/submit" />
 
     <ImageButton

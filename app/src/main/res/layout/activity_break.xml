@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.atp.live_atp_mobile.BreakActivity">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutBreak"
+        android:layout_width="839dp"
+        android:layout_height="500dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="70dp"
+        android:background="@color/Gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewBreakField"
+            android:layout_width="600dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/textViewBreakSet"
+            android:layout_marginTop="30dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/breakField"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakSet"
+            android:layout_width="600dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/textViewBreakToilet"
+            android:layout_alignStart="@+id/textViewBreakToilet"
+            android:layout_marginBottom="30dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/breakSet"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakToilet"
+            android:layout_width="600dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/textViewBreakHeal"
+            android:layout_alignStart="@+id/textViewBreakHeal"
+            android:layout_marginBottom="27dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/breakToilet"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakHeal"
+            android:layout_width="600dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/textViewBreakAbort"
+            android:layout_alignStart="@+id/textViewBreakExceptional"
+            android:layout_marginBottom="105dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/breakHeal"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakExceptional"
+            android:layout_width="750dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/textViewBreakAbort"
+            android:layout_alignStart="@+id/textViewBreakAbort"
+            android:layout_marginBottom="25dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/breakExceptional"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakAbort"
+            android:layout_width="750dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/breakAbort"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakFieldVal"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignEnd="@+id/textViewBreakExceptional"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/valBreak"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakSetVal"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignEnd="@+id/textViewBreakExceptional"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="105dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/valBreak"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakToiletVal"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/textViewBreakHeal"
+            android:layout_alignEnd="@+id/textViewBreakExceptional"
+            android:layout_marginBottom="27dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/valBreak"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewBreakHealVal"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/textViewBreakAbort"
+            android:layout_alignEnd="@+id/textViewBreakExceptional"
+            android:layout_marginBottom="105dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/valBreak"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/imageButtonSubmitBreak"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="540dp"
+        android:layout_marginTop="60dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/submit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutBreak"
+        app:srcCompat="@mipmap/submit" />
+
+    <ImageButton
+        android:id="@+id/imageButtonResume"
+        android:contentDescription="@string/reprise"
+        android:layout_width="65dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/bouton_reprise" />
+</android.support.constraint.ConstraintLayout>

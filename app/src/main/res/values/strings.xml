@@ -53,4 +53,11 @@
     <string name="sanction1">RAPPEL A L\' ORDRE</string>
     <string name="sanction2">SANCTION JEU</string>
     <string name="sanction3">EXCLUSION MATCH</string>
+    <string name="breakField">CHANGEMENT TERRAIN</string>
+    <string name="breakSet">PAUSE SET</string>
+    <string name="breakToilet">PAUSE TOILETTES</string>
+    <string name="breakHeal">PAUSE SOIGNEURS</string>
+    <string name="breakExceptional">PAUSE EXCEPTIONNELLE</string>
+    <string name="breakAbort">ABANDON</string>
+    <string name="valBreak">00</string>
 </resources>
