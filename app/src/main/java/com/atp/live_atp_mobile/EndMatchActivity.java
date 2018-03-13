@@ -11,7 +11,7 @@ import android.widget.TextView;
  * Created by cesar on 12/03/2018.
  */
 
-public class PopEndMatch extends AppCompatActivity implements View.OnClickListener {
+public class EndMatchActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvPlayerWin;
     private TextView tvScoreWin;
@@ -36,7 +36,7 @@ public class PopEndMatch extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v == buttonMatchEnd){
-            Intent intent = new Intent(PopEndMatch.this, AuthenticationActivity.class);
+            Intent intent = new Intent(EndMatchActivity.this, AuthenticationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();
             startActivity(intent);

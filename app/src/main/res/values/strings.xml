@@ -49,4 +49,8 @@
     <string name="toast2ndService">LE 2eme SERVICE A ETE COMPTABILISE</string>
     <string name="toastLet">LE LET A ETE COMPTABILISE</string>
     <string name="fantasticTieBreak">Super Tie-break</string>
+    <string name="reprise">Reprise</string>
+    <string name="sanction1">RAPPEL A L\' ORDRE</string>
+    <string name="sanction2">SANCTION JEU</string>
+    <string name="sanction3">EXCLUSION MATCH</string>
 </resources>

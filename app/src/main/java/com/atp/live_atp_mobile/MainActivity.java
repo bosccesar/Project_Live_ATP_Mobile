@@ -245,7 +245,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         if (view == buttonAdvertissement){
-
+            Intent intent = new Intent(MainActivity.this, SanctionActivity.class);
+            startActivity(intent);
         }
         if (view == buttonClose){
 
@@ -1162,7 +1163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         editor.commit();
 
-        Intent intent = new Intent(MainActivity.this, PopEndMatch.class);
+        Intent intent = new Intent(MainActivity.this, EndMatchActivity.class);
         startActivity(intent);
     }
 }

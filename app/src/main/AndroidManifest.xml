@@ -29,7 +29,12 @@
         <activity android:name="com.atp.live_atp_mobile.Pop"
             android:theme="@style/AppTheme.CustomTheme">
         </activity>
-        <activity android:name=".PopEndMatch" />
+
+        <activity android:name=".SanctionActivity" >
+        </activity>
+
+        <activity android:name=".EndMatchActivity" >
+        </activity>
     </application>
 
 </manifest>

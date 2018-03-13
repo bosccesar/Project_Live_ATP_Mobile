@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.atp.live_atp_mobile.SanctionActivity">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="839dp"
+        android:layout_height="316dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="95dp"
+        android:background="@color/Gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewRappel"
+            android:layout_width="750dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/sanction1"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewSanctionGame"
+            android:layout_width="750dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/sanction2"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewExclusion"
+            android:layout_width="750dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:background="@color/DarkGray"
+            android:gravity="center"
+            android:text="@string/sanction3"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textSanctionJ1"
+        android:layout_width="300dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="73dp"
+        android:background="@drawable/flat_textviewwhite"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="@string/valDefaultJ1"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+    <TextView
+        android:id="@+id/textSanctionJ2"
+        android:layout_width="300dp"
+        android:layout_height="82dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginTop="73dp"
+        android:background="@drawable/flat_textviewwhite"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="@string/valDefaultJ2"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSubmitSanction"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="540dp"
+        android:layout_marginTop="185dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/submit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:srcCompat="@mipmap/submit" />
+
+    <ImageButton
+        android:id="@+id/imageButtonResume"
+        android:layout_width="65dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/reprise"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/bouton_reprise" />
+</android.support.constraint.ConstraintLayout>
