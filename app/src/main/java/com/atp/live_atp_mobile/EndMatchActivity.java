@@ -21,7 +21,7 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pop_end_of_match);
+        setContentView(R.layout.activity_end_of_match);
 
         this.tvPlayerWin = (TextView) findViewById(R.id.textViewPlayerWin);
         this.tvScoreWin = (TextView) findViewById(R.id.textViewScorePlayerWin);

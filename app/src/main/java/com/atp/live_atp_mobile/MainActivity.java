@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonCancelDownJ2;
     private ImageButton buttonJ1;
     private ImageButton buttonJ2;
-    private ImageButton buttonPause;
+    private ImageButton buttonBreak;
     private ImageButton buttonAdvertissement;
     private ImageButton buttonClose;
     private Chronometer timer;
@@ -85,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final String PLAYERSWINLOST = "PlayersWinLost";
     public static final String PlayerWin = "playerWin";
+    public static final String Player1 = "player1";
+    public static final String Player2 = "player2";
     public static final String ScoreWin = "scoreWin";
     public static final String ScoreLost = "scoreLost";
     public static SharedPreferences sharedpreferences;
@@ -197,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.buttonLetJ2.setVisibility(View.INVISIBLE);
 
         //Pause
-        this.buttonPause = (ImageButton) findViewById(R.id.imageButtonPause);
+        this.buttonBreak = (ImageButton) findViewById(R.id.imageButtonPause);
 
         //Advertissement
         this.buttonAdvertissement = (ImageButton) findViewById(R.id.imageButtonAdvertissement);
@@ -230,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonDownJ2.setOnClickListener(this);
         buttonCancelDownJ1.setOnClickListener(this);
         buttonCancelDownJ2.setOnClickListener(this);
-        buttonPause.setOnClickListener(this);
+        buttonBreak.setOnClickListener(this);
         buttonAdvertissement.setOnClickListener(this);
         buttonClose.setOnClickListener(this);
     }
@@ -241,8 +243,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonStart){
             startChronometer();
         }
-        if (view == buttonPause){
-
+        if (view == buttonBreak){
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(Player1, tvJ1.getText().toString());
+            editor.putString(Player2, tvJ2.getText().toString());
+            editor.commit();
+            Intent intent = new Intent(MainActivity.this, BreakActivity.class);
+            startActivity(intent);
         }
         if (view == buttonAdvertissement){
             Intent intent = new Intent(MainActivity.this, SanctionActivity.class);
@@ -439,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonOutJ2.setEnabled(false);
         buttonNetJ1.setEnabled(false);
         buttonNetJ2.setEnabled(false);
-        buttonPause.setEnabled(false);
+        buttonBreak.setEnabled(false);
         buttonAdvertissement.setEnabled(false);
         buttonClose.setEnabled(false);
     }
@@ -457,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonOutJ2.setEnabled(true);
         buttonNetJ1.setEnabled(true);
         buttonNetJ2.setEnabled(true);
-        buttonPause.setEnabled(true);
+        buttonBreak.setEnabled(true);
         buttonAdvertissement.setEnabled(true);
         buttonClose.setEnabled(true);
     }

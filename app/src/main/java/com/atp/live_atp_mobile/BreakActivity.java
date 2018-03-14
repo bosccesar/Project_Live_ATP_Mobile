@@ -1,10 +1,16 @@
 package com.atp.live_atp_mobile;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by cesar on 13/03/2018.
@@ -12,16 +18,17 @@ import android.widget.TextView;
 
 public class BreakActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String FORMAT = "%02d:%02d";
     private TextView tvBreak1;
     private TextView tvBreak2;
     private TextView tvBreak3;
     private TextView tvBreak4;
     private TextView tvBreak5;
     private TextView tvBreak6;
-    private TextView tvBreakVal1;
-    private TextView tvBreakVal2;
-    private TextView tvBreakVal3;
-    private TextView tvBreakVal4;
+    private Chronometer chronoBreakVal1;
+    private Chronometer chronoBreakVal2;
+    private Chronometer chronoBreakVal3;
+    private Chronometer chronoBreakVal4;
     private TextView breakSelect;
     private ImageButton buttonSubmit;
     private ImageButton buttonResume;
@@ -29,7 +36,7 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sanction);
+        setContentView(R.layout.activity_break);
 
         this.tvBreak1 = (TextView) findViewById(R.id.textViewBreakField);
         this.tvBreak2 = (TextView) findViewById(R.id.textViewBreakSet);
@@ -37,12 +44,17 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
         this.tvBreak4 = (TextView) findViewById(R.id.textViewBreakHeal);
         this.tvBreak5 = (TextView) findViewById(R.id.textViewBreakExceptional);
         this.tvBreak6 = (TextView) findViewById(R.id.textViewBreakAbort);
-        this.tvBreakVal1 = (TextView) findViewById(R.id.textViewBreakFieldVal);
-        this.tvBreakVal2 = (TextView) findViewById(R.id.textViewBreakSetVal);
-        this.tvBreakVal3 = (TextView) findViewById(R.id.textViewBreakToiletVal);
-        this.tvBreakVal4 = (TextView) findViewById(R.id.textViewBreakHealVal);
+        this.chronoBreakVal1 = (Chronometer) findViewById(R.id.chronometerBreakFieldVal);
+        this.chronoBreakVal2 = (Chronometer) findViewById(R.id.chronometerBreakSetVal);
+        this.chronoBreakVal3 = (Chronometer) findViewById(R.id.chronometerBreakToiletVal);
+        this.chronoBreakVal4 = (Chronometer) findViewById(R.id.chronometerBreakHealVal);
         this.buttonSubmit = (ImageButton) findViewById(R.id.imageButtonSubmitBreak);
         this.buttonResume = (ImageButton) findViewById(R.id.imageButtonResume);
+
+        chronoBreakVal1.setText(R.string.valBreakField);
+        chronoBreakVal2.setText(R.string.valBreakSet);
+        chronoBreakVal3.setText(R.string.valBreakToiletHeal);
+        chronoBreakVal4.setText(R.string.valBreakToiletHeal);
 
 
         tvBreak1.setOnClickListener(this);
@@ -111,29 +123,77 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
             tvBreak2.setBackgroundResource(R.color.DarkGray);
             tvBreak3.setBackgroundResource(R.color.DarkGray);
             tvBreak4.setBackgroundResource(R.color.DarkGray);
-            tvBreak6.setBackgroundResource(R.color.DarkGray);
-            tvBreak5.setBackgroundResource(R.color.MiGreen);
+            tvBreak5.setBackgroundResource(R.color.DarkGray);
+            tvBreak6.setBackgroundResource(R.color.MiGreen);
         }
         if (v == buttonSubmit){
-            if (breakSelect == tvBreak1){
+            if (breakSelect == tvBreak1){ //Pause changement de terrain
                 //Appel post à la BDD pour incrementer le changement de terrain
-                BreakActivity.this.finish();
-            }else if (breakSelect == tvBreak2){
+                reverseChronometer(chronoBreakVal1, 90000, 50);//Millisecondes en parametre
+                tvBreak2.setEnabled(false);
+                tvBreak3.setEnabled(false);
+                tvBreak4.setEnabled(false);
+                tvBreak5.setEnabled(false);
+                tvBreak6.setEnabled(false);
+                buttonSubmit.setEnabled(false);
+            }else if (breakSelect == tvBreak2){ //Pause set
                 //Appel post à la BDD pour incrementer la pause set
-                BreakActivity.this.finish();
-            }else if (breakSelect == tvBreak3){
+                reverseChronometer(chronoBreakVal2, 120000, 50);//Millisecondes en parametre
+                tvBreak1.setEnabled(false);
+                tvBreak3.setEnabled(false);
+                tvBreak4.setEnabled(false);
+                tvBreak5.setEnabled(false);
+                tvBreak6.setEnabled(false);
+                buttonSubmit.setEnabled(false);
+            }else if (breakSelect == tvBreak3){ //Pause toilettes
                 //Appel post à la BDD pour incrementer la pause toilettes
-                BreakActivity.this.finish();
-            }else if (breakSelect == tvBreak4){
+                reverseChronometer(chronoBreakVal3, 180000, 50);//Millisecondes en parametre
+                tvBreak1.setEnabled(false);
+                tvBreak2.setEnabled(false);
+                tvBreak4.setEnabled(false);
+                tvBreak5.setEnabled(false);
+                tvBreak6.setEnabled(false);
+                buttonSubmit.setEnabled(false);
+            }else if (breakSelect == tvBreak4){ //Pause soigneurs
                 //Appel post à la BDD pour incrementer la pause soigneurs
-                BreakActivity.this.finish();
-            }else if (breakSelect == tvBreak5){
-                //Appel post à la BDD pour incrementer la pause exceptionnelle
-                BreakActivity.this.finish();
-            }else if (breakSelect == tvBreak6){
-                //Affiche activite selection joueur pour abandon et appel post à la BDD pour incrementer la pause abandon selon l'd du joueur
-                BreakActivity.this.finish();
+                reverseChronometer(chronoBreakVal4, 180000, 50);//Millisecondes en parametre
+                tvBreak1.setEnabled(false);
+                tvBreak2.setEnabled(false);
+                tvBreak3.setEnabled(false);
+                tvBreak5.setEnabled(false);
+                tvBreak6.setEnabled(false);
+                buttonSubmit.setEnabled(false);
+            }else if (breakSelect == tvBreak5){ //Arret exceptionnel du match
+                //Appel post à la BDD pour incrementer la pause exceptionnelle + appel post pour inscrire le temps du match
+                Intent intent = new Intent(BreakActivity.this, AuthenticationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                finish();
+                startActivity(intent);
+            }else if (breakSelect == tvBreak6){ //Abandon d'un joueur
+                //Affiche activite selection joueur pour abandon et appel post à la BDD pour incrementer la pause abandon selon l'id du joueur
+                //Affiche activity abandon avec le joueur a selectionner
+                Intent intent = new Intent(BreakActivity.this, AbortActivity.class);
+                startActivity(intent);
             }
         }
+    }
+
+    public void reverseChronometer(final Chronometer chronometerValue, int timeStart, int refresh){
+        new CountDownTimer(timeStart, refresh) {
+
+            public void onTick(long millisUntilFinished) {
+
+                chronometerValue.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                buttonResume.setEnabled(false);
+            }
+
+            public void onFinish() {
+                chronometerValue.setText(R.string.valBreak);
+                BreakActivity.this.finish();
+            }
+        }.start();
     }
 }

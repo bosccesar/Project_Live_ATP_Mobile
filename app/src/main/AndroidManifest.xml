@@ -36,6 +36,9 @@
         <activity android:name=".BreakActivity" >
         </activity>
 
+        <activity android:name=".AbortActivity" >
+        </activity>
+
         <activity android:name=".EndMatchActivity" >
         </activity>
     </application>

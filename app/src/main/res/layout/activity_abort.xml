@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.atp.live_atp_mobile.AbortActivity">
+
+    <TextView
+        android:id="@+id/textViewAbort"
+        android:layout_width="214dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="532dp"
+        android:layout_marginTop="156dp"
+        android:gravity="center"
+        android:text="@string/abort"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textviewAbortJ1"
+        android:layout_width="300dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="288dp"
+        android:background="@drawable/flat_textviewwhite"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="@string/valDefaultJ1"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textviewAbortJ2"
+        android:layout_width="300dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="380dp"
+        android:layout_marginTop="288dp"
+        android:background="@drawable/flat_textviewwhite"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="@string/valDefaultJ2"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        app:layout_constraintStart_toEndOf="@+id/textviewAbortJ1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSubmitAbort"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="540dp"
+        android:layout_marginTop="252dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/submit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAbort"
+        app:srcCompat="@mipmap/submit" />
+
+    <ImageButton
+        android:id="@+id/imageButtonAbortResume"
+        android:layout_width="65dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/reprise"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/bouton_reprise" />
+</android.support.constraint.ConstraintLayout>
