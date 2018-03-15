@@ -28,7 +28,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     public static final String Player1 = "player1";
     public static final String Player2 = "player2";
     public static final String Category = "Double dames";
-    public static SharedPreferences sharedpreferences;
+    public static SharedPreferences sharedpreferencesService;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +46,8 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         tvJ2.setOnClickListener(this);
         submit.setOnClickListener(this);
 
-        sharedpreferences = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
-        sharedpreferences = getSharedPreferences(CATEGORY, Context.MODE_PRIVATE);
+        sharedpreferencesService = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
+        sharedpreferencesService = getSharedPreferences(CATEGORY, Context.MODE_PRIVATE);
 
         //Méthodes
         displayTournament();
@@ -71,7 +71,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             String valJ1=tvJ1.getText().toString();
             String valJ2=tvJ2.getText().toString();
 
-            SharedPreferences.Editor editor = sharedpreferences.edit();
+            SharedPreferences.Editor editor = sharedpreferencesService.edit();
 
             if (player.equals("player1")){
                 editor.putString(Player1, valJ1);
@@ -92,7 +92,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
 
     public void displayTournament(){
         //Récupérer le nom du tournoi depuis l'activity précédente
-        tvTournament.setText(AuthenticationActivity.sharedpreferences.getString(AuthenticationActivity.Tournament, null));
+        tvTournament.setText(AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.Tournament, null));
     }
 
     public void displayStateTournament(){
@@ -107,7 +107,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         //Appel get de la categorie en fonction du tableau
         //GetString du résultat de la bdd
         //Exemple
-        SharedPreferences.Editor editor = sharedpreferences.edit();
+        SharedPreferences.Editor editor = sharedpreferencesService.edit();
         String resultBdd = "Simple messieurs";
         editor.putString(Category, resultBdd); //Insertion du resultat de la requete dans la sauvegarde
         editor.commit();

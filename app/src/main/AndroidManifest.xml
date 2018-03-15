@@ -41,6 +41,9 @@
 
         <activity android:name=".EndMatchActivity" >
         </activity>
+
+        <activity android:name=".CloseAppActivity" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.atp.live_atp_mobile.CloseAppActivity">
+
+    <TextView
+        android:id="@+id/textViewClose"
+        android:layout_width="1186dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="152dp"
+        android:gravity="center"
+        android:text="@string/closeVerif"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonYes"
+        android:layout_width="270dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="109dp"
+        android:background="@drawable/flat_rectangle_red"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="@string/closeYes"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewClose" />
+
+    <Button
+        android:id="@+id/buttonNo"
+        android:layout_width="270dp"
+        android:layout_height="90dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginTop="109dp"
+        android:background="@drawable/flat_rectangle"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="@string/closeNo"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewClose" />
+</android.support.constraint.ConstraintLayout>

@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean previousTieBreak;
     private boolean isBreak;
     private boolean finalTieBreak;
+    private boolean advertissement; //Permet de savoir si la sanctionActivity a ete appele
     private int countNbService;
     private int numSet;
     private boolean twoSetWin;
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String Player2 = "player2";
     public static final String ScoreWin = "scoreWin";
     public static final String ScoreLost = "scoreLost";
-    public static SharedPreferences sharedpreferences;
+    public static SharedPreferences sharedpreferencesMainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Initialisation des éléments
         //Element recupéré d'autres activity et BDD
-        this.tournament = AuthenticationActivity.sharedpreferences.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du Grand Chelem
-        this.category = ServiceActivity.sharedpreferences.getString(ServiceActivity.Category, null); //Récuperation de la category pour évaluer s'il y a super tie-break et 2 ou 3 set gangants
+        this.tournament = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du Grand Chelem
+        this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Category, null); //Récuperation de la category pour évaluer s'il y a super tie-break et 2 ou 3 set gangants
 
         //Joueurs
         this.tvJ1 = (TextView) findViewById(R.id.textJ1);
@@ -204,10 +206,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Advertissement
         this.buttonAdvertissement = (ImageButton) findViewById(R.id.imageButtonAdvertissement);
 
+        //sanctionActivity
+        this.advertissement = false;
+
         //Close
         this.buttonClose = (ImageButton) findViewById(R.id.imageButtonClose);
 
-        sharedpreferences = getSharedPreferences(PLAYERSWINLOST, Context.MODE_PRIVATE);
+        sharedpreferencesMainActivity = getSharedPreferences(PLAYERSWINLOST, Context.MODE_PRIVATE);
 
         //Interaction impossible sur les boutons
         interactionButtonFalse();
@@ -238,13 +243,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (advertissement) {
+            incrementationGameSanction(); //Recuperation la sanction d'activitySanction pour incrementer le set en cours
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         //Démarrage du match
         if (view == buttonStart){
             startChronometer();
         }
         if (view == buttonBreak){
-            SharedPreferences.Editor editor = sharedpreferences.edit();
+            SharedPreferences.Editor editor = sharedpreferencesMainActivity.edit();
             editor.putString(Player1, tvJ1.getText().toString());
             editor.putString(Player2, tvJ2.getText().toString());
             editor.commit();
@@ -254,9 +268,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonAdvertissement){
             Intent intent = new Intent(MainActivity.this, SanctionActivity.class);
             startActivity(intent);
+            advertissement = true;
         }
         if (view == buttonClose){
-
+            Intent intent = new Intent(MainActivity.this, CloseAppActivity.class);
+            startActivity(intent);
         }
         //Score
         if (view == buttonJ1){
@@ -471,8 +487,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void startChronometer(){
         interactionButtonTrue();
-        timer.setBase(SystemClock.elapsedRealtime()); //Intialisation du chronomètre
+        timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            public void onChronometerTick(Chronometer cArg) {
+                long t = SystemClock.elapsedRealtime() - cArg.getBase();
+                cArg.setText(DateFormat.format("HH:mm:ss", t));
+            }
+        });
         timer.start(); //Démarre le chronomètre
+        timer.setBase(SystemClock.elapsedRealtime());
         buttonStart.setVisibility(View.INVISIBLE); //Fais disparaitre le bouton start
     }
 
@@ -903,8 +925,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void playerNationality(){ //Placement des joueurs et récupération du drapeau associé à l'id du joueur en bdd
-        tvJ1.setText(ServiceActivity.sharedpreferences.getString(ServiceActivity.Player1, null));
-        tvJ2.setText(ServiceActivity.sharedpreferences.getString(ServiceActivity.Player2, null));
+        tvJ1.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Player1, null));
+        tvJ2.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Player2, null));
         //Méthodes get récupérant le drapeau en fonction du nom des joueurs
         nationalityJ1.setImageResource(R.mipmap.france);
         nationalityJ2.setImageResource(R.mipmap.italy);
@@ -1151,7 +1173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void endMatch() { //Récupérarion des joueurs gagnant et perdant pour l'activity de fin de match
-        SharedPreferences.Editor editor = sharedpreferences.edit();
+        SharedPreferences.Editor editor = sharedpreferencesMainActivity.edit();
         String strJ1=tvJ1.getText().toString();
         String strJ2=tvJ2.getText().toString();
         String strSetTotalJ1=tvScoreSetTotalJ1.getText().toString();
@@ -1172,5 +1194,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = new Intent(MainActivity.this, EndMatchActivity.class);
         startActivity(intent);
+    }
+
+    public void incrementationGameSanction(){
+        String sanction = SanctionActivity.sharedpreferencesSanction.getString(SanctionActivity.SanctionGame, null);
+        String playerSanction = SanctionActivity.sharedpreferencesSanction.getString(SanctionActivity.PlayerSanction, null);
+        if (sanction.equals("true") && playerSanction.equals(tvJ1.getText().toString())){
+            onClickButtonIncrementationSet(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+            //Incrementer la sanction jeu dans la BDD pour le playerSanction
+            tvScoreJ1.setText(R.string.startGame);
+            tvScoreJ2.setText(R.string.startGame);
+        }else if (sanction.equals("true") && playerSanction.equals(tvJ2.getText().toString())){
+            onClickButtonIncrementationSet(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+            //Incrementer la sanction jeu dans la BDD pour le playerSanction
+            tvScoreJ1.setText(R.string.startGame);
+            tvScoreJ2.setText(R.string.startGame);
+        }
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.pop_ace,
+                (ViewGroup) findViewById(R.id.custom_toast_container));
+
+        TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
+        CharSequence textSanction = "LA SANCTION A ETE APPLIQUEE A : " + playerSanction;
+        text.setText(textSanction);
+        text.setBackgroundResource(R.drawable.flat_rectangle_red);
+        text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        text.setTextSize(40);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM, 0, 60);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
     }
 }

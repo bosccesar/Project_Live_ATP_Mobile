@@ -72,7 +72,7 @@ public class AbortActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void fillTextView(){
-        tvPlayer1.setText(MainActivity.sharedpreferences.getString(MainActivity.Player1, null));
-        tvPlayer2.setText(MainActivity.sharedpreferences.getString(MainActivity.Player2, null));
+        tvPlayer1.setText(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.Player1, null));
+        tvPlayer2.setText(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.Player2, null));
     }
 }

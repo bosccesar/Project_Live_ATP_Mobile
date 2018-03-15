@@ -64,4 +64,7 @@
     <string name="valBreakSet">02:00</string>
     <string name="valBreakToiletHeal">03:00</string>
     <string name="abort">ABANDON :</string>
+    <string name="closeYes">OUI</string>
+    <string name="closeNo">NON</string>
+    <string name="closeVerif">Voulez-vous fermer votre session et perdre toutes les données du match ?</string>
 </resources>

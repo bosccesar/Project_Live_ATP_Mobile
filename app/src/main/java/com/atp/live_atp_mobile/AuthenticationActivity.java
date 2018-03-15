@@ -30,7 +30,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "Open Australia";
-    public static SharedPreferences sharedpreferences;
+    public static SharedPreferences sharedpreferencesAuthentication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         vue.setOnClickListener(this);
         submit.setOnClickListener(this);
 
-        sharedpreferences = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
+        sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
 
         //Méthodes
         displayTournament();
@@ -94,7 +94,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         //Appel get du tournoi en fonction du jour et de l'horaire de la rencontre
         //String resultTournoiBdd = mDatabase.child("tournoi/0/nom").getKey();
         //GetString du résultat de la bdd
-        SharedPreferences.Editor editor = sharedpreferences.edit();
+        SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
         String resultTournoiBdd = "Roland Garros";
         editor.putString(Tournament, resultTournoiBdd); //Insertion du resultat de la requete dans la sauvegarde
         editor.commit();

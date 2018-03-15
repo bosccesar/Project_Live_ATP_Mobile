@@ -44,8 +44,8 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void fillTextView(){
-        tvPlayerWin.setText(MainActivity.sharedpreferences.getString(MainActivity.PlayerWin, null));
-        tvScoreWin.setText(MainActivity.sharedpreferences.getString(MainActivity.ScoreWin, null));
-        tvScoreLost.setText(MainActivity.sharedpreferences.getString(MainActivity.ScoreLost, null));
+        tvPlayerWin.setText(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.PlayerWin, null));
+        tvScoreWin.setText(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.ScoreWin, null));
+        tvScoreLost.setText(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.ScoreLost, null));
     }
 }

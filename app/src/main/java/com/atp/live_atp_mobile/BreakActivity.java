@@ -170,10 +170,8 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
                 finish();
                 startActivity(intent);
             }else if (breakSelect == tvBreak6){ //Abandon d'un joueur
-                //Affiche activite selection joueur pour abandon et appel post à la BDD pour incrementer la pause abandon selon l'id du joueur
-                //Affiche activity abandon avec le joueur a selectionner
                 Intent intent = new Intent(BreakActivity.this, AbortActivity.class);
-                startActivity(intent);
+                startActivity(intent); //Affiche activity abandon avec le joueur a selectionner
             }
         }
     }

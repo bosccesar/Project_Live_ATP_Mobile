@@ -1,5 +1,8 @@
 package com.atp.live_atp_mobile;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,6 +25,11 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
     private ImageButton buttonSubmit;
     private ImageButton buttonResume;
 
+    public static final String PLAYERSANCTION= "PlayerSanction";
+    public static final String PlayerSanction = "PlayerSanction";
+    public static final String SanctionGame = "false";
+    public static SharedPreferences sharedpreferencesSanction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +42,8 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
         this.tvSanction3 = (TextView) findViewById(R.id.textViewExclusion);
         this.buttonSubmit = (ImageButton) findViewById(R.id.imageButtonSubmitSanction);
         this.buttonResume = (ImageButton) findViewById(R.id.imageButtonResume);
+
+        sharedpreferencesSanction = getSharedPreferences(PLAYERSANCTION, Context.MODE_PRIVATE);
 
         fillTextView();
 
@@ -80,20 +90,51 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
             tvSanction3.setBackgroundResource(R.color.MiGreen);
         }
         if (v == buttonSubmit){
-            if (playerSelect == tvPlayer1 && (sanctionSelect == tvSanction1 || sanctionSelect == tvSanction2 || sanctionSelect == tvSanction3)){
+            SharedPreferences.Editor editor = sharedpreferencesSanction.edit();
+            if (playerSelect == tvPlayer1){
                 String valJ1 = tvPlayer1.getText().toString();
-                //Appel post à la BDD pour inscrire la sanction via l'id du joueur 1 au travers du string juste au dessus
-                SanctionActivity.this.finish();
-            }else if (playerSelect == tvPlayer2 && (sanctionSelect == tvSanction1 || sanctionSelect == tvSanction2 || sanctionSelect == tvSanction3)){
+                if (sanctionSelect == tvSanction1){
+                    //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 1 au travers du string au dessus
+                    SanctionActivity.this.finish();
+                }else if (sanctionSelect == tvSanction2){
+                    //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 1 au travers du string au dessus
+                    editor.putString(PlayerSanction, tvPlayer1.getText().toString()); //Recuperation du joueur pour la sanction
+                    editor.putString(SanctionGame, "true");
+                    editor.commit();
+                    SanctionActivity.this.finish();
+                }else if (sanctionSelect == tvSanction3){
+                    //Appel post à la BDD pour inscrire l'exclusion via l'id du joueur 1 au travers du string au dessus
+                    //Mettre à true match fini dans la BDD
+                    Intent intent = new Intent(SanctionActivity.this, AuthenticationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
+                }
+            }else if (playerSelect == tvPlayer2){
                 String valJ2 = tvPlayer2.getText().toString();
-                //Appel post à la BDD pour inscrire la sanction via l'id du joueur 2 au travers du string juste au dessus
-                SanctionActivity.this.finish();
+                if (sanctionSelect == tvSanction1){
+                    //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 2 au travers du string au dessus
+                    SanctionActivity.this.finish();
+                }else if (sanctionSelect == tvSanction2){
+                    //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 2 au travers du string au dessus
+                    editor.putString(PlayerSanction, tvPlayer2.getText().toString()); //Recuperation du joueur pour la sanction
+                    editor.putString(SanctionGame, "true");
+                    editor.commit();
+                    SanctionActivity.this.finish();
+                }else if (sanctionSelect == tvSanction3){
+                    //Appel post à la BDD pour inscrire l'exclusion via l'id du joueur 2 au travers du string au dessus
+                    //Mettre à true match fini dans la BDD
+                    Intent intent = new Intent(SanctionActivity.this, AuthenticationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    startActivity(intent);
+                }
             }
         }
     }
 
     public void fillTextView(){ //Textview des joueurs remplis avec les textview de serviceActivity
-        tvPlayer1.setText(ServiceActivity.sharedpreferences.getString(ServiceActivity.Player1, null));
-        tvPlayer2.setText(ServiceActivity.sharedpreferences.getString(ServiceActivity.Player2, null));
+        tvPlayer1.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Player1, null));
+        tvPlayer2.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Player2, null));
     }
 }
