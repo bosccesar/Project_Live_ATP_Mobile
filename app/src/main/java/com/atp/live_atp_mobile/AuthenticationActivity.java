@@ -11,8 +11,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 /**
  * Created by cesar on 27/02/2018.
@@ -26,7 +30,13 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private EditText editPassword;
     private View vue;
     private ImageButton submit;
-    private DatabaseReference mDatabase;
+
+    public static FirebaseDatabase mDatabase;
+    public static FirebaseStorage storage;
+
+    private DatabaseReference mTournamentRef;
+    private TournamentBDD tournamentBDD;
+    private String resultTournoiBdd;
 
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "Open Australia";
@@ -38,10 +48,13 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_authentication);
 
         //Instance BDD
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        storage = FirebaseStorage.getInstance();
+        mDatabase = FirebaseDatabase.getInstance(); // Get database instance and reference
+        mTournamentRef = mDatabase.getReference("tournoi"); // Get bdd reference
 
         //Initialisation des éléments
         this.tvTournament = (TextView) findViewById(R.id.textViewTournament);
+        this.resultTournoiBdd = "";
         this.tvDate = (TextView) findViewById(R.id.textViewDate);
         this.editLogin = (EditText) findViewById(R.id.editTextLogin);
         this.editPassword = (EditText) findViewById(R.id.editTextPassword);
@@ -92,13 +105,27 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
     public void displayTournament(){
         //Appel get du tournoi en fonction du jour et de l'horaire de la rencontre
-        //String resultTournoiBdd = mDatabase.child("tournoi/0/nom").getKey();
+        //StorageReference storageRef = storage.getReferenceFromUrl("gs://fivehock-7caab.appspot.com");
+        mTournamentRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get current user profile using uid
+                tournamentBDD = dataSnapshot.getValue(TournamentBDD.class);
+                resultTournoiBdd = tournamentBDD.nom;
+                tvTournament.setText(resultTournoiBdd);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         //GetString du résultat de la bdd
         SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
-        String resultTournoiBdd = "Roland Garros";
+        //String resultTournoiBdd = "Roland Garros";
         editor.putString(Tournament, resultTournoiBdd); //Insertion du resultat de la requete dans la sauvegarde
         editor.commit();
-        tvTournament.setText(resultTournoiBdd);
+        //tvTournament.setText(resultTournoiBdd);
     }
 
     public void displayDate(){

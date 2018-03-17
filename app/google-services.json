@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "272741883274-mn9n73kcm045hf69bb54sknoe64gip1v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atp.project_live_atp",
+            "certificate_hash": "5d43fd0c6dfe8d4bc036d7dc1e9ed21abe06fdfe"
+          }
+        },
+        {
           "client_id": "272741883274-a0eor1k3alic7n281pit7vvjhrr78gb9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272741883274-a0eor1k3alic7n281pit7vvjhrr78gb9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
