@@ -27,7 +27,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     public static final String CATEGORY = "categories";
     public static final String Player1 = "player1";
     public static final String Player2 = "player2";
-    public static final String Category = "Double dames";
+    public static final String Category = "category";
     public static SharedPreferences sharedpreferencesService;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +42,6 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
         this.player = "";
 
-        tvJ1.setOnClickListener(this);
-        tvJ2.setOnClickListener(this);
-        submit.setOnClickListener(this);
-
         sharedpreferencesService = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
         sharedpreferencesService = getSharedPreferences(CATEGORY, Context.MODE_PRIVATE);
 
@@ -53,6 +49,10 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         displayTournament();
         displayStateTournament();
         displayCategory();
+
+        tvJ1.setOnClickListener(this);
+        tvJ2.setOnClickListener(this);
+        submit.setOnClickListener(this);
     }
 
     @Override

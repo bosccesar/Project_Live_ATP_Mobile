@@ -27,7 +27,7 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
 
     public static final String PLAYERSANCTION= "PlayerSanction";
     public static final String PlayerSanction = "PlayerSanction";
-    public static final String SanctionGame = "false";
+    public static final String SanctionGame = "sanctionGame";
     public static SharedPreferences sharedpreferencesSanction;
 
     @Override
