@@ -14,10 +14,16 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ConfigBDD {
 
+    private static MyCallback mMyCallback;
+
     public static TournamentBDD tournamentBDD;
     private static String resultTournoiBdd;
 
-    public static void loadModelTournamentFromFirebase(final TextView tvTournament) {
+    public void setMyCallback(MyCallback callback) {
+        mMyCallback = callback;
+    }
+
+    public static void loadModelTournamentFromFirebase() { //Appel get du tournoi en fonction du jour et de l'horaire de la rencontre
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference tournamentRef = database.getReference("tournoi").child("0");
 
@@ -27,7 +33,7 @@ public class ConfigBDD {
                 tournamentBDD = dataSnapshot.getValue(TournamentBDD.class);
                 if (tournamentBDD != null) {
                     resultTournoiBdd = tournamentBDD.nom;
-                    tvTournament.setText(resultTournoiBdd);
+                    mMyCallback.onCallback(resultTournoiBdd);
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.atp.live_atp_mobile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static com.atp.live_atp_mobile.SanctionActivity.sharedpreferencesSanction;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -1196,36 +1199,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    public void incrementationGameSanction(){
-        String sanction = SanctionActivity.sharedpreferencesSanction.getString(SanctionActivity.SanctionGame, null);
-        String playerSanction = SanctionActivity.sharedpreferencesSanction.getString(SanctionActivity.PlayerSanction, null);
-        if (sanction.equals("true") && playerSanction.equals(tvJ1.getText().toString())){
-            onClickButtonIncrementationSet(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
-            //Incrementer la sanction jeu dans la BDD pour le playerSanction
-            tvScoreJ1.setText(R.string.startGame);
-            tvScoreJ2.setText(R.string.startGame);
-        }else if (sanction.equals("true") && playerSanction.equals(tvJ2.getText().toString())){
-            onClickButtonIncrementationSet(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
-            //Incrementer la sanction jeu dans la BDD pour le playerSanction
-            tvScoreJ1.setText(R.string.startGame);
-            tvScoreJ2.setText(R.string.startGame);
+    public void incrementationGameSanction() {
+        String sanction = sharedpreferencesSanction.getString(SanctionActivity.SanctionGame, null);
+        String playerSanction = sharedpreferencesSanction.getString(SanctionActivity.PlayerSanction, null);
+        String resumeSanction = sharedpreferencesSanction.getString(SanctionActivity.Resume, null);
+        String idSanction = sharedpreferencesSanction.getString(SanctionActivity.IdSanction, null);
+        if (!resumeSanction.equals("true") && idSanction.equals("sanction2")) {
+            if (sanction.equals("true") && playerSanction.equals(tvJ1.getText().toString())) {
+                onClickButtonIncrementationSet(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
+                //Incrementer la sanction jeu dans la BDD pour le playerSanction
+                tvScoreJ1.setText(R.string.startGame);
+                tvScoreJ2.setText(R.string.startGame);
+            } else if (sanction.equals("true") && playerSanction.equals(tvJ2.getText().toString())) {
+                onClickButtonIncrementationSet(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
+                //Incrementer la sanction jeu dans la BDD pour le playerSanction
+                tvScoreJ1.setText(R.string.startGame);
+                tvScoreJ2.setText(R.string.startGame);
+            }
+
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.pop_ace,
+                    (ViewGroup) findViewById(R.id.custom_toast_container));
+
+            TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
+            CharSequence textSanction = "LA SANCTION A ETE APPLIQUEE A : " + playerSanction;
+            text.setText(textSanction);
+            text.setBackgroundResource(R.drawable.flat_rectangle_red);
+            text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            text.setTextSize(40);
+
+            Toast toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.BOTTOM, 0, 60);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
         }
-
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.pop_ace,
-                (ViewGroup) findViewById(R.id.custom_toast_container));
-
-        TextView text = (TextView) layout.findViewById(R.id.textViewToastAce);
-        CharSequence textSanction = "LA SANCTION A ETE APPLIQUEE A : " + playerSanction;
-        text.setText(textSanction);
-        text.setBackgroundResource(R.drawable.flat_rectangle_red);
-        text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        text.setTextSize(40);
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.BOTTOM, 0, 60);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show(); //Notification sur la vue attestant bien que le Ace a été pris en compte
     }
 }

@@ -15,7 +15,7 @@ import android.widget.TextView;
  * Created by cesar on 27/02/2018.
  */
 
-public class AuthenticationActivity extends AppCompatActivity implements View.OnClickListener{
+public class AuthenticationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvTournament;
     private TextView tvDate;
@@ -24,7 +24,8 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private View vue;
     private ImageButton submit;
 
-    private String resultTournoiBdd;
+    private String resultTournamentBdd;
+    private MyCallback myCallback;
 
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
@@ -37,7 +38,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
         //Initialisation des éléments
         this.tvTournament = (TextView) findViewById(R.id.textViewTournament);
-        this.resultTournoiBdd = "";
+        this.resultTournamentBdd = "";
         this.tvDate = (TextView) findViewById(R.id.textViewDate);
         this.editLogin = (EditText) findViewById(R.id.editTextLogin);
         this.editPassword = (EditText) findViewById(R.id.editTextPassword);
@@ -86,14 +87,16 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
     public void displayTournament(){
         sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
-        //Appel get du tournoi en fonction du jour et de l'horaire de la rencontre
-        ConfigBDD.loadModelTournamentFromFirebase(tvTournament);
-        resultTournoiBdd = tvTournament.getText().toString();
-        SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
-        //String resultTournoiBdd = "Roland Garros";
-        editor.putString(Tournament, resultTournoiBdd); //Insertion du resultat de la requete dans la sauvegarde
-        editor.commit();
-        //tvTournament.setText(resultTournoiBdd);
+        ConfigBDD tournament = new ConfigBDD();
+        tournament.setMyCallback(new MyCallback() {
+            public void onCallback(String value) { //value est le nom du tournoi récupéré de la bdd
+                tvTournament.setText(value);
+                SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
+                editor.putString(Tournament, value); //Insertion du resultat de la requete dans la sauvegarde
+                editor.commit();
+            }
+        });
+        tournament.loadModelTournamentFromFirebase();
     }
 
     public void displayDate(){
