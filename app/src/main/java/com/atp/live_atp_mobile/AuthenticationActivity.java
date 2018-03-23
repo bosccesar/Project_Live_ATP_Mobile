@@ -47,7 +47,6 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
         //Méthodes
         displayTournament();
-        displayDate();
 
         //Activation de l'intéraction
         vue.setOnClickListener(this);
@@ -89,21 +88,14 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
         ConfigBDD tournament = new ConfigBDD();
         tournament.setMyCallback(new MyCallback() {
-            public void onCallback(String value) { //value est le nom du tournoi récupéré de la bdd
+            public void onCallbackTournament(String value, String dateTournament) { //Nom et date du tournoi récupérés de la bdd
                 tvTournament.setText(value);
+                tvDate.setText(dateTournament);
                 SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
                 editor.putString(Tournament, value); //Insertion du resultat de la requete dans la sauvegarde
                 editor.commit();
             }
         });
         tournament.loadModelTournamentFromFirebase();
-    }
-
-    public void displayDate(){
-        //Appel get de la date en fonction du tournoi
-        //GetString du résultat de la bdd
-        //Exemple
-        String resultBdd = "22 - 30 janvier 2018";
-        tvDate.setText(resultBdd);
     }
 }

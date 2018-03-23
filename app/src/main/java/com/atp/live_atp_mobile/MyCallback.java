@@ -5,5 +5,5 @@ package com.atp.live_atp_mobile;
  */
 
 public interface MyCallback {
-    void onCallback(String value);
+    void onCallbackTournament(String nameTournament, String dateTournament);
 }

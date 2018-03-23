@@ -17,7 +17,8 @@ public class ConfigBDD {
     private static MyCallback mMyCallback;
 
     public static TournamentBDD tournamentBDD;
-    private static String resultTournoiBdd;
+    private static String resultNameTournamentBdd;
+    private static String resultDateTournamentBdd;
 
     public void setMyCallback(MyCallback callback) {
         mMyCallback = callback;
@@ -30,10 +31,12 @@ public class ConfigBDD {
         tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                tournamentBDD = dataSnapshot.getValue(TournamentBDD.class);
+                tournamentBDD = dataSnapshot.getValue(TournamentBDD.class); //Recuperation des elements du tournoi
                 if (tournamentBDD != null) {
-                    resultTournoiBdd = tournamentBDD.nom;
-                    mMyCallback.onCallback(resultTournoiBdd);
+                    resultNameTournamentBdd = tournamentBDD.nom; //Nom du tournoi
+                    resultDateTournamentBdd = tournamentBDD.dateDebut + " - " + tournamentBDD.dateFin; //Date du tournoi
+
+                    mMyCallback.onCallbackTournament(resultNameTournamentBdd, resultDateTournamentBdd);
                 }
             }
 
