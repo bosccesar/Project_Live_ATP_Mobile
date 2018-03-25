@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     defaultConfig {
         applicationId "com.atp.project_live_atp"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -25,6 +25,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'com.google.android.gms:play-services-location:11.8.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-database:11.8.0'
     compile 'com.google.firebase:firebase-storage:11.8.0'

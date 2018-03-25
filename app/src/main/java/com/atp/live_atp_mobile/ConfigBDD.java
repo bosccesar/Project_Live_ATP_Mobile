@@ -1,6 +1,6 @@
 package com.atp.live_atp_mobile;
 
-import android.widget.TextView;
+import android.location.Location;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,9 +24,9 @@ public class ConfigBDD {
         mMyCallback = callback;
     }
 
-    public static void loadModelTournamentFromFirebase() { //Appel get du tournoi en fonction du jour et de l'horaire de la rencontre
+    public static void loadModelTournamentFromFirebase() { //Appel get du tournoi en fonction du jour et de la latitude/longitude de l'endroit de la tablette
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference tournamentRef = database.getReference("tournoi").child("0");
+        DatabaseReference tournamentRef = database.getReference("tournoi").child("0"); //Pour choisir le tournoi pour les tests
 
         tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

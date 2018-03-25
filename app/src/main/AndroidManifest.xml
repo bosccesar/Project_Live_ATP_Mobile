@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.atp.live_atp_mobile">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="true"
+        android:version="@integer/google_play_services_version" />
 
     <application
         android:allowBackup="true"
@@ -44,6 +51,7 @@
 
         <activity android:name=".CloseAppActivity" >
         </activity>
+        <activity android:name=".Gps" />
     </application>
 
 </manifest>

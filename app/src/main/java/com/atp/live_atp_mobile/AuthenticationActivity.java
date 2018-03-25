@@ -1,9 +1,12 @@
 package com.atp.live_atp_mobile;
 
+import android.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -87,6 +90,9 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     public void displayTournament(){
         sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
         ConfigBDD tournament = new ConfigBDD();
+        Gps gps = new Gps(AuthenticationActivity.this);
+        double latitude = gps.getLatitude();
+        double longitude = gps.getLongitude();
         tournament.setMyCallback(new MyCallback() {
             public void onCallbackTournament(String value, String dateTournament) { //Nom et date du tournoi récupérés de la bdd
                 tvTournament.setText(value);
