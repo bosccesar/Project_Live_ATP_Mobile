@@ -841,7 +841,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             text.setTextSize(40);
             text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }else if (view == buttonLetJ1 || view == buttonLetJ2) {
-            text.setText(R.string.toastNet);
+            text.setText(R.string.toastLet);
+            text.setTextSize(40);
+            text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
 
         Toast toast = new Toast(getApplicationContext());

@@ -1,18 +1,16 @@
 package com.atp.live_atp_mobile;
 
-import android.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by cesar on 27/02/2018.
@@ -27,8 +25,8 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private View vue;
     private ImageButton submit;
 
-    private String resultTournamentBdd;
-    private MyCallback myCallback;
+    public static double resultLatitude;
+    public static double resultLongitude;
 
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
@@ -41,12 +39,14 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
         //Initialisation des éléments
         this.tvTournament = (TextView) findViewById(R.id.textViewTournament);
-        this.resultTournamentBdd = "";
         this.tvDate = (TextView) findViewById(R.id.textViewDate);
         this.editLogin = (EditText) findViewById(R.id.editTextLogin);
         this.editPassword = (EditText) findViewById(R.id.editTextPassword);
         this.vue = findViewById(android.R.id.content);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
+
+        //Reception Gps
+        getGps();
 
         //Méthodes
         displayTournament();
@@ -87,21 +87,29 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public void getGps(){
+        Gps gps = new Gps(AuthenticationActivity.this, AuthenticationActivity.this);
+        gps.setMyLocationListener(new MyLocationListener() {
+            public void onReceiveLocation(double latitude, double longitude) { //Latitude et longitude récupérés du device
+                resultLatitude = latitude;
+                resultLongitude = longitude;
+            }
+        });
+        gps.startGMS();
+    }
+
     public void displayTournament(){
         sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
         ConfigBDD tournament = new ConfigBDD();
-        Gps gps = new Gps(AuthenticationActivity.this);
-        double latitude = gps.getLatitude();
-        double longitude = gps.getLongitude();
         tournament.setMyCallback(new MyCallback() {
             public void onCallbackTournament(String value, String dateTournament) { //Nom et date du tournoi récupérés de la bdd
                 tvTournament.setText(value);
                 tvDate.setText(dateTournament);
                 SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
                 editor.putString(Tournament, value); //Insertion du resultat de la requete dans la sauvegarde
-                editor.commit();
+                editor.apply();
             }
         });
-        tournament.loadModelTournamentFromFirebase();
+        tournament.loadModelTournamentFromFirebase(AuthenticationActivity.this);
     }
 }

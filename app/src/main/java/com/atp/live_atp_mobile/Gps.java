@@ -1,66 +1,165 @@
 package com.atp.live_atp_mobile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 /**
  * Created by cesar on 23/03/2018.
  */
 
-public class Gps implements LocationListener, GoogleApiClient.ConnectionCallbacks,
+public class Gps implements LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private LocationManager locationManager;
-    private double latitude = 0;
-    private double longitude = 0;
-    private Location mylocation;
-    private GoogleApiClient googleApiClient;
-    private final static int REQUEST_CHECK_SETTINGS_GPS=0x1;
-    private final static int REQUEST_ID_MULTIPLE_PERMISSIONS=0x2;
+    private static MyLocationListener myLocationListener;
 
-    public Gps(Context context) {
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
+    private double latitude;
+    private double longitude;
+    private Context context;
+    private Activity activity;
+    private GoogleApiClient googleApiClient;
+    private Location myLocation;
+
+    public static final int ERROR_GMS_API = 100;
+    public static final int RESOLE_GMS_API = 200;
+    private static final String LOG_NAME = Gps.class.getName();
+
+    public Gps(Context context, Activity activity)
+    {
+        this.context = context;
+        this.activity = activity;
+
+        googleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        myLocation = null;
+    }
+
+    public void setMyLocationListener(MyLocationListener locationListener) {
+        myLocationListener = locationListener;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle)
+    {
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            Toast.makeText(context, "Permission Location is not granted. Please go in android parameters -> Apps -> Project_Live_ATP -> Permissions -> Turn on Location", Toast.LENGTH_LONG).show();
         }
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) context);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (location!=null) {
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
+        else
+        {
+            myLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            if(myLocation != null)
+            {
+               // Toast.makeText(context, "Permission Location is granted", Toast.LENGTH_SHORT).show();
+                latitude = myLocation.getLatitude();
+                longitude = myLocation.getLongitude();
+                myLocationListener.onReceiveLocation(latitude, longitude);
+            }
         }
     }
 
-    private synchronized void setUpGClient() {
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, 0, this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+        Toast.makeText(context, "The Service of Geolocation is disable ", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
+        int error = connectionResult.getErrorCode();
+        switch (error)
+        {
+            case ConnectionResult.API_UNAVAILABLE :
+            {
+                Log.i(LOG_NAME,"Error code GMS it is : "+error);
+                resolveError(connectionResult,error);
+                break;
+            }
+            case ConnectionResult.SERVICE_DISABLED :
+            {
+                Log.i(LOG_NAME,"Error code GMS it is : "+error);
+                resolveError(connectionResult,error);
+                break;
+            }
+            case ConnectionResult.SERVICE_MISSING :
+            {
+                Log.i(LOG_NAME,"Error code GMS it is : "+error);
+                resolveError(connectionResult,error);
+                break;
+            }
+            case ConnectionResult.DEVELOPER_ERROR :
+            {
+                Log.i(LOG_NAME,"Error code GMS it is : "+error);
+                resolveError(connectionResult,error);
+                break;
+            }
+            case ConnectionResult.NETWORK_ERROR :
+            {
+                Log.i(LOG_NAME,"Error code GMS it is : "+error);
+                resolveError(connectionResult,error);
+                break;
+            }
+        }
+    }
+
+    public void resolveError(ConnectionResult connectionResult,int error)
+    {
+        if(!connectionResult.hasResolution())
+        {
+            GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+            googleApiAvailability.getErrorDialog(activity,error, ERROR_GMS_API).show();
+        }
+        else
+        {
+            try
+            {
+                connectionResult.startResolutionForResult(activity,RESOLE_GMS_API);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void stopGMS()
+    {
+        googleApiClient.disconnect();
+    }
+
+    public void startGMS()
+    {
         googleApiClient.connect();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        mylocation = location;
-        if (mylocation != null) {
-            Double latitude=mylocation.getLatitude();
-            Double longitude=mylocation.getLongitude();
-            latitudeTextView.setText("Latitude : "+latitude);
-            longitudeTextView.setText("Longitude : "+longitude);
-            //Or Do whatever you want with your location
+        myLocation = location;
+        if (myLocation != null) {
+            latitude = myLocation.getLatitude();
+            longitude = myLocation.getLongitude();
         }
     }
 
@@ -79,123 +178,17 @@ public class Gps implements LocationListener, GoogleApiClient.ConnectionCallback
 
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        checkPermissions();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    private void getMyLocation(){
-        if(googleApiClient!=null) {
-            if (googleApiClient.isConnected()) {
-                int permissionLocation = ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION);
-                if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-                    mylocation =                     LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-                    LocationRequest locationRequest = new LocationRequest();
-                    locationRequest.setInterval(3000);
-                    locationRequest.setFastestInterval(3000);
-                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                    LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                            .addLocationRequest(locationRequest);
-                    builder.setAlwaysShow(true);
-                    LocationServices.FusedLocationApi
-                            .requestLocationUpdates(googleApiClient, locationRequest, this);
-                    PendingResult<LocationSettingsResult> result =
-                            LocationServices.SettingsApi
-                                    .checkLocationSettings(googleApiClient, builder.build());
-                    result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-
-                        @Override
-                        public void onResult(LocationSettingsResult result) {
-                            final Status status = result.getStatus();
-                            switch (status.getStatusCode()) {
-                                case LocationSettingsStatusCodes.SUCCESS:
-                                    // All location settings are satisfied.
-                                    // You can initialize location requests here.
-                                    int permissionLocation = ContextCompat
-                                            .checkSelfPermission(MainActivity.this,
-                                                    Manifest.permission.ACCESS_FINE_LOCATION);
-                                    if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-                                        mylocation = LocationServices.FusedLocationApi
-                                                .getLastLocation(googleApiClient);
-                                    }
-                                    break;
-                                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                                    // Location settings are not satisfied.
-                                    // But could be fixed by showing the user a dialog.
-                                    try {
-                                        // Show the dialog by calling startResolutionForResult(),
-                                        // and check the result in onActivityResult().
-                                        // Ask to turn on GPS automatically
-                                        status.startResolutionForResult(MainActivity.this,
-                                                REQUEST_CHECK_SETTINGS_GPS);
-                                    } catch (IntentSender.SendIntentException e) {
-                                        // Ignore the error.
-                                    }
-                                    break;
-                                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                    // Location settings are not satisfied.
-                                    // However, we have no way
-                                    // to fix the
-                                    // settings so we won't show the dialog.
-                                    // finish();
-                                    break;
-                            }
-                        }
-                    });
-                }
-            }
+    public double getLatitude() {
+        if(myLocation != null){
+            latitude = myLocation.getLatitude();
         }
+        return latitude;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CHECK_SETTINGS_GPS:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        getMyLocation();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        finish();
-                        break;
-                }
-                break;
+    public double getLongitude() {
+        if(myLocation != null){
+            longitude = myLocation.getLongitude();
         }
-    }
-
-    private void checkPermissions(){
-        int permissionLocation = ContextCompat.checkSelfPermission(MainActivity.this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION);
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        if (permissionLocation != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
-            if (!listPermissionsNeeded.isEmpty()) {
-                ActivityCompat.requestPermissions(this,
-                        listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
-            }
-        }else{
-            getMyLocation();
-        }
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        int permissionLocation = ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-            getMyLocation();
-        }
+        return longitude;
     }
 }
