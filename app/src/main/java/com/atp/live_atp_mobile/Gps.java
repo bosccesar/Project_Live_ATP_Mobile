@@ -21,11 +21,9 @@ import com.google.android.gms.location.LocationServices;
  * Created by cesar on 23/03/2018.
  */
 
-public class Gps implements LocationListener,
+public class Gps extends Observable implements LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-
-    private static MyLocationListener myLocationListener;
 
     private double latitude;
     private double longitude;
@@ -34,12 +32,11 @@ public class Gps implements LocationListener,
     private GoogleApiClient googleApiClient;
     private Location myLocation;
 
-    public static final int ERROR_GMS_API = 100;
-    public static final int RESOLE_GMS_API = 200;
     private static final String LOG_NAME = Gps.class.getName();
 
-    public Gps(Context context, Activity activity)
+    Gps(Context context, Activity activity)
     {
+        super();
         this.context = context;
         this.activity = activity;
 
@@ -49,10 +46,6 @@ public class Gps implements LocationListener,
                 .addOnConnectionFailedListener(this)
                 .build();
         myLocation = null;
-    }
-
-    public void setMyLocationListener(MyLocationListener locationListener) {
-        myLocationListener = locationListener;
     }
 
     @Override
@@ -70,10 +63,10 @@ public class Gps implements LocationListener,
             myLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             if(myLocation != null)
             {
-               // Toast.makeText(context, "Permission Location is granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Permission Location is granted", Toast.LENGTH_SHORT).show();
                 latitude = myLocation.getLatitude();
                 longitude = myLocation.getLongitude();
-                myLocationListener.onReceiveLocation(latitude, longitude);
+                notification();
             }
         }
     }
@@ -123,18 +116,20 @@ public class Gps implements LocationListener,
         }
     }
 
-    public void resolveError(ConnectionResult connectionResult,int error)
+    private void resolveError(ConnectionResult connectionResult, int error)
     {
         if(!connectionResult.hasResolution())
         {
             GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+            int ERROR_GMS_API = 100;
             googleApiAvailability.getErrorDialog(activity,error, ERROR_GMS_API).show();
         }
         else
         {
             try
             {
-                connectionResult.startResolutionForResult(activity,RESOLE_GMS_API);
+                int RESOLE_GMS_API = 200;
+                connectionResult.startResolutionForResult(activity, RESOLE_GMS_API);
             }
             catch (Exception e)
             {
@@ -144,12 +139,12 @@ public class Gps implements LocationListener,
     }
 
 
-    public void stopGMS()
+    void stopGMS()
     {
         googleApiClient.disconnect();
     }
 
-    public void startGMS()
+    void startGMS()
     {
         googleApiClient.connect();
     }
@@ -178,14 +173,14 @@ public class Gps implements LocationListener,
 
     }
 
-    public double getLatitude() {
+    double getLatitude() {
         if(myLocation != null){
             latitude = myLocation.getLatitude();
         }
         return latitude;
     }
 
-    public double getLongitude() {
+    double getLongitude() {
         if(myLocation != null){
             longitude = myLocation.getLongitude();
         }

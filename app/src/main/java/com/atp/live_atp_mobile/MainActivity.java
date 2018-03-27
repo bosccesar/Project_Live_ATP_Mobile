@@ -1,6 +1,5 @@
 package com.atp.live_atp_mobile;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;

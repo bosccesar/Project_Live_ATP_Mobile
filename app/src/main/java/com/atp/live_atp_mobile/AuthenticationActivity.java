@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by cesar on 27/02/2018.
@@ -24,9 +23,6 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private EditText editPassword;
     private View vue;
     private ImageButton submit;
-
-    public static double resultLatitude;
-    public static double resultLongitude;
 
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
@@ -46,7 +42,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
 
         //Reception Gps
-        getGps();
+        //getGps();
 
         //Méthodes
         displayTournament();
@@ -87,20 +83,16 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void getGps(){
+    public void getGps(ConfigBDD configBDD){
         Gps gps = new Gps(AuthenticationActivity.this, AuthenticationActivity.this);
-        gps.setMyLocationListener(new MyLocationListener() {
-            public void onReceiveLocation(double latitude, double longitude) { //Latitude et longitude récupérés du device
-                resultLatitude = latitude;
-                resultLongitude = longitude;
-            }
-        });
+        gps.observers.add(configBDD);
         gps.startGMS();
     }
 
     public void displayTournament(){
         sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
-        ConfigBDD tournament = new ConfigBDD();
+        ConfigBDD tournament = new ConfigBDD(AuthenticationActivity.this);
+        getGps(tournament);
         tournament.setMyCallback(new MyCallback() {
             public void onCallbackTournament(String value, String dateTournament) { //Nom et date du tournoi récupérés de la bdd
                 tvTournament.setText(value);
@@ -110,6 +102,5 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                 editor.apply();
             }
         });
-        tournament.loadModelTournamentFromFirebase(AuthenticationActivity.this);
     }
 }
