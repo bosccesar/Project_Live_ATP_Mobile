@@ -41,9 +41,6 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         this.vue = findViewById(android.R.id.content);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
 
-        //Reception Gps
-        //getGps();
-
         //Méthodes
         displayTournament();
 
