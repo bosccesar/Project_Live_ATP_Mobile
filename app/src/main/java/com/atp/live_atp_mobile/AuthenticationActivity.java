@@ -24,8 +24,12 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private View vue;
     private ImageButton submit;
 
+    private boolean loginComplete;
+    private boolean passwordComplete;
+
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
+    public static final String User = "user";
     public static SharedPreferences sharedpreferencesAuthentication;
 
     @Override
@@ -40,6 +44,8 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         this.editPassword = (EditText) findViewById(R.id.editTextPassword);
         this.vue = findViewById(android.R.id.content);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
+
+        sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
 
         //Méthodes
         displayTournament();
@@ -61,25 +67,6 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void verifIdent(){
-        String login = editLogin.getText().toString();
-        String password = editPassword.getText().toString();
-        //Comparaison à la bdd de l'autentification renseigné
-        //boolean loginRenseigné = résultat de la requete à la bdd
-        //Comparaison à la bdd du password renseigné
-        //boolean passwordRenseigné = résultat de la requete à la bdd
-        if (login.equals("admin")){ //Remplacer par loginRenseigné == true
-            if (password.equals("admin")){ //Remplacer par loginRenseigné == true
-                Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
-                startActivity(intent);
-            }else {
-                editPassword.setText("");
-            }
-        }else {
-            editLogin.setText("");
-        }
-    }
-
     public void getGps(ConfigBDD configBDD){
         Gps gps = new Gps(AuthenticationActivity.this, AuthenticationActivity.this);
         gps.observers.add(configBDD);
@@ -87,7 +74,6 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     }
 
     public void displayTournament(){
-        sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
         ConfigBDD tournament = new ConfigBDD(AuthenticationActivity.this);
         getGps(tournament);
         tournament.setMyCallback(new MyCallback() {
@@ -99,5 +85,34 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                 editor.apply();
             }
         });
+    }
+
+    public void verifIdent(){ //Mettre dans la methode displayTournament et la renommé en diplayTournamentAndVerifIdent
+        String login = editLogin.getText().toString();
+        String password = editPassword.getText().toString();
+        ConfigBDD user = new ConfigBDD(AuthenticationActivity.this);
+        user.setMyCallback(new MyCallback() {
+            public void onCallbackUser(String user, String password) { //User et password récupérés de la bdd
+                tvTournament.setText(user);
+                tvDate.setText(password);
+                SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
+                editor.putString(User, user); //Insertion du resultat de la requete dans la sauvegarde
+                editor.apply();
+            }
+        });
+        //Comparaison à la bdd de l'autentification renseigné
+        //boolean loginComplete = résultat de la requete à la bdd
+        //Comparaison à la bdd du password renseigné
+        //boolean passwordComplete = résultat de la requete à la bdd
+        if (login.equals("admin")){ //Remplacer par loginRenseigné == true
+            if (password.equals("admin")){ //Remplacer par loginRenseigné == true
+                Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
+                startActivity(intent);
+            }else {
+                editPassword.setText("");
+            }
+        }else {
+            editLogin.setText("");
+        }
     }
 }

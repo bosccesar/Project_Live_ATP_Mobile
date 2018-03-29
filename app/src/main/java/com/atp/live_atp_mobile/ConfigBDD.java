@@ -28,6 +28,10 @@ public class ConfigBDD implements Observer{
     private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     private Date dateDebut;
     private Date dateFin;
+    private double latitudeDebut;
+    private double latitudeFin;
+    private double longitudeDebut;
+    private double longitudeFin;
     private Date currentDate;
     private static double latitude;
     private static double longitude;
@@ -48,10 +52,24 @@ public class ConfigBDD implements Observer{
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         //int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int day = 4; //Donnee de test
         //int month = calendar.get(Calendar.MONTH) + 1; //Les mois vont de 0 à 11 (janvier à decembre) donc on incremente le mois de 1
-        int month = 7; //Donnee de test
         int year = calendar.get(Calendar.YEAR);
+
+        //Donnees de test
+        int day = 29;
+        int month = 8;
+        //Epsi Apothicaire
+        //latitudeStart = 43.641620;
+        //latitudeEnd = 43.643950;
+        //longitudeStart = 3.836715;
+        //longitudeEnd = 3.839001;
+        //Epsi Croix verte
+        //latitudeStart = 43.641594;
+        //latitudeEnd = 43.643549;
+        //longitudeStart = 3.842924;
+        //longitudeEnd = 3.844684;
+        //
+
         String stringDate = day + "/" + month +"/" + year;
         try {
             currentDate = formatter.parse(stringDate);
@@ -77,7 +95,11 @@ public class ConfigBDD implements Observer{
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        if ((currentDate.equals(dateDebut) || currentDate.after(dateDebut)) && (currentDate.equals(dateFin) || currentDate.before(dateFin))){ //Si la date du device est située entre les dates du tournoi et à l'endroit du gps alors on affiche le tournoi
+                        latitudeDebut = Double.parseDouble(tournament.latitudeDebut);
+                        latitudeFin = Double.parseDouble(tournament.latitudeFin);
+                        longitudeDebut = Double.parseDouble(tournament.longitudeDebut);
+                        longitudeFin = Double.parseDouble(tournament.longitudeFin);
+                        if (((currentDate.equals(dateDebut) || currentDate.after(dateDebut)) && (currentDate.equals(dateFin) || currentDate.before(dateFin))) && ((latitude >= latitudeDebut && latitude <= latitudeFin) && (longitude >= longitudeDebut && longitude <= longitudeFin))){ //Si la date du device est située entre les dates du tournoi et à l'endroit du gps alors on affiche le tournoi
                             resultNameTournamentBdd = tournament.nom; //Nom du tournoi
                             resultDateTournamentBdd = tournament.dateDebut + " - " + tournament.dateFin; //Date du tournoi
 
