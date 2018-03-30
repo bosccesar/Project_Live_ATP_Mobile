@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             SharedPreferences.Editor editor = sharedpreferencesMainActivity.edit();
             editor.putString(Player1, tvJ1.getText().toString());
             editor.putString(Player2, tvJ2.getText().toString());
-            editor.commit();
+            editor.apply();
             Intent intent = new Intent(MainActivity.this, BreakActivity.class);
             startActivity(intent);
         }
@@ -1194,7 +1194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editor.putString(ScoreWin, strSetTotalJ2);
             editor.putString(ScoreLost, strSetTotalJ1);
         }
-        editor.commit();
+        editor.apply();
 
         Intent intent = new Intent(MainActivity.this, EndMatchActivity.class);
         startActivity(intent);

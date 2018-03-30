@@ -16,7 +16,7 @@ abstract class Observable {
 
     void notification(){
         for (Observer observer: observers) {
-            observer.react(this);
+            observer.reactGps(this);
         }
     }
 }

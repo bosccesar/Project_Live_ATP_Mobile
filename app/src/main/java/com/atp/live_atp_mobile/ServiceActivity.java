@@ -76,14 +76,14 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             if (player.equals("player1")){
                 editor.putString(Player1, valJ1);
                 editor.putString(Player2, valJ2);
-                editor.commit();
+                editor.apply();
                 Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
                 startActivity(intent);
             }
             else if (player.equals("player2")){
                 editor.putString(Player1, valJ2);
                 editor.putString(Player2, valJ1);
-                editor.commit();
+                editor.apply();
                 Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -110,7 +110,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         SharedPreferences.Editor editor = sharedpreferencesService.edit();
         String resultBdd = "Simple messieurs";
         editor.putString(Category, resultBdd); //Insertion du resultat de la requete dans la sauvegarde
-        editor.commit();
+        editor.apply();
         tvCategory.setText(resultBdd); //id de la tv category
     }
 }

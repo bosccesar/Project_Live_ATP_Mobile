@@ -5,5 +5,5 @@ package com.atp.live_atp_mobile;
  */
 
 public interface Observer {
-    void react(Observable observable);
+    void reactGps(Observable observable);
 }

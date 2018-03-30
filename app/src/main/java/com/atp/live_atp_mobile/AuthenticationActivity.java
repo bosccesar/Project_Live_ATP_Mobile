@@ -24,8 +24,9 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private View vue;
     private ImageButton submit;
 
-    private boolean loginComplete;
-    private boolean passwordComplete;
+    public static String login;
+    public static String password;
+    public static boolean authentFail;
 
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
@@ -44,6 +45,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         this.editPassword = (EditText) findViewById(R.id.editTextPassword);
         this.vue = findViewById(android.R.id.content);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
+        authentFail = false;
 
         sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
 
@@ -84,35 +86,33 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                 editor.putString(Tournament, value); //Insertion du resultat de la requete dans la sauvegarde
                 editor.apply();
             }
+
+            @Override
+            public void onCallbackUser(String user, String password) {
+            }
         });
     }
 
-    public void verifIdent(){ //Mettre dans la methode displayTournament et la renommé en diplayTournamentAndVerifIdent
-        String login = editLogin.getText().toString();
-        String password = editPassword.getText().toString();
+    public void verifIdent(){
+        login = editLogin.getText().toString();
+        password = editPassword.getText().toString();
         ConfigBDD user = new ConfigBDD(AuthenticationActivity.this);
         user.setMyCallback(new MyCallback() {
-            public void onCallbackUser(String user, String password) { //User et password récupérés de la bdd
-                tvTournament.setText(user);
-                tvDate.setText(password);
-                SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
-                editor.putString(User, user); //Insertion du resultat de la requete dans la sauvegarde
-                editor.apply();
+            public void onCallbackTournament(String value, String dateTournament) {
+            }
+
+            @Override
+            public void onCallbackUser(String user, String passwordUser) {
+                if (login.equals(user) || login.equals("admin")){ //Si le login qui a ete renseigné correspond à celui de la BDD ou si on lance l'application en mode admin
+                    Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
+                    startActivity(intent);
+                }
             }
         });
-        //Comparaison à la bdd de l'autentification renseigné
-        //boolean loginComplete = résultat de la requete à la bdd
-        //Comparaison à la bdd du password renseigné
-        //boolean passwordComplete = résultat de la requete à la bdd
-        if (login.equals("admin")){ //Remplacer par loginRenseigné == true
-            if (password.equals("admin")){ //Remplacer par loginRenseigné == true
-                Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
-                startActivity(intent);
-            }else {
-                editPassword.setText("");
-            }
-        }else {
+        user.loadModelUserFromFirebase();
+        if (authentFail){
             editLogin.setText("");
+            editPassword.setText("");
         }
     }
 }

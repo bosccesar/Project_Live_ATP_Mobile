@@ -62,10 +62,10 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         SharedPreferences.Editor editor = sharedpreferencesSanction.edit();
         editor.putString(Resume, "false"); //Valeur par defaut
-        editor.commit();
+        editor.apply();
         if (v == buttonResume){
             editor.putString(Resume, "true");
-            editor.commit();
+            editor.apply();
             SanctionActivity.this.finish();
         }
         if (v == tvPlayer1){
@@ -99,7 +99,7 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
         if (v == buttonSubmit){
             if (playerSelect == tvPlayer1){
                 editor.putString(IdSanction, "IdSanction"); //Valeur par default
-                editor.commit();
+                editor.apply();
                 String valJ1 = tvPlayer1.getText().toString();
                 if (sanctionSelect == tvSanction1){
                     //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 1 au travers du string au dessus
@@ -109,7 +109,7 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
                     editor.putString(PlayerSanction, tvPlayer1.getText().toString()); //Recuperation du joueur pour la sanction
                     editor.putString(SanctionGame, "true");
                     editor.putString(IdSanction, "sanction2");
-                    editor.commit();
+                    editor.apply();
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction3){
                     //Appel post à la BDD pour inscrire l'exclusion via l'id du joueur 1 au travers du string au dessus
@@ -128,7 +128,7 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
                     //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 2 au travers du string au dessus
                     editor.putString(PlayerSanction, tvPlayer2.getText().toString()); //Recuperation du joueur pour la sanction
                     editor.putString(SanctionGame, "true");
-                    editor.commit();
+                    editor.apply();
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction3){
                     //Appel post à la BDD pour inscrire l'exclusion via l'id du joueur 2 au travers du string au dessus

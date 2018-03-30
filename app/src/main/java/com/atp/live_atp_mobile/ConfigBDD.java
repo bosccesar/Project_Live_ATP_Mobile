@@ -25,6 +25,7 @@ public class ConfigBDD implements Observer{
 
     private Context context;
     private List<TournamentBDD> tournamentBDDList;
+    private static List<UserBDD> userBDDList;
     private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     private Date dateDebut;
     private Date dateFin;
@@ -38,6 +39,8 @@ public class ConfigBDD implements Observer{
     private static MyCallback mMyCallback;
     private static String resultNameTournamentBdd;
     private static String resultDateTournamentBdd;
+    private static String resultUserBdd;
+    private static String resultPasswordBdd;
 
 
     ConfigBDD(AuthenticationActivity authenticationActivity) {
@@ -116,8 +119,43 @@ public class ConfigBDD implements Observer{
         });
     }
 
+    public static void loadModelUserFromFirebase() { //Appel get de l'arbitre pour comparer avec le login et password renseigne sur l'authentification
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = database.getReference("arbitre"); //Selectionne la table arbitre
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des tournois
+                if (iterable != null) {
+                    if (!(AuthenticationActivity.login.equals("admin") && AuthenticationActivity.login.equals("admin"))) {
+                        UserBDD user;
+                        userBDDList = new ArrayList<>();
+                        for (DataSnapshot getSnapshot : iterable) {
+                            user = getSnapshot.getValue(UserBDD.class);
+                            userBDDList.add(user);
+                            if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
+                                mMyCallback.onCallbackUser(user.username, user.password);
+                                AuthenticationActivity.authentFail = false;
+                            }else {
+                                AuthenticationActivity.authentFail = true;
+                            }
+                        }
+                    }else { //Si on se renseigne en mode admin
+                        mMyCallback.onCallbackUser("admin", "admin");
+                        AuthenticationActivity.authentFail = false;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
-    public void react(Observable observable) {
+    public void reactGps(Observable observable) {
         latitude = ((Gps) observable).getLatitude();
         longitude = ((Gps) observable).getLongitude();
         loadModelTournamentFromFirebase();
