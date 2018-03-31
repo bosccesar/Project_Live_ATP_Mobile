@@ -103,6 +103,9 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
             @Override
             public void onCallbackUser(String user, String passwordUser) {
                 if (login.equals(user) || login.equals("admin")){ //Si le login qui a ete renseigné correspond à celui de la BDD ou si on lance l'application en mode admin
+                    SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
+                    editor.putString(User, user); //Sauvegarde du user afin de recuperer les joueurs des rencontres qui lui sont assignés pour les afficher sur l'activityService
+                    editor.apply();
                     Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
                     startActivity(intent);
                 }

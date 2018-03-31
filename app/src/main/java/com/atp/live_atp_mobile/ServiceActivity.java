@@ -22,6 +22,10 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tvJ2;
     private ImageButton submit;
     private String player;
+    private String user;
+    private String resultState;
+    private String resultCategory;
+    private boolean admin;
 
     public static final String PLAYERS = "Players";
     public static final String CATEGORY = "categories";
@@ -41,11 +45,13 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
         this.player = "";
+        this.user = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.User, null);
 
         sharedpreferencesService = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
         sharedpreferencesService = getSharedPreferences(CATEGORY, Context.MODE_PRIVATE);
 
         //Méthodes
+        modeAdmin();
         displayTournament();
         displayStateTournament();
         displayCategory();
@@ -99,8 +105,12 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         //Appel get du tour en fonction de la rencontre
         //GetString du résultat de la bdd
         //Exemple
-        String resultBdd = "8e de finale";
-        tvStateTournament.setText(resultBdd);
+        if (modeAdmin()){
+            resultState= "8e de finale";
+        }else {
+
+        }
+        tvStateTournament.setText(resultState);
     }
 
     public void displayCategory(){
@@ -108,9 +118,20 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         //GetString du résultat de la bdd
         //Exemple
         SharedPreferences.Editor editor = sharedpreferencesService.edit();
-        String resultBdd = "Simple messieurs";
-        editor.putString(Category, resultBdd); //Insertion du resultat de la requete dans la sauvegarde
+        if (modeAdmin()){
+            resultCategory = "Simple messieurs";
+        }else {
+
+        }
+        editor.putString(Category, resultCategory); //Insertion du resultat de la requete dans la sauvegarde
         editor.apply();
-        tvCategory.setText(resultBdd); //id de la tv category
+        tvCategory.setText(resultCategory);
+    }
+
+    private boolean modeAdmin(){
+        if (user.equals("admin")){
+            admin = true;
+        }
+        return admin;
     }
 }
