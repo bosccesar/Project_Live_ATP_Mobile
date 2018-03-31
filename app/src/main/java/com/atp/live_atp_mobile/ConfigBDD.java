@@ -39,8 +39,6 @@ public class ConfigBDD implements Observer{
     private static MyCallback mMyCallback;
     private static String resultNameTournamentBdd;
     private static String resultDateTournamentBdd;
-    private static String resultUserBdd;
-    private static String resultPasswordBdd;
 
 
     ConfigBDD(AuthenticationActivity authenticationActivity) {
@@ -119,7 +117,7 @@ public class ConfigBDD implements Observer{
         });
     }
 
-    public static void loadModelUserFromFirebase() { //Appel get de l'arbitre pour comparer avec le login et password renseigne sur l'authentification
+    public void loadModelUserFromFirebase() { //Appel get de l'arbitre pour comparer avec le login et password renseigne sur l'authentification
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userRef = database.getReference("arbitre"); //Selectionne la table arbitre
         userRef.addValueEventListener(new ValueEventListener() {
@@ -135,14 +133,14 @@ public class ConfigBDD implements Observer{
                             userBDDList.add(user);
                             if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
                                 mMyCallback.onCallbackUser(user.username, user.password);
-                                AuthenticationActivity.authentFail = false;
                             }else {
-                                AuthenticationActivity.authentFail = true;
+                                    AuthenticationActivity.editLogin.setText("");
+                                    AuthenticationActivity.editPassword.setText("");
+                                    Toast.makeText(context, "Authentication failed. Try again", Toast.LENGTH_LONG).show();
                             }
                         }
                     }else { //Si on se renseigne en mode admin
                         mMyCallback.onCallbackUser("admin", "admin");
-                        AuthenticationActivity.authentFail = false;
                     }
                 }
             }

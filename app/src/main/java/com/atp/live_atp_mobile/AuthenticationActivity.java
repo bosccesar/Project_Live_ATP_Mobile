@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by cesar on 27/02/2018.
@@ -19,14 +20,13 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
     private TextView tvTournament;
     private TextView tvDate;
-    private EditText editLogin;
-    private EditText editPassword;
+    public static EditText editLogin;
+    public static EditText editPassword;
     private View vue;
     private ImageButton submit;
 
     public static String login;
     public static String password;
-    public static boolean authentFail;
 
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
@@ -41,11 +41,10 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         //Initialisation des éléments
         this.tvTournament = (TextView) findViewById(R.id.textViewTournament);
         this.tvDate = (TextView) findViewById(R.id.textViewDate);
-        this.editLogin = (EditText) findViewById(R.id.editTextLogin);
-        this.editPassword = (EditText) findViewById(R.id.editTextPassword);
+        editLogin = (EditText) findViewById(R.id.editTextLogin);
+        editPassword = (EditText) findViewById(R.id.editTextPassword);
         this.vue = findViewById(android.R.id.content);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
-        authentFail = false;
 
         sharedpreferencesAuthentication = getSharedPreferences(RECUPBDD, Context.MODE_PRIVATE);
 
@@ -110,9 +109,5 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
             }
         });
         user.loadModelUserFromFirebase();
-        if (authentFail){
-            editLogin.setText("");
-            editPassword.setText("");
-        }
     }
 }
