@@ -41,8 +41,8 @@ public class ConfigBDD implements Observer{
     private static String resultDateTournamentBdd;
 
 
-    ConfigBDD(AuthenticationActivity authenticationActivity) {
-        this.context = authenticationActivity;
+    ConfigBDD(Context context) {
+        this.context = context;
     }
 
     void setMyCallback(MyCallback callback) {
@@ -132,11 +132,47 @@ public class ConfigBDD implements Observer{
                             user = getSnapshot.getValue(UserBDD.class);
                             userBDDList.add(user);
                             if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
-                                mMyCallback.onCallbackUser(user.username, user.password);
+                                mMyCallback.onCallbackUser(user.idRencontre, user.username, user.password);
                             }else {
                                     AuthenticationActivity.editLogin.setText("");
                                     AuthenticationActivity.editPassword.setText("");
                                     Toast.makeText(context, "Authentication failed. Try again", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }else { //Si on se renseigne en mode admin
+                        mMyCallback.onCallbackUser(0, "admin", "admin");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadModelStateTournamentFromFirebase() { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = database.getReference("rencontre").child(AuthenticationActivity.IdRencontre); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRecncontre récupéré
+        /* A faire !!! Récupérer l'idTour */
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des tournois
+                if (iterable != null) {
+                    if (!(AuthenticationActivity.login.equals("admin") && AuthenticationActivity.login.equals("admin"))) {
+                        UserBDD user;
+                        userBDDList = new ArrayList<>();
+                        for (DataSnapshot getSnapshot : iterable) {
+                            user = getSnapshot.getValue(UserBDD.class);
+                            userBDDList.add(user);
+                            if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
+                                mMyCallback.onCallbackUser(user.username, user.password);
+                            }else {
+                                AuthenticationActivity.editLogin.setText("");
+                                AuthenticationActivity.editPassword.setText("");
+                                Toast.makeText(context, "Authentication failed. Try again", Toast.LENGTH_LONG).show();
                             }
                         }
                     }else { //Si on se renseigne en mode admin

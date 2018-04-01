@@ -8,6 +8,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class UserBDD {
+    public int idRencontre;
     public String username;
     public String password;
 
@@ -15,7 +16,8 @@ public class UserBDD {
 
     }
 
-    public UserBDD(String username, String password) {
+    public UserBDD(int idRencontre, String username, String password) {
+        this.idRencontre = idRencontre;
         this.username = username;
         this.password = password;
     }

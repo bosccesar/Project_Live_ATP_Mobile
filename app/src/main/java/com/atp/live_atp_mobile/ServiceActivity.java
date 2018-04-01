@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import static com.atp.live_atp_mobile.AuthenticationActivity.User;
+import static com.atp.live_atp_mobile.AuthenticationActivity.sharedpreferencesAuthentication;
+
 /**
  * Created by cesar on 01/03/2018.
  */
@@ -23,8 +26,6 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     private ImageButton submit;
     private String player;
     private String user;
-    private String resultState;
-    private String resultCategory;
     private boolean admin;
 
     public static final String PLAYERS = "Players";
@@ -45,7 +46,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
         this.player = "";
-        this.user = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.User, null);
+        this.user = sharedpreferencesAuthentication.getString(User, null);
 
         sharedpreferencesService = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
         sharedpreferencesService = getSharedPreferences(CATEGORY, Context.MODE_PRIVATE);
@@ -98,7 +99,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
 
     public void displayTournament(){
         //Récupérer le nom du tournoi depuis l'activity précédente
-        tvTournament.setText(AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.Tournament, null));
+        tvTournament.setText(sharedpreferencesAuthentication.getString(AuthenticationActivity.Tournament, null));
     }
 
     public void displayStateTournament(){
@@ -106,11 +107,23 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         //GetString du résultat de la bdd
         //Exemple
         if (modeAdmin()){
-            resultState= "8e de finale";
+            String resultState= "8e de finale";
+            tvStateTournament.setText(resultState);
         }else {
-
+            ConfigBDD stateTournament = new ConfigBDD(ServiceActivity.this);
+            stateTournament.setMyCallback(new MyCallback() {
+                @Override
+                public void onCallbackTournament(String nameTournament, String dateTournament) {
+                }
+                public void onCallbackStateTournament(String value) {
+                    tvStateTournament.setText(value);
+                }
+                @Override
+                public void onCallbackUser(String user, String passwordUser) {
+                }
+            });
+            stateTournament.loadModelStateTournamentFromFirebase();
         }
-        tvStateTournament.setText(resultState);
     }
 
     public void displayCategory(){
@@ -119,13 +132,13 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         //Exemple
         SharedPreferences.Editor editor = sharedpreferencesService.edit();
         if (modeAdmin()){
-            resultCategory = "Simple messieurs";
+            String resultCategory = "Simple messieurs";
+            editor.putString(Category, resultCategory); //Insertion du resultat de la requete dans la sauvegarde
+            editor.apply();
+            tvCategory.setText(resultCategory);
         }else {
 
         }
-        editor.putString(Category, resultCategory); //Insertion du resultat de la requete dans la sauvegarde
-        editor.apply();
-        tvCategory.setText(resultCategory);
     }
 
     private boolean modeAdmin(){

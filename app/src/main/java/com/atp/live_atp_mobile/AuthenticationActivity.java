@@ -31,6 +31,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
     public static final String User = "user";
+    public static final String IdRencontre = "IdRencontre";
     public static SharedPreferences sharedpreferencesAuthentication;
 
     @Override
@@ -78,6 +79,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         ConfigBDD tournament = new ConfigBDD(AuthenticationActivity.this);
         getGps(tournament);
         tournament.setMyCallback(new MyCallback() {
+            @Override
             public void onCallbackTournament(String value, String dateTournament) { //Nom et date du tournoi récupérés de la bdd
                 tvTournament.setText(value);
                 tvDate.setText(dateTournament);
@@ -85,9 +87,11 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                 editor.putString(Tournament, value); //Insertion du resultat de la requete dans la sauvegarde
                 editor.apply();
             }
-
             @Override
-            public void onCallbackUser(String user, String password) {
+            public void onCallbackStateTournament(String value) {
+            }
+            @Override
+            public void onCallbackUser(int idRencontre, String user, String password) {
             }
         });
     }
@@ -97,14 +101,18 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         password = editPassword.getText().toString();
         ConfigBDD user = new ConfigBDD(AuthenticationActivity.this);
         user.setMyCallback(new MyCallback() {
+            @Override
             public void onCallbackTournament(String value, String dateTournament) {
             }
-
             @Override
-            public void onCallbackUser(String user, String passwordUser) {
+            public void onCallbackStateTournament(String value) {
+            }
+            @Override
+            public void onCallbackUser(int idRencontre, String user, String passwordUser) {
                 if (login.equals(user) || login.equals("admin")){ //Si le login qui a ete renseigné correspond à celui de la BDD ou si on lance l'application en mode admin
                     SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
                     editor.putString(User, user); //Sauvegarde du user afin de recuperer les joueurs des rencontres qui lui sont assignés pour les afficher sur l'activityService
+                    editor.putInt(IdRencontre, idRencontre); //Sauvegarde de l'id de la rencontre user afin de recuperer le tour du tournoi pour l'afficher sur l'activityService
                     editor.apply();
                     Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
                     startActivity(intent);
