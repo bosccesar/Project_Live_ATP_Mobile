@@ -103,26 +103,33 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void displayStateTournament(){
-        //Appel get du tour en fonction de la rencontre
-        //GetString du résultat de la bdd
-        //Exemple
         if (modeAdmin()){
             String resultState= "8e de finale";
             tvStateTournament.setText(resultState);
         }else {
-            ConfigBDD stateTournament = new ConfigBDD(ServiceActivity.this);
+            final ConfigBDD stateTournament = new ConfigBDD(ServiceActivity.this);
             stateTournament.setMyCallback(new MyCallback() {
                 @Override
                 public void onCallbackTournament(String nameTournament, String dateTournament) {
                 }
-                public void onCallbackStateTournament(String value) {
-                    tvStateTournament.setText(value);
+                public void onCallbackStateTournament(String nameTour) {
+                    tvStateTournament.setText(nameTour); //Affichage final du nom du tour
                 }
                 @Override
-                public void onCallbackUser(String user, String passwordUser) {
+                public void onCallbackBoard(int idCategory) {
+                }
+                @Override
+                public void onCallbackCategory(String nameCategory) {
+                }
+                @Override
+                public void onCallbackUser(int idRencontre, String user, String passwordUser) {
+                }
+                @Override
+                public void onCallbackMatch(int idTableau, int idTour) {
+                    stateTournament.loadModelStateTournamentFromFirebase(idTour); //Appel pour récupérer le nom du tour en passant l'idTour
                 }
             });
-            stateTournament.loadModelStateTournamentFromFirebase();
+            stateTournament.loadModelMatchFromFirebase(); //Appel pour recupérer l'idTour de la rencontre
         }
     }
 
@@ -137,7 +144,30 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             editor.apply();
             tvCategory.setText(resultCategory);
         }else {
-
+            final ConfigBDD categoryTournament = new ConfigBDD(ServiceActivity.this);
+            categoryTournament.setMyCallback(new MyCallback() {
+                @Override
+                public void onCallbackTournament(String nameTournament, String dateTournament) {
+                }
+                public void onCallbackStateTournament(String nameTour) {
+                }
+                @Override
+                public void onCallbackBoard(int idCategory) {
+                    categoryTournament.loadModelCategoryFromFirebase(idCategory);
+                }
+                @Override
+                public void onCallbackCategory(String nameCategory) {
+                    tvCategory.setText(nameCategory); //Affichage final de la categorie
+                }
+                @Override
+                public void onCallbackUser(int idRencontre, String user, String passwordUser) {
+                }
+                @Override
+                public void onCallbackMatch(int idTableau, int idTour) {
+                    categoryTournament.loadModelBoardFromFirebase(idTableau);
+                }
+            });
+            categoryTournament.loadModelMatchFromFirebase(); //Appel pour recupérer l'idTableau de la rencontre
         }
     }
 

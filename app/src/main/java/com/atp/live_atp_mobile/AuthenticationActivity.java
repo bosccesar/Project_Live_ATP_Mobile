@@ -91,7 +91,16 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
             public void onCallbackStateTournament(String value) {
             }
             @Override
+            public void onCallbackBoard(int idCategory) {
+            }
+            @Override
+            public void onCallbackCategory(String nameCategory) {
+            }
+            @Override
             public void onCallbackUser(int idRencontre, String user, String password) {
+            }
+            @Override
+            public void onCallbackMatch(int idTableau, int idTour) {
             }
         });
     }
@@ -108,15 +117,24 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
             public void onCallbackStateTournament(String value) {
             }
             @Override
+            public void onCallbackBoard(int idCategory) {
+            }
+            @Override
+            public void onCallbackCategory(String nameCategory) {
+            }
+            @Override
             public void onCallbackUser(int idRencontre, String user, String passwordUser) {
                 if (login.equals(user) || login.equals("admin")){ //Si le login qui a ete renseigné correspond à celui de la BDD ou si on lance l'application en mode admin
                     SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
                     editor.putString(User, user); //Sauvegarde du user afin de recuperer les joueurs des rencontres qui lui sont assignés pour les afficher sur l'activityService
-                    editor.putInt(IdRencontre, idRencontre); //Sauvegarde de l'id de la rencontre user afin de recuperer le tour du tournoi pour l'afficher sur l'activityService
+                    editor.putString(IdRencontre, String.valueOf(idRencontre)); //Sauvegarde de l'id de la rencontre user afin de recuperer le tour du tournoi pour l'afficher sur l'activityService
                     editor.apply();
                     Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
                     startActivity(intent);
                 }
+            }
+            @Override
+            public void onCallbackMatch(int idTableau, int idTour) {
             }
         });
         user.loadModelUserFromFirebase();

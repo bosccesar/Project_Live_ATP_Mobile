@@ -152,32 +152,73 @@ public class ConfigBDD implements Observer{
         });
     }
 
-    public void loadModelStateTournamentFromFirebase() { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
+    public void loadModelStateTournamentFromFirebase(int id) { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference userRef = database.getReference("rencontre").child(AuthenticationActivity.IdRencontre); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRecncontre récupéré
-        /* A faire !!! Récupérer l'idTour */
-        userRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference stateTournamentRef = database.getReference("tour").child(String.valueOf(id)); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
+        stateTournamentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des tournois
-                if (iterable != null) {
-                    if (!(AuthenticationActivity.login.equals("admin") && AuthenticationActivity.login.equals("admin"))) {
-                        UserBDD user;
-                        userBDDList = new ArrayList<>();
-                        for (DataSnapshot getSnapshot : iterable) {
-                            user = getSnapshot.getValue(UserBDD.class);
-                            userBDDList.add(user);
-                            if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
-                                mMyCallback.onCallbackUser(user.username, user.password);
-                            }else {
-                                AuthenticationActivity.editLogin.setText("");
-                                AuthenticationActivity.editPassword.setText("");
-                                Toast.makeText(context, "Authentication failed. Try again", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }else { //Si on se renseigne en mode admin
-                        mMyCallback.onCallbackUser("admin", "admin");
-                    }
+                StateBDD stateBDD = dataSnapshot.getValue(StateBDD.class);
+                if (stateBDD != null) {
+                    mMyCallback.onCallbackStateTournament(stateBDD.nom);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadModelMatchFromFirebase() { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        String idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
+        DatabaseReference matchRef = database.getReference("rencontre").child(idRencontre); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
+        matchRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MatchBDD matchBDD = dataSnapshot.getValue(MatchBDD.class);
+                if (matchBDD != null) {
+                    mMyCallback.onCallbackMatch(matchBDD.idTableau, matchBDD.idTour);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadModelBoardFromFirebase(int id) { //Appel get du tableau du tournoi en fonction du tableau de la rencontre
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference boardRef = database.getReference("tableau").child(String.valueOf(id)); //Selectionne la table tableau pour récuperer l'idCategorie en fonction de l'idTableau récupéré
+        boardRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                BoardBDD boardBDD = dataSnapshot.getValue(BoardBDD.class);
+                if (boardBDD != null) {
+                    mMyCallback.onCallbackBoard(boardBDD.idCategorie);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadModelCategoryFromFirebase(int id) { //Appel get de la categorie en fonction de la categorie du tableau
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference categoryRef = database.getReference("categorie").child(String.valueOf(id)); //Selectionne la table tableau pour récuperer l'idCategorie en fonction de l'idTableau récupéré
+        categoryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                CategoryBDD categoryBDD = dataSnapshot.getValue(CategoryBDD.class);
+                if (categoryBDD != null) {
+                    mMyCallback.onCallbackCategory(categoryBDD.nom);
                 }
             }
 

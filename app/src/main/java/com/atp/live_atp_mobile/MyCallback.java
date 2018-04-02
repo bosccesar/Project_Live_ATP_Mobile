@@ -7,5 +7,8 @@ package com.atp.live_atp_mobile;
 public interface MyCallback {
     void onCallbackTournament(String nameTournament, String dateTournament);
     void onCallbackUser(int idRencontre, String user, String passwordUser);
-    void onCallbackStateTournament(String value);
+    void onCallbackMatch(int idTableau, int idTour);
+    void onCallbackStateTournament(String nameTour);
+    void onCallbackBoard(int idCategory);
+    void onCallbackCategory(String nameCategory);
 }
