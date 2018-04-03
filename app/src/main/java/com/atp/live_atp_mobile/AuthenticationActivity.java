@@ -97,10 +97,22 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
             public void onCallbackCategory(String nameCategory) {
             }
             @Override
+            public void onCallbackPlayer1(int idPlayer1, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
+            }
+            @Override
+            public void onCallbackPlayer2(int idPlayer2, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
+            }
+            @Override
+            public void onCallbackTeam1(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
+            }
+            @Override
+            public void onCallbackTeam2(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
+            }
+            @Override
             public void onCallbackUser(int idRencontre, String user, String password) {
             }
             @Override
-            public void onCallbackMatch(int idTableau, int idTour) {
+            public void onCallbackMatch(boolean equipe, int idTableau, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
             }
         });
     }
@@ -123,6 +135,18 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
             public void onCallbackCategory(String nameCategory) {
             }
             @Override
+            public void onCallbackPlayer1(int idPlayer1, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
+            }
+            @Override
+            public void onCallbackPlayer2(int idPlayer2, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
+            }
+            @Override
+            public void onCallbackTeam1(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
+            }
+            @Override
+            public void onCallbackTeam2(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
+            }
+            @Override
             public void onCallbackUser(int idRencontre, String user, String passwordUser) {
                 if (login.equals(user) || login.equals("admin")){ //Si le login qui a ete renseigné correspond à celui de la BDD ou si on lance l'application en mode admin
                     SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
@@ -134,7 +158,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
                 }
             }
             @Override
-            public void onCallbackMatch(int idTableau, int idTour) {
+            public void onCallbackMatch(boolean equipe, int idTableau, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
             }
         });
         user.loadModelUserFromFirebase();

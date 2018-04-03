@@ -143,7 +143,7 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void fillTextView(){ //Textview des joueurs remplis avec les textview de serviceActivity
-        tvPlayer1.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Player1, null));
-        tvPlayer2.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Player2, null));
+        tvPlayer1.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.ConcatPlayer1, null));
+        tvPlayer2.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.ConcatPlayer2, null));
     }
 }

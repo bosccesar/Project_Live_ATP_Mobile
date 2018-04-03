@@ -152,15 +152,16 @@ public class ConfigBDD implements Observer{
         });
     }
 
-    public void loadModelStateTournamentFromFirebase(int id) { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
+    public void loadModelMatchFromFirebase() { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference stateTournamentRef = database.getReference("tour").child(String.valueOf(id)); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
-        stateTournamentRef.addValueEventListener(new ValueEventListener() {
+        String idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
+        DatabaseReference matchRef = database.getReference("rencontre").child(idRencontre); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
+        matchRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                StateBDD stateBDD = dataSnapshot.getValue(StateBDD.class);
-                if (stateBDD != null) {
-                    mMyCallback.onCallbackStateTournament(stateBDD.nom);
+                MatchBDD matchBDD = dataSnapshot.getValue(MatchBDD.class);
+                if (matchBDD != null) {
+                    mMyCallback.onCallbackMatch(matchBDD.equipe, matchBDD.idTableau, matchBDD.idTour, matchBDD.idJoueur1, matchBDD.idJoueur2, matchBDD.idEquipe1, matchBDD.idEquipe2);
                 }
             }
 
@@ -171,16 +172,15 @@ public class ConfigBDD implements Observer{
         });
     }
 
-    public void loadModelMatchFromFirebase() { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
+    public void loadModelStateTournamentFromFirebase(int id) { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
-        DatabaseReference matchRef = database.getReference("rencontre").child(idRencontre); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
-        matchRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference stateTournamentRef = database.getReference("tour").child(String.valueOf(id)); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
+        stateTournamentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                MatchBDD matchBDD = dataSnapshot.getValue(MatchBDD.class);
-                if (matchBDD != null) {
-                    mMyCallback.onCallbackMatch(matchBDD.idTableau, matchBDD.idTour);
+                StateBDD stateBDD = dataSnapshot.getValue(StateBDD.class);
+                if (stateBDD != null) {
+                    mMyCallback.onCallbackStateTournament(stateBDD.nom);
                 }
             }
 
@@ -227,6 +227,127 @@ public class ConfigBDD implements Observer{
 
             }
         });
+    }
+
+    public void loadModelPlayersFromFirebase(final int idPlayer1, final int idPlayer2, final String category) { //Appel get des joueurs en fonction de la categorie de la rencontre
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        String table = "";
+        if (category.equals("Simple messieurs")) {
+            table = "joueurHomme";
+        }else if (category.equals("Simple dames")) {
+            table = "joueurFemme";
+        }
+        DatabaseReference player1Ref = database.getReference(table).child(String.valueOf(idPlayer1)); //Selectionne la table joueurHomme en fonction de l'idPlayer1 récupéré
+        DatabaseReference player2Ref = database.getReference(table).child(String.valueOf(idPlayer2)); //Selectionne la table joueurHomme en fonction de l'idPlayer2 récupéré
+        player1Ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (category.equals("Simple messieurs")) {
+                    PlayerMenBDD playerMenBDD = dataSnapshot.getValue(PlayerMenBDD.class);
+                    if (playerMenBDD != null) {
+                        mMyCallback.onCallbackPlayer1(idPlayer1, playerMenBDD.prenom, playerMenBDD.nom, playerMenBDD.codeNationalite);
+                    }
+                }else if (category.equals("Simple dames")){
+                    PlayerWomenBDD playerWomenBDD = dataSnapshot.getValue(PlayerWomenBDD.class);
+                    if (playerWomenBDD != null) {
+                        mMyCallback.onCallbackPlayer1(idPlayer1, playerWomenBDD.prenom, playerWomenBDD.nom, playerWomenBDD.codeNationalite);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        player2Ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (category.equals("Simple messieurs")) {
+                    PlayerMenBDD playerMenBDD = dataSnapshot.getValue(PlayerMenBDD.class);
+                    if (playerMenBDD != null) {
+                        mMyCallback.onCallbackPlayer2(idPlayer2, playerMenBDD.prenom, playerMenBDD.nom, playerMenBDD.codeNationalite);
+                    }
+                }else if (category.equals("Simple dames")){
+                    PlayerWomenBDD playerWomenBDD = dataSnapshot.getValue(PlayerWomenBDD.class);
+                    if (playerWomenBDD != null) {
+                        mMyCallback.onCallbackPlayer1(idPlayer2, playerWomenBDD.prenom, playerWomenBDD.nom, playerWomenBDD.codeNationalite);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadModelTeamFromFirebase(final int idTeam1, final int idTeam2, String category) { //Appel get des équipes en fonction de la categorie de la rencontre
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        if (!category.equals("Double mixte")) {
+            final DatabaseReference team1Ref = database.getReference("equipe").child(String.valueOf(idTeam1)); //Selectionne la table equipe avec l'idTeam correspondant
+            DatabaseReference team2Ref = database.getReference("equipe").child(String.valueOf(idTeam2)); //Selectionne la table equipe avec l'idTeam correspondant
+            team1Ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    TeamBDD teamBDD = dataSnapshot.getValue(TeamBDD.class);
+                    if (teamBDD != null) {
+                        mMyCallback.onCallbackTeam1(teamBDD.codeNationalite, teamBDD.idJoueur1, teamBDD.idJoueur2, teamBDD.nom);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            team2Ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    TeamBDD teamBDD = dataSnapshot.getValue(TeamBDD.class);
+                    if (teamBDD != null) {
+                        mMyCallback.onCallbackTeam2(teamBDD.codeNationalite, teamBDD.idJoueur1, teamBDD.idJoueur2, teamBDD.nom);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }else {
+            final DatabaseReference team1Ref = database.getReference("equipe").child(String.valueOf(idTeam1)); //Selectionne la table equipe avec l'idTeam correspondant
+            DatabaseReference team2Ref = database.getReference("equipe").child(String.valueOf(idTeam2)); //Selectionne la table equipe avec l'idTeam correspondant
+            team1Ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    TeamBDD teamBDD = dataSnapshot.getValue(TeamBDD.class);
+                    if (teamBDD != null) {
+                        mMyCallback.onCallbackTeam1(teamBDD.codeNationalite, teamBDD.idJoueur1, teamBDD.idJoueur2, teamBDD.nom); //Comme c'est mixte le joueur 1 est un homme et le joueur 2 est une femme
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            team2Ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    TeamBDD teamBDD = dataSnapshot.getValue(TeamBDD.class);
+                    if (teamBDD != null) {
+                        mMyCallback.onCallbackTeam2(teamBDD.codeNationalite, teamBDD.idJoueur1, teamBDD.idJoueur2, teamBDD.nom); //Comme c'est mixte le joueur 1 est un homme et le joueur 2 est une femme
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     @Override

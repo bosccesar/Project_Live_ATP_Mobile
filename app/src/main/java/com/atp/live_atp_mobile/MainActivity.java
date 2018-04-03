@@ -929,8 +929,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void playerNationality(){ //Placement des joueurs et récupération du drapeau associé à l'id du joueur en bdd
-        tvJ1.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Player1, null));
-        tvJ2.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Player2, null));
+        tvJ1.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.ConcatPlayer1, null));
+        tvJ2.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.ConcatPlayer2, null));
         //Méthodes get récupérant le drapeau en fonction du nom des joueurs
         nationalityJ1.setImageResource(R.mipmap.france);
         nationalityJ2.setImageResource(R.mipmap.italy);

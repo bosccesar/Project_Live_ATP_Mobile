@@ -105,7 +105,7 @@
         android:layout_marginTop="60dp"
         android:background="#dfffffff"
         android:gravity="top"
-        android:text="@string/category"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="30sp"
