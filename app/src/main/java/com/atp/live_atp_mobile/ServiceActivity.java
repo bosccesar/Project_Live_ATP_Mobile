@@ -129,17 +129,14 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             tvJ1.setText(player1);
             tvJ2.setText(player2);
         }else {
-            final ConfigBDD stateTournament = new ConfigBDD(ServiceActivity.this);
-            stateTournament.setMyCallback(new MyCallback() {
-                @Override
-                public void onCallbackTournament(String nameTournament, String dateTournament) {
-                }
+            final ConfigBDD displayBDD = new ConfigBDD(ServiceActivity.this);
+            displayBDD.setMyCallback(new MyCallback() {
                 public void onCallbackStateTournament(String nameTour) {
                     tvStateTournament.setText(nameTour); //Affichage final du tour
                 }
                 @Override
                 public void onCallbackBoard(int idCategory) {
-                    stateTournament.loadModelCategoryFromFirebase(idCategory);
+                    displayBDD.loadModelCategoryFromFirebase(idCategory);
                 }
                 @Override
                 public void onCallbackCategory(String nameCategory) {
@@ -148,22 +145,22 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                     editor.apply();
                 }
                 @Override
-                public void onCallbackUser(int idRencontre, String user, String passwordUser) {
-                }
-                @Override
                 public void onCallbackMatch(boolean equipe, int idTableau, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
-                    stateTournament.loadModelStateTournamentFromFirebase(idTour); //Appel pour récupérer le nom du tour en passant l'idTour
-                    stateTournament.loadModelBoardFromFirebase(idTableau); //Appel pour récupérer le nom de la categorie en passant l'idTableau
+                    displayBDD.loadModelStateTournamentFromFirebase(idTour); //Appel pour récupérer le nom du tour en passant l'idTour
+                    displayBDD.loadModelBoardFromFirebase(idTableau); //Appel pour récupérer le nom de la categorie en passant l'idTableau
                     if (equipe) {
-                        stateTournament.loadModelTeamFromFirebase(idTeam1, idTeam2, Category); //Appel pour récupérer la team en passant leur idTeam et la categorie
+                        displayBDD.loadModelTeamFromFirebase(idTeam1, idTeam2, Category); //Appel pour récupérer la team en passant leur idTeam et la categorie
                     }else {
-                        stateTournament.loadModelPlayersFromFirebase(player1, player2, Category); //Appel pour récupérer les joueurs en passant leur id et la categorie
+                        displayBDD.loadModelPlayersFromFirebase(player1, player2, sharedpreferencesService.getString(ServiceActivity.Category, null)); //Appel pour récupérer les joueurs en passant leur id et la categorie
                     }
                 }
                 @Override
                 public void onCallbackPlayer1(int idPlayer1, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
                     String concatName = firstNamePlayer.substring(0,1) + "." + lastNamePlayer;
                     tvJ1.setText(concatName); //Affichage final du joueur1
+                    if (tvJ1.getText().length() > 15){
+                        tvJ1.setTextSize(28);
+                    }
                     editor.putString(CodeJ1, codeNationality);
                     editor.putString(Player1, String.valueOf(idPlayer1));
                     editor.apply();
@@ -171,7 +168,10 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onCallbackPlayer2(int idPlayer2, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
                     String concatName = firstNamePlayer.substring(0,1) + "." + lastNamePlayer;
-                    tvJ1.setText(concatName); //Affichage final du joueur2
+                    tvJ2.setText(concatName); //Affichage final du joueur2
+                    if (tvJ2.getText().length() > 15){
+                        tvJ2.setTextSize(28);
+                    }
                     editor.putString(CodeJ2, codeNationality);
                     editor.putString(Player2, String.valueOf(idPlayer2));
                     editor.apply();
@@ -179,6 +179,9 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onCallbackTeam1(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
                     tvJ1.setText(nameTeam); //Affichage final de la team 1
+                    if (tvJ1.getText().length() > 15){
+                        tvJ1.setTextSize(28);
+                    }
                     editor.putString(CodeJ1, codeNationality);
                     editor.putString(Player1Team1, String.valueOf(idPlayer1));
                     editor.putString(Player2Team1, String.valueOf(idPlayer2));
@@ -187,13 +190,16 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onCallbackTeam2(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
                     tvJ2.setText(nameTeam); //Affichage final de la team 2
+                    if (tvJ2.getText().length() > 15){
+                        tvJ2.setTextSize(28);
+                    }
                     editor.putString(CodeJ2, codeNationality);
                     editor.putString(Player1Team2, String.valueOf(idPlayer1));
                     editor.putString(Player2Team2, String.valueOf(idPlayer2));
                     editor.apply();
                 }
             });
-            stateTournament.loadModelMatchFromFirebase(); //Appel pour recupérer l'idTour de la rencontre
+            displayBDD.loadModelMatchFromFirebase(); //Appel pour recupérer l'idTour de la rencontre
         }
     }
 

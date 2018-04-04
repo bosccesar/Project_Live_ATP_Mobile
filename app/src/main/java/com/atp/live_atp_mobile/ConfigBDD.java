@@ -1,13 +1,19 @@
 package com.atp.live_atp_mobile;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +31,7 @@ public class ConfigBDD implements Observer{
 
     private Context context;
     private List<TournamentBDD> tournamentBDDList;
+    private List<CountryBDD> countryBDDList;
     private static List<UserBDD> userBDDList;
     private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     private Date dateDebut;
@@ -271,7 +278,7 @@ public class ConfigBDD implements Observer{
                 }else if (category.equals("Simple dames")){
                     PlayerWomenBDD playerWomenBDD = dataSnapshot.getValue(PlayerWomenBDD.class);
                     if (playerWomenBDD != null) {
-                        mMyCallback.onCallbackPlayer1(idPlayer2, playerWomenBDD.prenom, playerWomenBDD.nom, playerWomenBDD.codeNationalite);
+                        mMyCallback.onCallbackPlayer2(idPlayer2, playerWomenBDD.prenom, playerWomenBDD.nom, playerWomenBDD.codeNationalite);
                     }
                 }
             }
@@ -348,6 +355,86 @@ public class ConfigBDD implements Observer{
                 }
             });
         }
+    }
+
+    public void loadCodeCountryFromFirebase(final String codeJ1, final String codeJ2) { //Appel get des drapeaux des pays
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference countryRef = database.getReference("pays"); //Selectionne la table cible
+        countryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des pays
+                if (iterable != null) {
+                    CountryBDD country;
+                    countryBDDList = new ArrayList<>();
+                    for (DataSnapshot getSnapshot: iterable) {
+                        country = getSnapshot.getValue(CountryBDD.class);
+                        countryBDDList.add(country);
+                        String code = country.code;
+                        if (codeJ1.equals(code)){ //Si le codeJ1 est le meme qu'un code d'un pays
+                            mMyCallback.onCallbackCodeCountryJ1(country.libelle);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        countryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des pays
+                if (iterable != null) {
+                    CountryBDD country;
+                    countryBDDList = new ArrayList<>();
+                    for (DataSnapshot getSnapshot: iterable) {
+                        country = getSnapshot.getValue(CountryBDD.class);
+                        countryBDDList.add(country);
+                        String code = country.code;
+                        if (codeJ2.equals(code)){ //Si le codeJ1 est le meme qu'un code d'un pays
+                            mMyCallback.onCallbackCodeCountryJ2(country.libelle);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadNationalityFlagFromFirebase(String libelleJ1, String libelleJ2) { //Appel get des drapeaux des pays en fonction du libelle de chaque joueur
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference NationalityRef1 = storage.getReference(libelleJ1 + ".png"); //Selectionne le drapeau en fonction du libelleNationalite du J1
+        StorageReference NationalityRef2 = storage.getReference(libelleJ2 + ".png"); //Selectionne le drapeau en fonction du libelleNationalite du J2
+        NationalityRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                mMyCallback.onCallbackNationalityJ1(uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(context, "403 au secours", Toast.LENGTH_LONG).show();
+            }
+        });
+        NationalityRef2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                mMyCallback.onCallbackNationalityJ2(uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(context, "403 au secours", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

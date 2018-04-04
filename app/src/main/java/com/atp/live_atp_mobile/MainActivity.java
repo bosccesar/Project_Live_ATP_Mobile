@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.net.Uri;
+
 import static com.atp.live_atp_mobile.SanctionActivity.sharedpreferencesSanction;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -93,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String Player2 = "player2";
     public static final String ScoreWin = "scoreWin";
     public static final String ScoreLost = "scoreLost";
+    public static final String LibelleCodeJ1 = "libelleCodeJ1";
+    public static final String LibelleCodeJ2 = "libelleCodeJ2";
     public static SharedPreferences sharedpreferencesMainActivity;
 
     @Override
@@ -111,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Drapeau nationalite
         this.nationalityJ1 = (ImageView) findViewById(R.id.imageViewNationalityJ1);
         this.nationalityJ2 = (ImageView) findViewById(R.id.imageViewNationalityJ2);
-        playerNationality();
 
         //Chronomètre
         this.buttonStart = (Button) findViewById(R.id.buttonStart);
@@ -215,6 +218,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.buttonClose = (ImageButton) findViewById(R.id.imageButtonClose);
 
         sharedpreferencesMainActivity = getSharedPreferences(PLAYERSWINLOST, Context.MODE_PRIVATE);
+
+        playerNationality();
 
         //Interaction impossible sur les boutons
         interactionButtonFalse();
@@ -929,13 +934,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void playerNationality(){ //Placement des joueurs et récupération du drapeau associé à l'id du joueur en bdd
+        String codeJ1 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.CodeJ1, null);
+        String codeJ2 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.CodeJ2, null);
         tvJ1.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.ConcatPlayer1, null));
+        if (tvJ1.getText().length() > 15){
+            tvJ1.setTextSize(25);
+        }
         tvJ2.setText(ServiceActivity.sharedpreferencesService.getString(ServiceActivity.ConcatPlayer2, null));
-        //Méthodes get récupérant le drapeau en fonction du nom des joueurs
-        nationalityJ1.setImageResource(R.mipmap.france);
-        nationalityJ2.setImageResource(R.mipmap.italy);
-        //nationalityJ1.setImageDrawable(drapeau récupéré de la bdd);
-        //nationalityJ2.setImageDrawable(drapeau récupéré de la bdd);
+        if (tvJ2.getText().length() > 15){
+            tvJ2.setTextSize(25);
+        }
+        final SharedPreferences.Editor editor = sharedpreferencesMainActivity.edit();
+        ConfigBDD nationality = new ConfigBDD(MainActivity.this);
+        nationality.setMyCallback(new MyCallback() {
+            @Override
+            public void onCallbackCodeCountryJ1(String libelleCode) {
+                editor.putString(LibelleCodeJ1, libelleCode);
+                editor.apply();
+            }
+            @Override
+            public void onCallbackCodeCountryJ2(String libelleCode) {
+                editor.putString(LibelleCodeJ2, libelleCode);
+                editor.apply();
+            }
+        });
+        nationality.loadCodeCountryFromFirebase(codeJ1, codeJ2);
+
+        //Méthodes get récupérant le drapeau en fonction du libelle des joueurs ci-dessus
+        nationality.setMyCallback(new MyCallback() {
+            @Override
+            public void onCallbackNationalityJ1(Uri libelleNationality) { //Url du drapeau.png
+                nationalityJ1.setImageURI(libelleNationality);
+            }
+            @Override
+            public void onCallbackNationalityJ2(Uri libelleNationality) { //Url du drapeau.png
+                nationalityJ2.setImageURI(libelleNationality);
+            }
+        });
+        nationality.loadNationalityFlagFromFirebase(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.LibelleCodeJ1, null), MainActivity.sharedpreferencesMainActivity.getString(MainActivity.LibelleCodeJ2, null));
     }
 
     public void onClickButtonScoreDown(TextView tvScore, TextView tvScoreAdv, Button buttonDown, Button buttonCancel, TextView tvChallenge, TextView tvChallengeAdv, Button buttonChallenge, Button buttonChallengeAdv, String tvPreviousScore, String tvPreviousScoreAdv, TextView tvScoreSet){ //Decrementation du score adverse suite à une demande de challenge de la part d'un joueur s'il a raison

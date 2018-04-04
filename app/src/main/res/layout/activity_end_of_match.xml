@@ -9,9 +9,9 @@
 
     <TextView
         android:id="@+id/textViewPlayerWin"
-        android:layout_width="325dp"
+        android:layout_width="500dp"
         android:layout_height="110dp"
-        android:layout_marginStart="476dp"
+        android:layout_marginStart="387dp"
         android:layout_marginTop="36dp"
         android:gravity="center"
         android:text="@string/player_win"

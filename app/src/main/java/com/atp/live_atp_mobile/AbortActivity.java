@@ -73,6 +73,12 @@ public class AbortActivity extends AppCompatActivity implements View.OnClickList
 
     public void fillTextView(){
         tvPlayer1.setText(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.Player1, null));
+        if (tvPlayer1.getText().length() > 15){
+            tvPlayer1.setTextSize(28);
+        }
         tvPlayer2.setText(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.Player2, null));
+        if (tvPlayer2.getText().length() > 15){
+            tvPlayer2.setTextSize(28);
+        }
     }
 }
