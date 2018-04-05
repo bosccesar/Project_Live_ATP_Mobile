@@ -1,6 +1,6 @@
 package com.atp.live_atp_mobile;
 
-import android.net.Uri;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * Created by cesar on 22/03/2018.
@@ -31,8 +31,8 @@ public abstract class MyCallback {
     }
     void onCallbackCodeCountryJ2(String libelleCode) {
     }
-    void onCallbackNationalityJ1(Uri libelleNationality) {
+    void onCallbackNationalityJ1(StorageReference nationalityRef) {
     }
-    void onCallbackNationalityJ2(Uri libelleNationality) {
+    void onCallbackNationalityJ2(StorageReference nationalityRef) {
     }
 }

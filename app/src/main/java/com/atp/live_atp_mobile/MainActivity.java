@@ -19,7 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.net.Uri;
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.StorageReference;
 
 import static com.atp.live_atp_mobile.SanctionActivity.sharedpreferencesSanction;
 
@@ -95,8 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String Player2 = "player2";
     public static final String ScoreWin = "scoreWin";
     public static final String ScoreLost = "scoreLost";
-    public static final String LibelleCodeJ1 = "libelleCodeJ1";
-    public static final String LibelleCodeJ2 = "libelleCodeJ2";
     public static SharedPreferences sharedpreferencesMainActivity;
 
     @Override
@@ -107,7 +107,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Initialisation des éléments
         //Element recupéré d'autres activity et BDD
         this.tournament = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du Grand Chelem
-        this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Category, null); //Récuperation de la category pour évaluer s'il y a super tie-break et 2 ou 3 set gangants
+        if (ServiceActivity.user.equals("admin")){
+            this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.CategoryAdmin, null); //Récuperation de la category en mode admin
+        }else {
+            this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Category, null); //Récuperation de la category pour évaluer s'il y a super tie-break et 2 ou 3 set gangants
+        }
 
         //Joueurs
         this.tvJ1 = (TextView) findViewById(R.id.textJ1);
@@ -944,34 +948,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (tvJ2.getText().length() > 15){
             tvJ2.setTextSize(25);
         }
-        final SharedPreferences.Editor editor = sharedpreferencesMainActivity.edit();
-        ConfigBDD nationality = new ConfigBDD(MainActivity.this);
+        final ConfigBDD nationality = new ConfigBDD(MainActivity.this);
         nationality.setMyCallback(new MyCallback() {
             @Override
             public void onCallbackCodeCountryJ1(String libelleCode) {
-                editor.putString(LibelleCodeJ1, libelleCode);
-                editor.apply();
+                int idImage = 1;
+                nationality.loadNationalityFlagFromFirebase(libelleCode, idImage);
             }
             @Override
             public void onCallbackCodeCountryJ2(String libelleCode) {
-                editor.putString(LibelleCodeJ2, libelleCode);
-                editor.apply();
+                int idImage = 2;
+                nationality.loadNationalityFlagFromFirebase(libelleCode, idImage);
+            }
+            @Override
+            public void onCallbackNationalityJ1(StorageReference nationalityRef) { //Récupération du drapeau et affichage dans l'ImageView du J1
+                Glide.with(MainActivity.this)
+                        .using(new FirebaseImageLoader())
+                        .load(nationalityRef)
+                        .into(nationalityJ1);
+            }
+            @Override
+            public void onCallbackNationalityJ2(StorageReference nationalityRef) { //Récupération du drapeau et affichage dans l'ImageView du J2
+                Glide.with(MainActivity.this)
+                        .using(new FirebaseImageLoader())
+                        .load(nationalityRef)
+                        .into(nationalityJ2);
             }
         });
         nationality.loadCodeCountryFromFirebase(codeJ1, codeJ2);
-
-        //Méthodes get récupérant le drapeau en fonction du libelle des joueurs ci-dessus
-        nationality.setMyCallback(new MyCallback() {
-            @Override
-            public void onCallbackNationalityJ1(Uri libelleNationality) { //Url du drapeau.png
-                nationalityJ1.setImageURI(libelleNationality);
-            }
-            @Override
-            public void onCallbackNationalityJ2(Uri libelleNationality) { //Url du drapeau.png
-                nationalityJ2.setImageURI(libelleNationality);
-            }
-        });
-        nationality.loadNationalityFlagFromFirebase(MainActivity.sharedpreferencesMainActivity.getString(MainActivity.LibelleCodeJ1, null), MainActivity.sharedpreferencesMainActivity.getString(MainActivity.LibelleCodeJ2, null));
     }
 
     public void onClickButtonScoreDown(TextView tvScore, TextView tvScoreAdv, Button buttonDown, Button buttonCancel, TextView tvChallenge, TextView tvChallengeAdv, Button buttonChallenge, Button buttonChallengeAdv, String tvPreviousScore, String tvPreviousScoreAdv, TextView tvScoreSet){ //Decrementation du score adverse suite à une demande de challenge de la part d'un joueur s'il a raison

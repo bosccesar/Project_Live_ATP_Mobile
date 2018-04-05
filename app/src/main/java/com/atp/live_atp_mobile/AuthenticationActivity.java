@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by cesar on 27/02/2018.
@@ -25,13 +24,13 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     private View vue;
     private ImageButton submit;
 
-    public static String login;
-    public static String password;
-
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
     public static final String User = "user";
     public static final String IdRencontre = "IdRencontre";
+
+    public static String login;
+    public static String password;
     public static SharedPreferences sharedpreferencesAuthentication;
 
     @Override

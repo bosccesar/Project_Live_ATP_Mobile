@@ -1,12 +1,8 @@
 package com.atp.live_atp_mobile;
 
 import android.content.Context;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -219,7 +215,7 @@ public class ConfigBDD implements Observer{
 
     public void loadModelCategoryFromFirebase(int id) { //Appel get de la categorie en fonction de la categorie du tableau
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference categoryRef = database.getReference("categorie").child(String.valueOf(id)); //Selectionne la table tableau pour récuperer l'idCategorie en fonction de l'idTableau récupéré
+        DatabaseReference categoryRef = database.getReference("categorie").child(String.valueOf(id)); //Selectionne la table category pour récuperer le nom de la categorie en fonction de l'idCategorie récupéré
         categoryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -238,14 +234,15 @@ public class ConfigBDD implements Observer{
 
     public void loadModelPlayersFromFirebase(final int idPlayer1, final int idPlayer2, final String category) { //Appel get des joueurs en fonction de la categorie de la rencontre
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String table = "";
+        DatabaseReference player1Ref = database.getReference();
+        DatabaseReference player2Ref = database.getReference();
         if (category.equals("Simple messieurs")) {
-            table = "joueurHomme";
+            player1Ref = database.getReference("joueurHomme").child(String.valueOf(idPlayer1)); //Selectionne la table joueurHomme en fonction de l'idPlayer1 récupéré
+            player2Ref = database.getReference("joueurHomme").child(String.valueOf(idPlayer2)); //Selectionne la table joueurHomme en fonction de l'idPlayer2 récupéré
         }else if (category.equals("Simple dames")) {
-            table = "joueurFemme";
+            player1Ref = database.getReference("joueurFemme").child(String.valueOf(idPlayer1)); //Selectionne la table joueurFemme en fonction de l'idPlayer1 récupéré
+            player2Ref = database.getReference("joueurFemme").child(String.valueOf(idPlayer2)); //Selectionne la table joueurFemme en fonction de l'idPlayer2 récupéré
         }
-        DatabaseReference player1Ref = database.getReference(table).child(String.valueOf(idPlayer1)); //Selectionne la table joueurHomme en fonction de l'idPlayer1 récupéré
-        DatabaseReference player2Ref = database.getReference(table).child(String.valueOf(idPlayer2)); //Selectionne la table joueurHomme en fonction de l'idPlayer2 récupéré
         player1Ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -372,7 +369,11 @@ public class ConfigBDD implements Observer{
                         countryBDDList.add(country);
                         String code = country.code;
                         if (codeJ1.equals(code)){ //Si le codeJ1 est le meme qu'un code d'un pays
-                            mMyCallback.onCallbackCodeCountryJ1(country.libelle);
+                            String libelle = country.libelle;
+                            if (libelle.contains(" ")){
+                                libelle = libelle.replaceAll(" ", "_");
+                            }
+                            mMyCallback.onCallbackCodeCountryJ1(libelle);
                         }
                     }
                 }
@@ -396,7 +397,11 @@ public class ConfigBDD implements Observer{
                         countryBDDList.add(country);
                         String code = country.code;
                         if (codeJ2.equals(code)){ //Si le codeJ1 est le meme qu'un code d'un pays
-                            mMyCallback.onCallbackCodeCountryJ2(country.libelle);
+                            String libelle = country.libelle;
+                            if (libelle.contains(" ")){
+                                libelle = libelle.replaceAll(" ", "_");
+                            }
+                            mMyCallback.onCallbackCodeCountryJ2(libelle);
                         }
                     }
                 }
@@ -409,32 +414,14 @@ public class ConfigBDD implements Observer{
         });
     }
 
-    public void loadNationalityFlagFromFirebase(String libelleJ1, String libelleJ2) { //Appel get des drapeaux des pays en fonction du libelle de chaque joueur
+    public void loadNationalityFlagFromFirebase(String libelle, int idImage) { //Appel des drapeaux des pays en fonction du libelle de chaque joueur
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference NationalityRef1 = storage.getReference(libelleJ1 + ".png"); //Selectionne le drapeau en fonction du libelleNationalite du J1
-        StorageReference NationalityRef2 = storage.getReference(libelleJ2 + ".png"); //Selectionne le drapeau en fonction du libelleNationalite du J2
-        NationalityRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                mMyCallback.onCallbackNationalityJ1(uri);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(context, "403 au secours", Toast.LENGTH_LONG).show();
-            }
-        });
-        NationalityRef2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                mMyCallback.onCallbackNationalityJ2(uri);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(context, "403 au secours", Toast.LENGTH_LONG).show();
-            }
-        });
+        StorageReference nationalityRef = storage.getReference(libelle + ".png"); //Selectionne le drapeau en fonction du libelleNationalite du joueur
+        if (idImage == 1){
+            mMyCallback.onCallbackNationalityJ1(nationalityRef);
+        }else if (idImage == 2){
+            mMyCallback.onCallbackNationalityJ2(nationalityRef);
+        }
     }
 
     @Override

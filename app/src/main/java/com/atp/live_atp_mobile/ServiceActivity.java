@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import static com.atp.live_atp_mobile.AuthenticationActivity.User;
 import static com.atp.live_atp_mobile.AuthenticationActivity.sharedpreferencesAuthentication;
 
 /**
@@ -25,8 +24,6 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tvJ2;
     private ImageButton submit;
     private String player;
-    private String user;
-    private boolean admin;
 
     public static final String PLAYERS = "Players";
     public static final String CATEGORY = "categories";
@@ -35,12 +32,15 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     public static final String Player2 = "player2";
     public static final String ConcatPlayer2 = "concatPlayer2";
     public static final String Category = "category";
+    public static final String CategoryAdmin = "categoryAdmin";
     public static final String CodeJ1 = "codeJ1";
     public static final String CodeJ2 = "codeJ2";
     public static final String Player1Team1 = "player1Team1";
     public static final String Player2Team1 = "player2Team1";
     public static final String Player1Team2 = "player1Team2";
     public static final String Player2Team2 = "player2Team2";
+
+    public static String user;
     public static SharedPreferences sharedpreferencesService;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +54,12 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
         this.player = "";
-        this.user = sharedpreferencesAuthentication.getString(User, null);
+        user = sharedpreferencesAuthentication.getString(AuthenticationActivity.User,null);
 
         sharedpreferencesService = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
         sharedpreferencesService = getSharedPreferences(CATEGORY, Context.MODE_PRIVATE);
 
         //Méthodes
-        modeAdmin();
         displayTournament();
         displayStateTournamentCategoryAndPlayers();
 
@@ -97,12 +96,12 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             else if (player.equals(ConcatPlayer2)){
                 editor.putString(ConcatPlayer1, valJ2);
                 editor.putString(ConcatPlayer2, valJ1);
-                editor.putString(CodeJ1, CodeJ2);
-                editor.putString(CodeJ2, CodeJ1);
-                editor.putString(Player1Team1, Player1Team2);
-                editor.putString(Player2Team1, Player2Team2);
-                editor.putString(Player1Team2, Player1Team1);
-                editor.putString(Player2Team2, Player2Team1);
+                editor.putString(CodeJ1, sharedpreferencesService.getString(ServiceActivity.CodeJ2, null));
+                editor.putString(CodeJ2, sharedpreferencesService.getString(ServiceActivity.CodeJ1, null));
+                editor.putString(Player1Team1, sharedpreferencesService.getString(ServiceActivity.Player1Team2, null));
+                editor.putString(Player2Team1, sharedpreferencesService.getString(ServiceActivity.Player2Team2, null));
+                editor.putString(Player1Team2, sharedpreferencesService.getString(ServiceActivity.Player1Team1, null));
+                editor.putString(Player2Team2, sharedpreferencesService.getString(ServiceActivity.Player2Team1, null));
                 editor.apply();
                 Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -122,7 +121,9 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             String resultCategory = "Simple messieurs";
             String player1 = "A.MURRAY";
             String player2 = "J.W.TSONGA";
-            editor.putString(Category, resultCategory);
+            editor.putString(CategoryAdmin, resultCategory);
+            editor.putString(CodeJ1, "GBR");
+            editor.putString(CodeJ2, "FRA");
             editor.apply();
             tvStateTournament.setText(resultState);
             tvCategory.setText(resultCategory);
@@ -146,12 +147,13 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 @Override
                 public void onCallbackMatch(boolean equipe, int idTableau, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
+                    String category = sharedpreferencesService.getString(ServiceActivity.Category, null);
                     displayBDD.loadModelStateTournamentFromFirebase(idTour); //Appel pour récupérer le nom du tour en passant l'idTour
                     displayBDD.loadModelBoardFromFirebase(idTableau); //Appel pour récupérer le nom de la categorie en passant l'idTableau
                     if (equipe) {
-                        displayBDD.loadModelTeamFromFirebase(idTeam1, idTeam2, Category); //Appel pour récupérer la team en passant leur idTeam et la categorie
+                        displayBDD.loadModelTeamFromFirebase(idTeam1, idTeam2, category); //Appel pour récupérer la team en passant leur idTeam et la categorie
                     }else {
-                        displayBDD.loadModelPlayersFromFirebase(player1, player2, sharedpreferencesService.getString(ServiceActivity.Category, null)); //Appel pour récupérer les joueurs en passant leur id et la categorie
+                        displayBDD.loadModelPlayersFromFirebase(player1, player2, category); //Appel pour récupérer les joueurs en passant leur id et la categorie
                     }
                 }
                 @Override
@@ -204,8 +206,11 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private boolean modeAdmin(){
+        boolean admin = false;
         if (user.equals("admin")){
             admin = true;
+        }else if (!user.equals("admin")){
+            admin = false;
         }
         return admin;
     }
