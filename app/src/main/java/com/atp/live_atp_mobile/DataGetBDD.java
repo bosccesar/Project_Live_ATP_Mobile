@@ -23,7 +23,7 @@ import java.util.TimeZone;
  * Created by cesar on 22/03/2018.
  */
 
-public class ConfigBDD implements Observer{
+public class DataGetBDD implements Observer{
 
     private Context context;
     private List<TournamentBDD> tournamentBDDList;
@@ -44,7 +44,7 @@ public class ConfigBDD implements Observer{
     private static String resultDateTournamentBdd;
 
 
-    ConfigBDD(Context context) {
+    DataGetBDD(Context context) {
         this.context = context;
     }
 
@@ -133,8 +133,11 @@ public class ConfigBDD implements Observer{
                         userBDDList = new ArrayList<>();
                         for (DataSnapshot getSnapshot : iterable) {
                             user = getSnapshot.getValue(UserBDD.class);
+                            //rencontre = getSnapshot.getValue(MatchBDD.class);
                             userBDDList.add(user);
                             if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
+                                //Faire : Si rencontre.matchFini == false
+                                //Si date == dateDevice et rencontre.heureDebut == heureDevice
                                 mMyCallback.onCallbackUser(user.idRencontre, user.username, user.password);
                             }else {
                                     AuthenticationActivity.editLogin.setText("");
@@ -155,7 +158,7 @@ public class ConfigBDD implements Observer{
         });
     }
 
-    public void loadModelMatchFromFirebase() { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
+    public void loadModelMatchFromFirebase() { //Appel get de la rencontre
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         String idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
         DatabaseReference matchRef = database.getReference("rencontre").child(idRencontre); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
@@ -175,9 +178,9 @@ public class ConfigBDD implements Observer{
         });
     }
 
-    public void loadModelStateTournamentFromFirebase(int id) { //Appel get du tour du tournoi en fonction du user et de sa rencontre (recupération de l'idTour) en comparant son heureDebut avec l'heure du device
+    public void loadModelStateTournamentFromFirebase(int id) { //Appel get du tour du tournoi en fonction de l'idTour
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference stateTournamentRef = database.getReference("tour").child(String.valueOf(id)); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
+        DatabaseReference stateTournamentRef = database.getReference("tour").child(String.valueOf(id)); //Selectionne la table tour pour récuperer le nom du tour en fonction de l'idTour récupéré
         stateTournamentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

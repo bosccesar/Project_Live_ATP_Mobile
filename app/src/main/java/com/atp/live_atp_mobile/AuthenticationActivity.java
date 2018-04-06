@@ -68,14 +68,14 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void getGps(ConfigBDD configBDD){
+    public void getGps(DataGetBDD dataGetBDD){
         Gps gps = new Gps(AuthenticationActivity.this, AuthenticationActivity.this);
-        gps.observers.add(configBDD);
+        gps.observers.add(dataGetBDD);
         gps.startGMS();
     }
 
     public void displayTournament(){
-        ConfigBDD tournament = new ConfigBDD(AuthenticationActivity.this);
+        DataGetBDD tournament = new DataGetBDD(AuthenticationActivity.this);
         getGps(tournament);
         tournament.setMyCallback(new MyCallback() {
             @Override
@@ -92,7 +92,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     public void verifIdent(){
         login = editLogin.getText().toString();
         password = editPassword.getText().toString();
-        ConfigBDD user = new ConfigBDD(AuthenticationActivity.this);
+        DataGetBDD user = new DataGetBDD(AuthenticationActivity.this);
         user.setMyCallback(new MyCallback() {
             @Override
             public void onCallbackUser(int idRencontre, String user, String passwordUser) {

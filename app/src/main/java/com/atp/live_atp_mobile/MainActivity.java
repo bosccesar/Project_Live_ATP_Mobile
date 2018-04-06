@@ -948,7 +948,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (tvJ2.getText().length() > 15){
             tvJ2.setTextSize(25);
         }
-        final ConfigBDD nationality = new ConfigBDD(MainActivity.this);
+        final DataGetBDD nationality = new DataGetBDD(MainActivity.this);
         nationality.setMyCallback(new MyCallback() {
             @Override
             public void onCallbackCodeCountryJ1(String libelleCode) {

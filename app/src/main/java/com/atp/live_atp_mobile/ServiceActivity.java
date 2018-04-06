@@ -130,7 +130,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             tvJ1.setText(player1);
             tvJ2.setText(player2);
         }else {
-            final ConfigBDD displayBDD = new ConfigBDD(ServiceActivity.this);
+            final DataGetBDD displayBDD = new DataGetBDD(ServiceActivity.this);
             displayBDD.setMyCallback(new MyCallback() {
                 public void onCallbackStateTournament(String nameTour) {
                     tvStateTournament.setText(nameTour); //Affichage final du tour

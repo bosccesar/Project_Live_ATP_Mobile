@@ -10,7 +10,8 @@ public enum Tournament {
     WIMBELDON("Wimbledon", true),
     US_OPEN("US Open", true),
     DAVIS_CUP("Davis Cup", false),
-    OPEN_FRANCE("Open de France", false);
+    FED_CUP("Fed Cup", false),
+    OPEN_FRANCE("Open Sud de France", false);
 
     private final String nom;
     private final boolean grandChelem;
