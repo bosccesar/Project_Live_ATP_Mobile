@@ -130,6 +130,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             tvJ1.setText(player1);
             tvJ2.setText(player2);
         }else {
+            String idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
             final DataGetBDD displayBDD = new DataGetBDD(ServiceActivity.this);
             displayBDD.setMyCallback(new MyCallback() {
                 public void onCallbackStateTournament(String nameTour) {
@@ -201,7 +202,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                     editor.apply();
                 }
             });
-            displayBDD.loadModelMatchFromFirebase(); //Appel pour recupérer l'idTour de la rencontre
+            displayBDD.loadModelMatchFromFirebase(idRencontre); //Appel pour recupérer l'idTour de la rencontre
         }
     }
 

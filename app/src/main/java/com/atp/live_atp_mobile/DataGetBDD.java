@@ -29,14 +29,21 @@ public class DataGetBDD implements Observer{
     private List<TournamentBDD> tournamentBDDList;
     private List<CountryBDD> countryBDDList;
     private static List<UserBDD> userBDDList;
-    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    private List<MatchBDD> matchBDDList;
+    private SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat formatterHour = new SimpleDateFormat("HH:mm");
     private Date dateDebut;
     private Date dateFin;
+    private Date dateMatch;
+    private Date hourStart;
+    private boolean aroundHourStart;
+    private boolean matchValid;
     private double latitudeDebut;
     private double latitudeFin;
     private double longitudeDebut;
     private double longitudeFin;
     private Date currentDate;
+    private Date currentHour;
     private static double latitude;
     private static double longitude;
     private static MyCallback mMyCallback;
@@ -74,9 +81,9 @@ public class DataGetBDD implements Observer{
         //longitudeEnd = 3.844684;
         //
 
-        String stringDate = day + "/" + month +"/" + year;
+        String stringDate = day + "/" + month + "/" + year;
         try {
-            currentDate = formatter.parse(stringDate);
+            currentDate = formatterDate.parse(stringDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -94,8 +101,8 @@ public class DataGetBDD implements Observer{
                         tournament = getSnapshot.getValue(TournamentBDD.class);
                         tournamentBDDList.add(tournament);
                         try {
-                            dateDebut = formatter.parse(tournament.dateDebut);
-                            dateFin = formatter.parse(tournament.dateFin);
+                            dateDebut = formatterDate.parse(tournament.dateDebut);
+                            dateFin = formatterDate.parse(tournament.dateFin);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -126,19 +133,17 @@ public class DataGetBDD implements Observer{
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des tournois
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des arbitres
                 if (iterable != null) {
                     if (!(AuthenticationActivity.login.equals("admin") && AuthenticationActivity.login.equals("admin"))) {
                         UserBDD user;
                         userBDDList = new ArrayList<>();
                         for (DataSnapshot getSnapshot : iterable) {
                             user = getSnapshot.getValue(UserBDD.class);
-                            //rencontre = getSnapshot.getValue(MatchBDD.class);
                             userBDDList.add(user);
                             if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
-                                //Faire : Si rencontre.matchFini == false
-                                //Si date == dateDevice et rencontre.heureDebut == heureDevice
-                                mMyCallback.onCallbackUser(user.idRencontre, user.username, user.password);
+                                addListMatch();
+                                mMyCallback.onCallbackUser(user.idRencontre, user.username, user.password); //Retouner la liste de rencontre associé à l'arbitre
                             }else {
                                     AuthenticationActivity.editLogin.setText("");
                                     AuthenticationActivity.editPassword.setText("");
@@ -158,9 +163,8 @@ public class DataGetBDD implements Observer{
         });
     }
 
-    public void loadModelMatchFromFirebase() { //Appel get de la rencontre
+    public void loadModelMatchFromFirebase(String idRencontre) { //Appel get de la rencontre
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
         DatabaseReference matchRef = database.getReference("rencontre").child(idRencontre); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
         matchRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -168,6 +172,63 @@ public class DataGetBDD implements Observer{
                 MatchBDD matchBDD = dataSnapshot.getValue(MatchBDD.class);
                 if (matchBDD != null) {
                     mMyCallback.onCallbackMatch(matchBDD.equipe, matchBDD.idTableau, matchBDD.idTour, matchBDD.idJoueur1, matchBDD.idJoueur2, matchBDD.idEquipe1, matchBDD.idEquipe2);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadVerifyMatchFromFirebase(final String idRencontre, final String user) { //Vérifie si un match attribué à un arbitre est disponible en fonction de la date, de l'heure et si le match n'est pas fini (pas encore joué). On retourne alors l'idRencontre
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        //int day = calendar.get(Calendar.DAY_OF_MONTH);
+        //int month = calendar.get(Calendar.MONTH) + 1; //Les mois vont de 0 à 11 (janvier à decembre) donc on incremente le mois de 1
+        int year = calendar.get(Calendar.YEAR);
+
+        //Donnees de test
+        //int hour = 18;
+        //int minute = 0;
+        int day = 9;
+        int month = 9;
+
+        final String stringDate = day + "/" + month + "/" + year;
+        final String stringHour = hour + ":" + minute;
+        try {
+            currentDate = formatterDate.parse(stringDate);
+            currentHour = formatterHour.parse(stringHour);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DatabaseReference matchRef = database.getReference("rencontre").child(idRencontre); //Selectionne la table rencontre en fonction de l'idRencontre récupéré pour vérifier si c'est le bon match
+        matchRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MatchBDD matchBDD = dataSnapshot.getValue(MatchBDD.class);
+                if (matchBDD != null) {
+                    try {
+                        dateMatch = formatterDate.parse(matchBDD.date);
+                        hourStart = formatterHour.parse(matchBDD.heureDebut);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    long diffHour = hourStart.getTime() - currentHour.getTime();
+                    if(diffHour >= 0 && diffHour/(1000*60) <= 10 || diffHour <= 0 && diffHour/(1000*60) >= -10) {
+                        aroundHourStart = true;
+                    }else {
+                        aroundHourStart = false;
+                    }
+                    if (!matchBDD.matchFini && (dateMatch.equals(currentDate) && aroundHourStart)) { //Si le match n'est pas fini, que le jour est bon et que l'on soit au alentour (10mn) de l'heure du début du match
+                        matchValid = true;
+                    }else {
+                        matchValid = false;
+                    }
+                    mMyCallback.onCallbackVerifyMatch(matchValid, idRencontre, user);
                 }
             }
 
@@ -432,6 +493,11 @@ public class DataGetBDD implements Observer{
         latitude = ((Gps) observable).getLatitude();
         longitude = ((Gps) observable).getLongitude();
         loadModelTournamentFromFirebase();
+    }
+
+    private List<MatchBDD> addListMatch(){
+        matchBDDList = new ArrayList<>();
+        return matchBDDList;
     }
 }
 

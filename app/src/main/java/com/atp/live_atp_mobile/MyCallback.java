@@ -13,6 +13,8 @@ public abstract class MyCallback {
     }
     void onCallbackMatch(boolean equipe, int idTableau, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
     }
+    void onCallbackVerifyMatch(boolean matchValid, String idRencontre, String user) {
+    }
     void onCallbackStateTournament(String nameTour) {
     }
     void onCallbackBoard(int idCategory) {
