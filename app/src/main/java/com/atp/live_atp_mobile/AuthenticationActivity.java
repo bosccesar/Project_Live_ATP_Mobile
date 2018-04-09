@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by cesar on 27/02/2018.
@@ -28,7 +27,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     public static final String RECUPBDD = "RecupBdd";
     public static final String Tournament = "tournament";
     public static final String User = "user";
-    public static final String IdRencontre = "IdRencontre";
+    public static final String IdRencontre = "idRencontre";
 
     public static String login;
     public static String password;
@@ -98,25 +97,22 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         userBDD.setMyCallback(new MyCallback() {
             @Override
             public void onCallbackUser(int idRencontre, String user, String passwordUser) {
-                if (login.equals("admin")){ //Si le login qui a ete renseigné correspond à celui de la BDD ou si on lance l'application en mode admin
-                    Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
-                    startActivity(intent);
-                }else if (login.equals(user)){
-                    userBDD.loadVerifyMatchFromFirebase(String.valueOf(idRencontre), user);
-                }
+                userBDD.loadVerifyMatchFromFirebase(String.valueOf(idRencontre), user);
+            }
+            @Override
+            public void onCallbackUserAdmin() {
+                Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
+                startActivity(intent);
             }
             @Override
             public void onCallbackVerifyMatch(boolean matchValid, String idRencontre, String user) {
                 if (matchValid) {
+                    //cptMatch = cptMatch + 1;
                     editor.putString(User, user); //Sauvegarde du user afin de recuperer les joueurs des rencontres qui lui sont assignés pour les afficher sur l'activityService
                     editor.putString(IdRencontre, String.valueOf(idRencontre)); //Sauvegarde de l'id de la rencontre user afin de recuperer le tour du tournoi pour l'afficher sur l'activityService
                     editor.apply();
                     Intent intent = new Intent(AuthenticationActivity.this, ServiceActivity.class);
                     startActivity(intent);
-                }else {
-                    editLogin.setText("");
-                    editPassword.setText("");
-                    Toast.makeText(AuthenticationActivity.this, "Vous n'avez aucune rencontre de prévu aujourd'hui " + login + ". Veuillez réessayer 10 minutes avant la prochaine rencontre qui vous a été attribuée pour vous re-logger", Toast.LENGTH_LONG).show();
                 }
             }
         });

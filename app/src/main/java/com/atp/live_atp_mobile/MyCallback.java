@@ -11,6 +11,8 @@ public abstract class MyCallback {
     }
     void onCallbackUser(int idRencontre, String user, String passwordUser) {
     }
+    void onCallbackUserAdmin() {
+    }
     void onCallbackMatch(boolean equipe, int idTableau, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
     }
     void onCallbackVerifyMatch(boolean matchValid, String idRencontre, String user) {

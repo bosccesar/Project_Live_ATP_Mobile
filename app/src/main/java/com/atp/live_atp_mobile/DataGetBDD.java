@@ -29,7 +29,6 @@ public class DataGetBDD implements Observer{
     private List<TournamentBDD> tournamentBDDList;
     private List<CountryBDD> countryBDDList;
     private static List<UserBDD> userBDDList;
-    private List<MatchBDD> matchBDDList;
     private SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat formatterHour = new SimpleDateFormat("HH:mm");
     private Date dateDebut;
@@ -49,6 +48,7 @@ public class DataGetBDD implements Observer{
     private static MyCallback mMyCallback;
     private static String resultNameTournamentBdd;
     private static String resultDateTournamentBdd;
+    private int cptMatch;
 
 
     DataGetBDD(Context context) {
@@ -139,11 +139,21 @@ public class DataGetBDD implements Observer{
                         UserBDD user;
                         userBDDList = new ArrayList<>();
                         for (DataSnapshot getSnapshot : iterable) {
+                            String key = getSnapshot.getKey();
                             user = getSnapshot.getValue(UserBDD.class);
                             userBDDList.add(user);
                             if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
-                                addListMatch();
-                                mMyCallback.onCallbackUser(user.idRencontre, user.username, user.password); //Retouner la liste de rencontre associé à l'arbitre
+                                Iterable<DataSnapshot> iterableRencontre = dataSnapshot.child(key).child("rencontre").getChildren(); //Recuperation de l'ensemble des rencontre
+                                UserTabMatchBDD matchUser;
+                                for (DataSnapshot getSnapshotRencontre : iterableRencontre) {
+                                    matchUser = getSnapshotRencontre.getValue(UserTabMatchBDD.class);
+                                    mMyCallback.onCallbackUser(matchUser.idRencontre, user.username, user.password);
+                                }
+//                                if (AuthenticationActivity.cptMatch == 0){
+//                                    AuthenticationActivity.editLogin.setText("");
+//                                    AuthenticationActivity.editPassword.setText("");
+//                                    Toast.makeText(context, "Vous n'avez aucune rencontre de prévu aujourd'hui " + AuthenticationActivity.login + ". Veuillez réessayer 10 minutes avant la prochaine rencontre qui vous a été attribuée pour vous re-logger", Toast.LENGTH_LONG).show();
+//                                }
                             }else {
                                     AuthenticationActivity.editLogin.setText("");
                                     AuthenticationActivity.editPassword.setText("");
@@ -151,7 +161,7 @@ public class DataGetBDD implements Observer{
                             }
                         }
                     }else { //Si on se renseigne en mode admin
-                        mMyCallback.onCallbackUser(0, "admin", "admin");
+                        mMyCallback.onCallbackUserAdmin();
                     }
                 }
             }
@@ -185,15 +195,15 @@ public class DataGetBDD implements Observer{
     public void loadVerifyMatchFromFirebase(final String idRencontre, final String user) { //Vérifie si un match attribué à un arbitre est disponible en fonction de la date, de l'heure et si le match n'est pas fini (pas encore joué). On retourne alors l'idRencontre
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        //int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        //int minute = calendar.get(Calendar.MINUTE);
         //int day = calendar.get(Calendar.DAY_OF_MONTH);
         //int month = calendar.get(Calendar.MONTH) + 1; //Les mois vont de 0 à 11 (janvier à decembre) donc on incremente le mois de 1
         int year = calendar.get(Calendar.YEAR);
 
         //Donnees de test
-        //int hour = 18;
-        //int minute = 0;
+        int hour = 17;
+        int minute = 55;
         int day = 9;
         int month = 9;
 
@@ -493,11 +503,6 @@ public class DataGetBDD implements Observer{
         latitude = ((Gps) observable).getLatitude();
         longitude = ((Gps) observable).getLongitude();
         loadModelTournamentFromFirebase();
-    }
-
-    private List<MatchBDD> addListMatch(){
-        matchBDDList = new ArrayList<>();
-        return matchBDDList;
     }
 }
 
