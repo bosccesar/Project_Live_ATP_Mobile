@@ -48,7 +48,6 @@ public class DataGetBDD implements Observer{
     private static MyCallback mMyCallback;
     private static String resultNameTournamentBdd;
     private static String resultDateTournamentBdd;
-    private int cptMatch;
 
 
     DataGetBDD(Context context) {
