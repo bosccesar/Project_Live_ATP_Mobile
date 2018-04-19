@@ -1,6 +1,8 @@
 package com.atp.live_atp_mobile;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.provider.ContactsContract;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -143,9 +145,9 @@ public class DataGetBDD implements Observer{
                             userBDDList.add(user);
                             if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
                                 Iterable<DataSnapshot> iterableRencontre = dataSnapshot.child(key).child("rencontre").getChildren(); //Recuperation de l'ensemble des rencontre
-                                UserTabMatchBDD matchUser;
+                                UserBDD matchUser;
                                 for (DataSnapshot getSnapshotRencontre : iterableRencontre) {
-                                    matchUser = getSnapshotRencontre.getValue(UserTabMatchBDD.class);
+                                    matchUser = getSnapshotRencontre.getValue(UserBDD.class);
                                     mMyCallback.onCallbackUser(matchUser.idRencontre, user.username, user.password);
                                 }
 //                                if (AuthenticationActivity.cptMatch == 0){

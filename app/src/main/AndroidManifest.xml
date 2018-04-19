@@ -47,7 +47,6 @@
 
         <activity android:name=".CloseAppActivity" >
         </activity>
-        <activity android:name=".Gps" />
     </application>
 
 </manifest>

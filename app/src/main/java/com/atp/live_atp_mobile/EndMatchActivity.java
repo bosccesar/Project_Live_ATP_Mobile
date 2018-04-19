@@ -18,6 +18,8 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
     private TextView tvScoreLost;
     private Button buttonMatchEnd;
 
+    private String idRencontre;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,8 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
         this.tvScoreLost = (TextView) findViewById(R.id.textViewPlayerLost);
         this.buttonMatchEnd = (Button) findViewById(R.id.buttonEndMatch);
 
+        this.idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
+
         fillTextView();
 
         buttonMatchEnd.setOnClickListener(this);
@@ -36,6 +40,10 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == buttonMatchEnd){
+            String winner = MainActivity.sharedpreferencesMainActivity.getString(MainActivity.IdPlayerWin, null);
+            String looser = MainActivity.sharedpreferencesMainActivity.getString(MainActivity.IdPlayerLoose, null);
+            DataPostBDD postMatch = new DataPostBDD(EndMatchActivity.this);
+            postMatch.postEndMatch(idRencontre, winner, looser);
             Intent intent = new Intent(EndMatchActivity.this, AuthenticationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();

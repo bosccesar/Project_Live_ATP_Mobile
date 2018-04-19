@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final String PLAYERSWINLOST = "PlayersWinLost";
     public static final String PlayerWin = "playerWin";
+    public static final String IdPlayerWin = "idPlayerWin";
+    public static final String IdPlayerLoose = "idPlayerLoose";
     public static final String Player1 = "player1";
     public static final String Player2 = "player2";
     public static final String ScoreWin = "scoreWin";
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Initialisation des éléments
         //Element recupéré d'autres activity et BDD
         this.tournament = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.Tournament, null); //Récuperation du tournoi pour évaluer si c'est un tournoi du Grand Chelem
-        if (ServiceActivity.user.equals("admin")){
+        if (AuthenticationActivity.login.equals("admin")){
             this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.CategoryAdmin, null); //Récuperation de la category en mode admin
         }else {
             this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Category, null); //Récuperation de la category pour évaluer s'il y a super tie-break et 2 ou 3 set gangants
@@ -500,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         interactionButtonTrue();
         timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             public void onChronometerTick(Chronometer cArg) {
-                long t = SystemClock.elapsedRealtime() - cArg.getBase();
+                long t = SystemClock.elapsedRealtime() - cArg.getBase() - 3600000; //Le chrono démarre à 01:00:00, on lui soustrait l'heure pour démarrer à 00:00:00
                 cArg.setText(DateFormat.format("HH:mm:ss", t));
             }
         });
@@ -1218,8 +1220,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void endMatch() { //Récupérarion des joueurs gagnant et perdant pour l'activity de fin de match
         SharedPreferences.Editor editor = sharedpreferencesMainActivity.edit();
-        String strJ1=tvJ1.getText().toString();
-        String strJ2=tvJ2.getText().toString();
+        String strJ1 = tvJ1.getText().toString();
+        String strJ2 = tvJ2.getText().toString();
         String strSetTotalJ1=tvScoreSetTotalJ1.getText().toString();
         int intSetTotalJ1 = Integer.parseInt(strSetTotalJ1);
         String strSetTotalJ2=tvScoreSetTotalJ2.getText().toString();
@@ -1227,10 +1229,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (intSetTotalJ1 > intSetTotalJ2){
             editor.putString(PlayerWin, strJ1);
+            editor.putString(IdPlayerWin, ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null));
+            editor.putString(IdPlayerLoose, ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null));
             editor.putString(ScoreWin, strSetTotalJ1);
             editor.putString(ScoreLost, strSetTotalJ2);
         }else {
             editor.putString(PlayerWin, strJ2);
+            editor.putString(IdPlayerLoose, ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null));
+            editor.putString(IdPlayerWin, ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null));
             editor.putString(ScoreWin, strSetTotalJ2);
             editor.putString(ScoreLost, strSetTotalJ1);
         }

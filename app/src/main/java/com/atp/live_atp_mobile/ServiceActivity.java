@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import static com.atp.live_atp_mobile.AuthenticationActivity.IdRencontre;
+import static com.atp.live_atp_mobile.AuthenticationActivity.login;
 import static com.atp.live_atp_mobile.AuthenticationActivity.sharedpreferencesAuthentication;
 
 /**
@@ -27,9 +29,9 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
 
     public static final String PLAYERS = "Players";
     public static final String CATEGORY = "categories";
-    public static final String Player1 = "player1";
+    public static final String IdPlayer1 = "idPlayer1";
     public static final String ConcatPlayer1 = "concatPlayer1";
-    public static final String Player2 = "player2";
+    public static final String IdPlayer2 = "idPlayer2";
     public static final String ConcatPlayer2 = "concatPlayer2";
     public static final String Category = "category";
     public static final String CategoryAdmin = "categoryAdmin";
@@ -40,7 +42,6 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     public static final String Player1Team2 = "player1Team2";
     public static final String Player2Team2 = "player2Team2";
 
-    public static String user;
     public static SharedPreferences sharedpreferencesService;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +55,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
         this.submit = (ImageButton) findViewById(R.id.imageButtonSubmit);
         this.player = "";
-        user = sharedpreferencesAuthentication.getString(AuthenticationActivity.User,null);
 
-        sharedpreferencesService = getSharedPreferences(PLAYERS, Context.MODE_PRIVATE);
         sharedpreferencesService = getSharedPreferences(CATEGORY, Context.MODE_PRIVATE);
 
         //Méthodes
@@ -88,14 +87,18 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
 
             if (player.equals(ConcatPlayer1)){
                 editor.putString(ConcatPlayer1, valJ1);
+                editor.putString(IdPlayer1, sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null));
                 editor.putString(ConcatPlayer2, valJ2);
+                editor.putString(IdPlayer2, sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null));
                 editor.apply();
                 Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
                 startActivity(intent);
             }
             else if (player.equals(ConcatPlayer2)){
                 editor.putString(ConcatPlayer1, valJ2);
+                editor.putString(IdPlayer1, sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null));
                 editor.putString(ConcatPlayer2, valJ1);
+                editor.putString(IdPlayer2, sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null));
                 editor.putString(CodeJ1, sharedpreferencesService.getString(ServiceActivity.CodeJ2, null));
                 editor.putString(CodeJ2, sharedpreferencesService.getString(ServiceActivity.CodeJ1, null));
                 editor.putString(Player1Team1, sharedpreferencesService.getString(ServiceActivity.Player1Team2, null));
@@ -116,6 +119,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
 
     public void displayStateTournamentCategoryAndPlayers(){
         final SharedPreferences.Editor editor = sharedpreferencesService.edit();
+        SharedPreferences.Editor editorAdmin = sharedpreferencesAuthentication.edit();
         if (modeAdmin()){
             String resultState= "8e de finale";
             String resultCategory = "Simple messieurs";
@@ -124,7 +128,9 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             editor.putString(CategoryAdmin, resultCategory);
             editor.putString(CodeJ1, "GBR");
             editor.putString(CodeJ2, "FRA");
+            editorAdmin.putString(IdRencontre, "2");
             editor.apply();
+            editorAdmin.apply();
             tvStateTournament.setText(resultState);
             tvCategory.setText(resultCategory);
             tvJ1.setText(player1);
@@ -143,11 +149,13 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onCallbackCategory(String nameCategory) {
                     tvCategory.setText(nameCategory); //Affichage final de la categorie
+                    //A modifier : Arriver à récupérer la categorie (Sharepreference ne fonctionne pas car on n'a pas changer d'activity). Essayer d'utiliser un observer observable
                     editor.putString(Category, nameCategory);
                     editor.apply();
                 }
                 @Override
                 public void onCallbackMatch(boolean equipe, int idTableau, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
+                    //A modifier : Arriver à récupérer la categorie (Sharepreference ne fonctionne pas car on n'a pas changer d'activity). Essayer d'utiliser un observer observable
                     String category = sharedpreferencesService.getString(ServiceActivity.Category, null);
                     displayBDD.loadModelStateTournamentFromFirebase(idTour); //Appel pour récupérer le nom du tour en passant l'idTour
                     displayBDD.loadModelBoardFromFirebase(idTableau); //Appel pour récupérer le nom de la categorie en passant l'idTableau
@@ -165,7 +173,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                         tvJ1.setTextSize(28);
                     }
                     editor.putString(CodeJ1, codeNationality);
-                    editor.putString(Player1, String.valueOf(idPlayer1));
+                    editor.putString(IdPlayer1, String.valueOf(idPlayer1));
                     editor.apply();
                 }
                 @Override
@@ -176,7 +184,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                         tvJ2.setTextSize(28);
                     }
                     editor.putString(CodeJ2, codeNationality);
-                    editor.putString(Player2, String.valueOf(idPlayer2));
+                    editor.putString(IdPlayer2, String.valueOf(idPlayer2));
                     editor.apply();
                 }
                 @Override
@@ -208,9 +216,9 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
 
     private boolean modeAdmin(){
         boolean admin = false;
-        if (user.equals("admin")){
+        if (login.equals("admin")){
             admin = true;
-        }else if (!user.equals("admin")){
+        }else if (!login.equals("admin")){
             admin = false;
         }
         return admin;
