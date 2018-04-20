@@ -21,7 +21,9 @@
     <string name="cancel">X</string>
     <string name="selectionService">Sélection du service pour le premier jeu de la partie :</string>
     <string name="login">Login :</string>
+    <string name="loginHint">Login</string>
     <string name="password">Password :</string>
+    <string name="passwordHint">Password</string>
     <string name="admin">admin</string>
     <string name="submit">Submit</string>
     <string name="close">Close</string>

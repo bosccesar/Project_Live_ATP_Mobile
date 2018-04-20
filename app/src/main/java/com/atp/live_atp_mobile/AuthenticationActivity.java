@@ -70,8 +70,8 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
 
     public void getGps(DataGetBDD dataGetBDD){
         Gps gps = new Gps(AuthenticationActivity.this, AuthenticationActivity.this);
-        gps.observers.add(dataGetBDD);
         gps.startGMS();
+        gps.observers.add(dataGetBDD);
     }
 
     public void displayTournament(){
@@ -80,11 +80,20 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
         tournament.setMyCallback(new MyCallback() {
             @Override
             public void onCallbackTournament(String value, String dateTournament) { //Nom et date du tournoi récupérés de la bdd
-                tvTournament.setText(value);
-                tvDate.setText(dateTournament);
-                SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
-                editor.putString(Tournament, value); //Insertion du resultat de la requete dans la sauvegarde
-                editor.apply();
+                if (value.equals("No Tournament")){
+                    editLogin.setEnabled(false);
+                    editPassword.setEnabled(false);
+                    submit.setEnabled(false);
+                    SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
+                    editor.putString(Tournament, "No Tournament"); //Insertion du resultat de la requete dans la sauvegarde
+                    editor.apply();
+                }else {
+                    tvTournament.setText(value);
+                    tvDate.setText(dateTournament);
+                    SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
+                    editor.putString(Tournament, value); //Insertion du resultat de la requete dans la sauvegarde
+                    editor.apply();
+                }
             }
         });
     }

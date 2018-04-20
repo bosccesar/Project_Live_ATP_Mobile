@@ -96,6 +96,7 @@ public class DataGetBDD implements Observer{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des tournois
                 if (iterable != null) {
+                    int cptTournament = 0;
                     TournamentBDD tournament;
                     tournamentBDDList = new ArrayList<>();
                     for (DataSnapshot getSnapshot: iterable) {
@@ -116,7 +117,11 @@ public class DataGetBDD implements Observer{
                             resultDateTournamentBdd = tournament.dateDebut + " - " + tournament.dateFin; //Date du tournoi
 
                             mMyCallback.onCallbackTournament(resultNameTournamentBdd, resultDateTournamentBdd);
+                            cptTournament = 1;
                         }
+                    }
+                    if (cptTournament == 0) {
+                        mMyCallback.onCallbackTournament("No Tournament", "");
                     }
                 }
             }

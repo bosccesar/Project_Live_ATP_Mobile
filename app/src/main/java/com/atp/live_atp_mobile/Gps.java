@@ -15,7 +15,9 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 /**
  * Created by cesar on 23/03/2018.
@@ -31,6 +33,7 @@ public class Gps extends Observable implements LocationListener,
     private Activity activity;
     private GoogleApiClient googleApiClient;
     private Location myLocation;
+    private FusedLocationProviderClient mFusedLocationClient;
 
     private static final String LOG_NAME = Gps.class.getName();
 
@@ -45,7 +48,7 @@ public class Gps extends Observable implements LocationListener,
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        myLocation = null;
+        mFusedLocationClient = null;
     }
 
     @Override
@@ -57,17 +60,21 @@ public class Gps extends Observable implements LocationListener,
                 != PackageManager.PERMISSION_GRANTED)
         {
             Toast.makeText(context, "Permission Location is not granted. Please go in android parameters -> Apps -> Project_Live_ATP -> Permissions -> Turn on Location", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            myLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if(myLocation != null)
-            {
-                Toast.makeText(context, "Permission Location is granted", Toast.LENGTH_SHORT).show();
-                latitude = myLocation.getLatitude();
-                longitude = myLocation.getLongitude();
-                notification();
-            }
+        }else {
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context); //myLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            Toast.makeText(context, "Permission Location is granted", Toast.LENGTH_SHORT).show();
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            notification();
+                        }
+                    }
+                });
         }
     }
 

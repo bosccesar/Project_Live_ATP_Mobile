@@ -10,6 +10,7 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,6 +33,8 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
     private TextView breakSelect;
     private ImageButton buttonSubmit;
     private ImageButton buttonResume;
+    private String idRencontre;
+    private String chronometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
         chronoBreakVal3.setText(R.string.valBreakToiletHeal);
         chronoBreakVal4.setText(R.string.valBreakToiletHeal);
 
+        this.idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
 
         tvBreak1.setOnClickListener(this);
         tvBreak2.setOnClickListener(this);
@@ -164,7 +168,12 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
                 tvBreak6.setEnabled(false);
                 buttonSubmit.setEnabled(false);
             }else if (breakSelect == tvBreak5){ //Arret exceptionnel du match
-                //Appel post à la BDD pour incrementer la pause exceptionnelle + appel post pour inscrire le temps du match
+                this.chronometer = String.valueOf(MainActivity.timer);
+                //Appel post à la BDD pour incrementer la pause exceptionnelle + inscrire le temps du match
+                DataPostBDD postMatch = new DataPostBDD(BreakActivity.this);
+                postMatch.postEndMatch(idRencontre);
+                postMatch.postExceptionnalBreakMatch(idRencontre);
+                postMatch.postTimeMatch(idRencontre, chronometer);
                 Intent intent = new Intent(BreakActivity.this, AuthenticationActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 finish();

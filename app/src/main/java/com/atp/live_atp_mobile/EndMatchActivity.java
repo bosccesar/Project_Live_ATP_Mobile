@@ -17,8 +17,8 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
     private TextView tvScoreWin;
     private TextView tvScoreLost;
     private Button buttonMatchEnd;
-
     private String idRencontre;
+    private String chronometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,12 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
         if (v == buttonMatchEnd){
             String winner = MainActivity.sharedpreferencesMainActivity.getString(MainActivity.IdPlayerWin, null);
             String looser = MainActivity.sharedpreferencesMainActivity.getString(MainActivity.IdPlayerLoose, null);
+            this.chronometer = String.valueOf(MainActivity.timer);
+            //Appel post à la BDD pour inscrire l'id des joueurs dans statsRencontre + inscrire le temps du match
             DataPostBDD postMatch = new DataPostBDD(EndMatchActivity.this);
-            postMatch.postEndMatch(idRencontre, winner, looser);
+            postMatch.postEndMatch(idRencontre);
+            postMatch.postStatsEndMatch(idRencontre, winner, looser);
+            postMatch.postTimeMatch(idRencontre, chronometer);
             Intent intent = new Intent(EndMatchActivity.this, AuthenticationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();

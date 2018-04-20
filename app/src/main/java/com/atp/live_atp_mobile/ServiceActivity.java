@@ -148,7 +148,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 @Override
                 public void onCallbackCategory(String nameCategory) {
-                    tvCategory.setText(nameCategory); //Affichage final de la categorie
+                    tvCategory.setText(nameCategory); //Affichage final de la catégorie
                     //A modifier : Arriver à récupérer la categorie (Sharepreference ne fonctionne pas car on n'a pas changer d'activity). Essayer d'utiliser un observer observable
                     editor.putString(Category, nameCategory);
                     editor.apply();

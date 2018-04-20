@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton buttonBreak;
     private ImageButton buttonAdvertissement;
     private ImageButton buttonClose;
-    private Chronometer timer;
+    public static Chronometer timer;
 
     private boolean tieBreak;
     private boolean superTieBreak;
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Chronomètre
         this.buttonStart = (Button) findViewById(R.id.buttonStart);
-        this.timer = (Chronometer) findViewById(R.id.chronometerMain);
+        timer = (Chronometer) findViewById(R.id.chronometerMain);
 
         //Score
         this.buttonJ1 = (ImageButton) findViewById(R.id.imageButtonModifPointJ1);

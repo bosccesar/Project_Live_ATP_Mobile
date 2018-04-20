@@ -65,7 +65,7 @@
 
     <EditText
         android:id="@+id/editTextLogin"
-        android:labelFor="@id/editTextLogin"
+        android:hint="@string/loginHint"
         android:layout_width="269dp"
         android:layout_height="76dp"
         android:layout_marginStart="28dp"
@@ -79,7 +79,7 @@
 
     <EditText
         android:id="@+id/editTextPassword"
-        android:labelFor="@id/editTextPassword"
+        android:hint="@string/passwordHint"
         android:layout_width="269dp"
         android:layout_height="76dp"
         android:layout_marginStart="28dp"
