@@ -8,7 +8,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
 import java.util.Map;
 
 public class DataPostBDD {
@@ -43,8 +42,8 @@ public class DataPostBDD {
                         String key = getSnapshot.getKey();
                         statMatch = getSnapshot.getValue(StatMatchBDD.class);
                         if (idRencontre.equals(String.valueOf(statMatch.idRencontre))) {
-                            StatMatchBDD postStat = new StatMatchBDD(Integer.parseInt(idWinner), Integer.parseInt(idLooser));
-                            Map<String, Object> postValuesStat = postStat.toMap();
+                            StatMatchBDD postStat = new StatMatchBDD(idWinner, idLooser);
+                            Map<String, Object> postValuesStat = postStat.toMapWinAndLost();
                             statsMatchPostRef.child(key).updateChildren(postValuesStat); //Ajoute le vainqueur et le perdant sans supprimer les autres données
                         }
                     }
@@ -70,12 +69,12 @@ public class DataPostBDD {
                         statPlayer = getSnapshot.getValue(StatPlayerBDD.class);
                         if (idWinner.equals(String.valueOf(statPlayer.idJoueur))) {
                             statPlayer.victoire++;
-                            Map<String, Object> postValuesStat = statPlayer.toMap();
+                            Map<String, Object> postValuesStat = statPlayer.toMapInteger();
                             statsPlayerPostRef.child(key).updateChildren(postValuesStat);
                         }
                         if (idLooser.equals(String.valueOf(statPlayer.idJoueur))) {
                             statPlayer.defaite++;
-                            Map<String, Object> postValuesStat = statPlayer.toMap();
+                            Map<String, Object> postValuesStat = statPlayer.toMapInteger();
                             statsPlayerPostRef.child(key).updateChildren(postValuesStat);
                         }
                     }
@@ -135,6 +134,100 @@ public class DataPostBDD {
                             StatMatchBDD postStat = new StatMatchBDD(timeMatch);
                             Map<String, Object> postValuesStat = postStat.toMapChronometer();
                             statsMatchPostRef.child(key).updateChildren(postValuesStat); //Ajoute pauseExceptionnelle sans supprimer les autres données
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void postStatsAbortMatch(final String idRencontre, final String idAbort, final String idOtherPlayer) { //La stat abandon a true et ajoute le joueur qui abandonne, incrémente les stats des 2 joueurs (abandon, victoire et victoires)
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        //La stat abandon a true et ajoute le joueur qui abandonne dans la table statsRencontre
+        final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
+        statsMatchPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Récupération de l'ensemble des stats
+                if (iterable != null) {
+                    StatMatchBDD statMatch;
+                    for (DataSnapshot getSnapshot : iterable) {
+                        String key = getSnapshot.getKey();
+                        statMatch = getSnapshot.getValue(StatMatchBDD.class);
+                        if (idRencontre.equals(String.valueOf(statMatch.idRencontre))) {
+                            StatMatchBDD postStat = new StatMatchBDD(true, Integer.parseInt(idAbort));
+                            Map<String, Object> postValuesStat = postStat.toMapAbort();
+                            statsMatchPostRef.child(key).updateChildren(postValuesStat);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //Incrémente stats des 2 joueurs dans la table statJoueur
+        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Récupération de l'ensemble des stats
+                if (iterable != null) {
+                    StatPlayerBDD statPlayer;
+                    for (DataSnapshot getSnapshot : iterable) {
+                        String key = getSnapshot.getKey();
+                        statPlayer = getSnapshot.getValue(StatPlayerBDD.class);
+                        if (idAbort.equals(String.valueOf(statPlayer.idJoueur))) {
+                            statPlayer.abandon++;
+                            statPlayer.defaite++;
+                            Map<String, Object> postValuesStat = statPlayer.toMapInteger();
+                            statsPlayerPostRef.child(key).updateChildren(postValuesStat);
+                        }
+                        if (idOtherPlayer.equals(String.valueOf(statPlayer.idJoueur))) {
+                            statPlayer.victoire++;
+                            Map<String, Object> postValuesStat = statPlayer.toMapInteger();
+                            statsPlayerPostRef.child(key).updateChildren(postValuesStat);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }public void postStatsPauseMatch(final String idRencontre, final String natureOfPause) { //La stat abandon a true et ajoute le joueur qui abandonne, incrémente les stats des 2 joueurs (abandon, victoire et victoires)
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        //La stat abandon a true et ajoute le joueur qui abandonne dans la table statsRencontre
+        final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
+        statsMatchPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Récupération de l'ensemble des stats
+                if (iterable != null) {
+                    StatMatchBDD statMatch;
+                    for (DataSnapshot getSnapshot : iterable) {
+                        String key = getSnapshot.getKey();
+                        statMatch = getSnapshot.getValue(StatMatchBDD.class);
+                        if (idRencontre.equals(String.valueOf(statMatch.idRencontre))) {
+                            if (natureOfPause.equals("Toilettes")) {
+                                statMatch.pauseToilettes++;
+                            }else if (natureOfPause.equals("Soigneurs")) {
+                                statMatch.pauseSoigneurs++;
+                            }
+                            Map<String, Object> postValuesStat = statMatch.toMapInteger();
+                            statsMatchPostRef.child(key).updateChildren(postValuesStat);
                         }
                     }
                 }

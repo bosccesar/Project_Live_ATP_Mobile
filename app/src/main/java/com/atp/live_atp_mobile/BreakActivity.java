@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -151,6 +152,8 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
                 buttonSubmit.setEnabled(false);
             }else if (breakSelect == tvBreak3){ //Pause toilettes
                 //Appel post à la BDD pour incrementer la pause toilettes
+                DataPostBDD postMatch = new DataPostBDD(BreakActivity.this);
+                postMatch.postStatsPauseMatch(idRencontre, "Toilettes");
                 reverseChronometer(chronoBreakVal3, 180000, 50);//Millisecondes en parametre
                 tvBreak1.setEnabled(false);
                 tvBreak2.setEnabled(false);
@@ -160,6 +163,8 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
                 buttonSubmit.setEnabled(false);
             }else if (breakSelect == tvBreak4){ //Pause soigneurs
                 //Appel post à la BDD pour incrementer la pause soigneurs
+                DataPostBDD postMatch = new DataPostBDD(BreakActivity.this);
+                postMatch.postStatsPauseMatch(idRencontre, "Soigneurs");
                 reverseChronometer(chronoBreakVal4, 180000, 50);//Millisecondes en parametre
                 tvBreak1.setEnabled(false);
                 tvBreak2.setEnabled(false);
@@ -168,12 +173,14 @@ public class BreakActivity extends AppCompatActivity implements View.OnClickList
                 tvBreak6.setEnabled(false);
                 buttonSubmit.setEnabled(false);
             }else if (breakSelect == tvBreak5){ //Arret exceptionnel du match
-                this.chronometer = String.valueOf(MainActivity.timer);
+                long timer = SystemClock.elapsedRealtime() - MainActivity.timer.getBase() - 3600000;
+                this.chronometer = (String) DateFormat.format("HH:mm:ss", timer);
                 //Appel post à la BDD pour incrementer la pause exceptionnelle + inscrire le temps du match
                 DataPostBDD postMatch = new DataPostBDD(BreakActivity.this);
                 postMatch.postEndMatch(idRencontre);
                 postMatch.postExceptionnalBreakMatch(idRencontre);
                 postMatch.postTimeMatch(idRencontre, chronometer);
+
                 Intent intent = new Intent(BreakActivity.this, AuthenticationActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 finish();

@@ -47,11 +47,18 @@ public class StatPlayerBDD {
         this.defaite = loose;
     }
 
+    public StatPlayerBDD(int abort, int win, int loose) {
+        this.abandon = abort;
+        this.victoire = win;
+        this.defaite = loose;
+    }
+
     @Exclude
-    public Map<String, Object> toMap() {
+    public Map<String, Object> toMapInteger() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("victoire", victoire);
         result.put("defaite", defaite);
+        result.put("abandon", abandon);
 
         return result;
     }
