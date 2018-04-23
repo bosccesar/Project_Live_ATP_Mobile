@@ -29,12 +29,14 @@ public class StatMatchBDD {
     public int idJoueurforfait;
     public int pauseToilettes;
     public int pauseSoigneurs;
+    public int sanctionOrdre;
+    public int sanctionJeu;
 
     public StatMatchBDD() {
 
     }
 
-    public StatMatchBDD(int idJeu, int idJoueur, int idSet, boolean filet, int idPoint, boolean out, int idRencontre, int nombreService, int valeur, boolean ace, String libelle, boolean secondService, boolean serviceReussi, boolean pauseExceptionnelle, String chronometre, boolean abandon, int idJoueurforfait, int pauseToilettes, int pauseSoigneurs) {
+    public StatMatchBDD(int idJeu, int idJoueur, int idSet, boolean filet, int idPoint, boolean out, int idRencontre, int nombreService, int valeur, boolean ace, String libelle, boolean secondService, boolean serviceReussi, boolean pauseExceptionnelle, String chronometre, boolean abandon, int idJoueurforfait, int pauseToilettes, int pauseSoigneurs, int sanctionOrdre, int sanctionJeu) {
         this.idJeu = idJeu;
         this.idJoueur = idJoueur;
         this.idSet = idSet;
@@ -54,6 +56,8 @@ public class StatMatchBDD {
         this.idJoueurforfait = idJoueurforfait;
         this.pauseToilettes = pauseToilettes;
         this.pauseSoigneurs = pauseSoigneurs;
+        this.sanctionOrdre = sanctionOrdre;
+        this.sanctionJeu = sanctionJeu;
     }
 
     public StatMatchBDD(boolean pauseExceptionnelle) {
@@ -62,6 +66,10 @@ public class StatMatchBDD {
 
     public StatMatchBDD(String chronometre) {
         this.chronometre = chronometre;
+    }
+
+    public StatMatchBDD(int sanctionOrdre) {
+        this.sanctionOrdre = sanctionOrdre;
     }
 
     public StatMatchBDD(boolean abandon, int idJoueurforfait) {

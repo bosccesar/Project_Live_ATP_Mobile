@@ -19,9 +19,7 @@ public abstract class MyCallback {
     }
     void onCallbackStateTournament(String nameTour) {
     }
-    void onCallbackBoard(int idCategory) {
-    }
-    void onCallbackCategory(String nameCategory) {
+    void onCallbackCategory(boolean equipe, int idTeam1, int idTeam2, int player1, int player2, String nameCategory) {
     }
     void onCallbackPlayer1(int idPlayer1, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
     }

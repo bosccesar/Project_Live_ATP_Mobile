@@ -149,7 +149,7 @@ public class DataGetBDD implements Observer{
                             user = getSnapshot.getValue(UserBDD.class);
                             userBDDList.add(user);
                             if (AuthenticationActivity.login.equals(user.username) && AuthenticationActivity.password.equals(user.password)) { //Si le login et password renseignes sont les bons en BDD
-                                Iterable<DataSnapshot> iterableRencontre = dataSnapshot.child(key).child("rencontre").getChildren(); //Recuperation de l'ensemble des rencontre
+                                Iterable<DataSnapshot> iterableRencontre = dataSnapshot.child(key).child("rencontre").getChildren(); //Recuperation de l'ensemble des rencontres
                                 UserBDD matchUser;
                                 for (DataSnapshot getSnapshotRencontre : iterableRencontre) {
                                     matchUser = getSnapshotRencontre.getValue(UserBDD.class);
@@ -187,7 +187,7 @@ public class DataGetBDD implements Observer{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 MatchBDD matchBDD = dataSnapshot.getValue(MatchBDD.class);
                 if (matchBDD != null) {
-                    mMyCallback.onCallbackMatch(matchBDD.equipe, matchBDD.idTableau, matchBDD.idTour, matchBDD.idJoueur1, matchBDD.idJoueur2, matchBDD.idEquipe1, matchBDD.idEquipe2);
+                    mMyCallback.onCallbackMatch(matchBDD.equipe, matchBDD.idCategorie, matchBDD.idTour, matchBDD.idJoueur1, matchBDD.idJoueur2, matchBDD.idEquipe1, matchBDD.idEquipe2);
                 }
             }
 
@@ -274,34 +274,15 @@ public class DataGetBDD implements Observer{
         });
     }
 
-    public void loadModelBoardFromFirebase(int id) { //Appel get du tableau du tournoi en fonction du tableau de la rencontre
+    public void loadModelCategoryFromFirebase(final boolean equipe, final int idTeam1, final int idTeam2, final int player1, final int player2, int idCategory) { //Appel get de la categorie en fonction de la categorie du tableau
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference boardRef = database.getReference("tableau").child(String.valueOf(id)); //Selectionne la table tableau pour récuperer l'idCategorie en fonction de l'idTableau récupéré
-        boardRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                BoardBDD boardBDD = dataSnapshot.getValue(BoardBDD.class);
-                if (boardBDD != null) {
-                    mMyCallback.onCallbackBoard(boardBDD.idCategorie);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void loadModelCategoryFromFirebase(int id) { //Appel get de la categorie en fonction de la categorie du tableau
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference categoryRef = database.getReference("categorie").child(String.valueOf(id)); //Selectionne la table category pour récuperer le nom de la categorie en fonction de l'idCategorie récupéré
+        DatabaseReference categoryRef = database.getReference("categorie").child(String.valueOf(idCategory)); //Selectionne la table category pour récuperer le nom de la categorie en fonction de l'idCategorie récupéré
         categoryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 CategoryBDD categoryBDD = dataSnapshot.getValue(CategoryBDD.class);
                 if (categoryBDD != null) {
-                    mMyCallback.onCallbackCategory(categoryBDD.nom);
+                    mMyCallback.onCallbackCategory(equipe, idTeam1, idTeam2, player1, player2, categoryBDD.nom);
                 }
             }
 

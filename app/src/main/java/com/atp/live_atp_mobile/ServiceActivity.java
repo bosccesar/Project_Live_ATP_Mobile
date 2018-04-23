@@ -143,27 +143,20 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                     tvStateTournament.setText(nameTour); //Affichage final du tour
                 }
                 @Override
-                public void onCallbackBoard(int idCategory) {
-                    displayBDD.loadModelCategoryFromFirebase(idCategory);
-                }
-                @Override
-                public void onCallbackCategory(String nameCategory) {
+                public void onCallbackCategory(boolean equipe, int idTeam1, int idTeam2, int player1, int player2, String nameCategory) {
                     tvCategory.setText(nameCategory); //Affichage final de la catégorie
-                    //A modifier : Arriver à récupérer la categorie (Sharepreference ne fonctionne pas car on n'a pas changer d'activity). Essayer d'utiliser un observer observable
                     editor.putString(Category, nameCategory);
                     editor.apply();
+                    if (equipe) {
+                        displayBDD.loadModelTeamFromFirebase(idTeam1, idTeam2, nameCategory); //Appel pour récupérer la team en passant leur idTeam et la categorie
+                    }else {
+                        displayBDD.loadModelPlayersFromFirebase(player1, player2, nameCategory); //Appel pour récupérer les joueurs en passant leur id et la categorie
+                    }
                 }
                 @Override
-                public void onCallbackMatch(boolean equipe, int idTableau, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
-                    //A modifier : Arriver à récupérer la categorie (Sharepreference ne fonctionne pas car on n'a pas changer d'activity). Essayer d'utiliser un observer observable
-                    String category = sharedpreferencesService.getString(ServiceActivity.Category, null);
+                public void onCallbackMatch(boolean equipe, int idCategory, int idTour, int player1, int player2, int idTeam1, int idTeam2) {
                     displayBDD.loadModelStateTournamentFromFirebase(idTour); //Appel pour récupérer le nom du tour en passant l'idTour
-                    displayBDD.loadModelBoardFromFirebase(idTableau); //Appel pour récupérer le nom de la categorie en passant l'idTableau
-                    if (equipe) {
-                        displayBDD.loadModelTeamFromFirebase(idTeam1, idTeam2, category); //Appel pour récupérer la team en passant leur idTeam et la categorie
-                    }else {
-                        displayBDD.loadModelPlayersFromFirebase(player1, player2, category); //Appel pour récupérer les joueurs en passant leur id et la categorie
-                    }
+                    displayBDD.loadModelCategoryFromFirebase(equipe, idTeam1, idTeam2, player1, player2, idCategory); //Appel pour récupérer le nom de la categorie
                 }
                 @Override
                 public void onCallbackPlayer1(int idPlayer1, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
