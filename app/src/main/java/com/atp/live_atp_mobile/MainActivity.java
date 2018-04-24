@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton buttonBreak;
     private ImageButton buttonAdvertissement;
     private ImageButton buttonClose;
+    private String valJ1;
+    private String valJ2;
+    private String idRencontre;
     public static Chronometer timer;
 
     private boolean tieBreak;
@@ -229,6 +232,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Interaction impossible sur les boutons
         interactionButtonFalse();
+
+        this.idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
+        this.valJ1 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null);
+        this.valJ2 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null);
 
         //Activation du click de chaque bouton
         buttonStart.setOnClickListener(this);
@@ -580,6 +587,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttonDown.setVisibility(View.VISIBLE);
             buttonCancelDown.setVisibility(View.VISIBLE);
             interactionButtonFalse();
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            if (tvChallenge == tvChallengeJ1) {
+                postMatch.postChallengeMatch(idRencontre, valJ1);
+            }else if (tvChallenge == tvChallengeJ2) {
+                postMatch.postChallengeMatch(idRencontre, valJ2);
+            }
         }
     }
 

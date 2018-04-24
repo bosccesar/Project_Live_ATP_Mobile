@@ -336,7 +336,7 @@ public class DataPostBDD {
             }
         });
 
-        //Incrémente sanctionGame du joueur
+        //Incrémente sanctionJeu du joueur
         final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -363,7 +363,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postSanctionExclusionMatch(final String idMatch, final String idExcluded, final String idOtherPlayer) { //Inscrit dans la statsRencontre à sanctionJeu l'id du joueur et incrémente sanctionJeu du joueur
+    public void postSanctionExclusionMatch(final String idMatch, final String idExcluded, final String idOtherPlayer) { //Inscrit dans la statsRencontre à sanctionExclusion l'id du joueur et incrémente exclusion du joueur
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         //La stat abandon a true et ajoute le joueur qui abandonne dans la table statsRencontre
@@ -413,6 +413,41 @@ public class DataPostBDD {
                             statPlayer.victoire++;
                             Map<String, Object> postValuesStat = statPlayer.toMapInteger();
                             statsPlayerPostRef.child(key).updateChildren(postValuesStat);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void postChallengeMatch(final String idMatch, final String idPlayer) { //Inscrit dans la statsRencontre à challenge l'id du joueur
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
+        statsMatchPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Récupération de l'ensemble des stats
+                if (iterable != null) {
+                    StatMatchBDD statMatch;
+                    for (DataSnapshot getSnapshot : iterable) {
+                        String key = getSnapshot.getKey();
+                        statMatch = getSnapshot.getValue(StatMatchBDD.class);
+                        if (idMatch.equals(String.valueOf(statMatch.idRencontre))) {
+                            Iterable<DataSnapshot> iterableChallenge = dataSnapshot.child(key).child("challenge").getChildren();
+                            long countKey = 0;
+                            for (DataSnapshot getSnapshotChallenge : iterableChallenge) {
+                                countKey = countKey + 1;
+                            }
+                            DatabaseReference challengePostRef = statsMatchPostRef.child(key).child("challenge"); //Récupération de l'ensemble des stats
+                            StatMatchBDD postStat = new StatMatchBDD(Integer.parseInt(idPlayer));
+                            Map<String, Object> postValuesStat = postStat.toMapPlayer();
+                            challengePostRef.child(String.valueOf(countKey)).updateChildren(postValuesStat);
                         }
                     }
                 }
