@@ -26,17 +26,17 @@ public class StatMatchBDD {
     public boolean pauseExceptionnelle;
     public String chronometre;
     public boolean abandon;
+    public boolean exclusion;
     public int idJoueurforfait;
+    public int idJoueurExclusion;
     public int pauseToilettes;
     public int pauseSoigneurs;
-    public int sanctionOrdre;
-    public int sanctionJeu;
 
     public StatMatchBDD() {
 
     }
 
-    public StatMatchBDD(int idJeu, int idJoueur, int idSet, boolean filet, int idPoint, boolean out, int idRencontre, int nombreService, int valeur, boolean ace, String libelle, boolean secondService, boolean serviceReussi, boolean pauseExceptionnelle, String chronometre, boolean abandon, int idJoueurforfait, int pauseToilettes, int pauseSoigneurs, int sanctionOrdre, int sanctionJeu) {
+    public StatMatchBDD(int idJeu, int idJoueur, int idSet, boolean filet, int idPoint, boolean out, int idRencontre, int nombreService, int valeur, boolean ace, String libelle, boolean secondService, boolean serviceReussi, boolean pauseExceptionnelle, String chronometre, boolean abandon, boolean exclusion, int idJoueurforfait, int idJoueurExclusion, int pauseToilettes, int pauseSoigneurs) {
         this.idJeu = idJeu;
         this.idJoueur = idJoueur;
         this.idSet = idSet;
@@ -53,11 +53,11 @@ public class StatMatchBDD {
         this.pauseExceptionnelle = pauseExceptionnelle;
         this.chronometre = chronometre;
         this.abandon = abandon;
+        this.exclusion = exclusion;
         this.idJoueurforfait = idJoueurforfait;
+        this.idJoueurExclusion = idJoueurExclusion;
         this.pauseToilettes = pauseToilettes;
         this.pauseSoigneurs = pauseSoigneurs;
-        this.sanctionOrdre = sanctionOrdre;
-        this.sanctionJeu = sanctionJeu;
     }
 
     public StatMatchBDD(boolean pauseExceptionnelle) {
@@ -68,13 +68,18 @@ public class StatMatchBDD {
         this.chronometre = chronometre;
     }
 
-    public StatMatchBDD(int sanctionOrdre) {
-        this.sanctionOrdre = sanctionOrdre;
+    public StatMatchBDD(int idJoueur) {
+        this.idJoueur = idJoueur;
     }
 
-    public StatMatchBDD(boolean abandon, int idJoueurforfait) {
-        this.abandon = abandon;
-        this.idJoueurforfait = idJoueurforfait;
+    public StatMatchBDD(boolean exclusion, boolean abandon, int idJoueur) {
+        if (exclusion) {
+            this.exclusion = exclusion;
+            this.idJoueurExclusion = idJoueur;
+        }else if (abandon) {
+            this.abandon = abandon;
+            this.idJoueurforfait = idJoueur;
+        }
     }
 
     public StatMatchBDD(String idVainqueur, String idPerdant) {
@@ -121,6 +126,23 @@ public class StatMatchBDD {
         HashMap<String, Object> result = new HashMap<>();
         result.put("abandon", abandon);
         result.put("idJoueurforfait", idJoueurforfait);
+
+        return result;
+    }
+
+    @Exclude
+    public Map<String, Object> toMapExclusion() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("exclusion", exclusion);
+        result.put("idJoueurExclusion", idJoueurExclusion);
+
+        return result;
+    }
+
+    @Exclude
+    public Map<String, Object> toMapPlayer() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("idJoueur", idJoueur);
 
         return result;
     }

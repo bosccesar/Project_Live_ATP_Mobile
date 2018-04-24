@@ -48,7 +48,9 @@ public class StatPlayerBDD {
         result.put("victoire", victoire);
         result.put("defaite", defaite);
         result.put("abandon", abandon);
+        result.put("exclusion", exclusion);
         result.put("sanctionOrdre", sanctionOrdre);
+        result.put("sanctionJeu", sanctionJeu);
 
         return result;
     }

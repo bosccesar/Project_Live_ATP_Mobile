@@ -27,7 +27,6 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     private ImageButton submit;
     private String player;
 
-    public static final String PLAYERS = "Players";
     public static final String CATEGORY = "categories";
     public static final String IdPlayer1 = "idPlayer1";
     public static final String ConcatPlayer1 = "concatPlayer1";

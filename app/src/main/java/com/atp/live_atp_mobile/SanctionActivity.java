@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,6 +26,10 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
     private TextView sanctionSelect;
     private ImageButton buttonSubmit;
     private ImageButton buttonResume;
+    private String idRencontre;
+    private String valJ1;
+    private String valJ2;
+    private String chronometer;
 
     public static final String PLAYERSANCTION= "PlayerSanction";
     public static final String PlayerSanction = "PlayerSanction";
@@ -48,6 +54,10 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
         sharedpreferencesSanction = getSharedPreferences(PLAYERSANCTION, Context.MODE_PRIVATE);
 
         fillTextView();
+
+        this.idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
+        this.valJ1 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null);
+        this.valJ2 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null);
 
         tvPlayer1.setOnClickListener(this);
         tvPlayer2.setOnClickListener(this);
@@ -97,42 +107,56 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
             tvSanction3.setBackgroundResource(R.color.MiGreen);
         }
         if (v == buttonSubmit){
+            long timer = SystemClock.elapsedRealtime() - MainActivity.timer.getBase() - 3600000;
+            this.chronometer = (String) DateFormat.format("HH:mm:ss", timer);
             if (playerSelect == tvPlayer1){
                 editor.putString(IdSanction, "IdSanction"); //Valeur par default
                 editor.apply();
-                String valJ1 = tvPlayer1.getText().toString();
                 if (sanctionSelect == tvSanction1){
-                    //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 1 au travers du string au dessus
+                    //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 1
+                    DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
+                    postMatch.postSanctionOrderMatch(idRencontre, valJ1);
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction2){
-                    //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 1 au travers du string au dessus
+                    //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 1
                     editor.putString(PlayerSanction, tvPlayer1.getText().toString()); //Recuperation du joueur pour la sanction
                     editor.putString(SanctionGame, "true");
                     editor.putString(IdSanction, "sanction2");
                     editor.apply();
+                    DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
+                    postMatch.postSanctionGameMatch(idRencontre, valJ1);
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction3){
-                    //Appel post à la BDD pour inscrire l'exclusion via l'id du joueur 1 au travers du string au dessus
-                    //Mettre à true match fini dans la BDD
+                    //Appel post à la BDD pour inscrire l'exclusion
+                    DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
+                    postMatch.postEndMatch(idRencontre);
+                    postMatch.postSanctionExclusionMatch(idRencontre, valJ1, valJ2);
+                    postMatch.postTimeMatch(idRencontre, chronometer);
                     Intent intent = new Intent(SanctionActivity.this, AuthenticationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     finish();
                     startActivity(intent);
                 }
             }else if (playerSelect == tvPlayer2){
-                String valJ2 = tvPlayer2.getText().toString();
                 if (sanctionSelect == tvSanction1){
-                    //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 2 au travers du string au dessus
+                    //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 2
+                    DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
+                    postMatch.postSanctionOrderMatch(idRencontre, valJ2);
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction2){
-                    //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 2 au travers du string au dessus
+                    //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 2
                     editor.putString(PlayerSanction, tvPlayer2.getText().toString()); //Recuperation du joueur pour la sanction
                     editor.putString(SanctionGame, "true");
                     editor.apply();
+                    DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
+                    postMatch.postSanctionGameMatch(idRencontre, valJ2);
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction3){
-                    //Appel post à la BDD pour inscrire l'exclusion via l'id du joueur 2 au travers du string au dessus
-                    //Mettre à true match fini dans la BDD
+                    //Appel post à la BDD pour inscrire l'exclusion
+                    DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
+                    postMatch.postEndMatch(idRencontre);
+                    postMatch.postSanctionExclusionMatch(idRencontre, valJ2, valJ1);
+                    postMatch.postTimeMatch(idRencontre, chronometer);
                     Intent intent = new Intent(SanctionActivity.this, AuthenticationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     finish();

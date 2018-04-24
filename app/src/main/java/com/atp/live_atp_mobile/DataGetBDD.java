@@ -1,8 +1,6 @@
 package com.atp.live_atp_mobile;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.provider.ContactsContract;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;

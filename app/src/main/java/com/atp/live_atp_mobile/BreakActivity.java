@@ -11,7 +11,6 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
