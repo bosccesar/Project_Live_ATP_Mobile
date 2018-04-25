@@ -74,25 +74,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton buttonBreak;
     private ImageButton buttonAdvertissement;
     private ImageButton buttonClose;
-    private String valJ1;
-    private String valJ2;
-    private String idRencontre;
-    public static Chronometer timer;
 
     private boolean tieBreak;
     private boolean superTieBreak;
     private boolean previousTieBreak;
     private boolean isBreak;
     private boolean finalTieBreak;
-    private boolean advertissement; //Permet de savoir si la sanctionActivity a ete appele
+    private boolean advertissement; //Permet de savoir si la sanctionActivity a ete appelé
+    private boolean twoSetWin;
+    private boolean secondServiceJ1; //Permet de savoir s'il y a eu un 2eme service pour le joueur1
+    private boolean secondServiceJ2; //Permet de savoir s'il y a eu un 2eme service pour le joueur2
     private int countNbService;
     private int numSet;
-    private boolean twoSetWin;
+    private int idSetJ1;
+    private int idSetJ2;
+    private int idGameJ1;
+    private int idGameJ2;
+    private int idPointJ1;
+    private int idPointJ2;
     private String tvPreviousScoreJ1;
     private String tvPreviousScoreJ2;
     private String firstServiceTieBreak;
     private String tournament;
     private String category;
+    private String valJ1;
+    private String valJ2;
+    private String idRencontre;
+
+    public static Chronometer timer;
 
     public static final String PLAYERSWINLOST = "PlayersWinLost";
     public static final String PlayerWin = "playerWin";
@@ -236,6 +245,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
         this.valJ1 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null);
         this.valJ2 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null);
+        this.idSetJ1 = 0;
+        this.idSetJ2 = 0;
+        this.idGameJ1 = 0;
+        this.idGameJ2 = 0;
+        this.idPointJ1 = 0;
+        this.idPointJ2 = 0;
+        this.secondServiceJ1 = false;
+        this.secondServiceJ2 = false;
 
         //Activation du click de chaque bouton
         buttonStart.setOnClickListener(this);
@@ -298,7 +315,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonJ1){
             if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
-                //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
                     onClickButtonScoreUp(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
@@ -315,7 +331,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonJ2){
             if (superTieBreak){
                 superTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
-                //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
                     onClickButtonScoreUp(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
@@ -330,10 +345,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         if (view == buttonAceJ1){
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
             if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+                postMatch.postAceMatch(idRencontre, valJ1, String.valueOf(idSetJ1), String.valueOf(idGameJ1), tvScoreJ1.getText().toString()); //
+                if (secondServiceJ1) {
+                    postMatch.postTwoServiceMatch(idRencontre, valJ1, idSetJ1, idGameJ1, idPointJ1);
+                }
                 toast(view);
-                //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
                     onClickButtonAce(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
@@ -350,10 +369,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         if (view == buttonAceJ2){
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
             if (superTieBreak){
                 superTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+                postMatch.postAceMatch(idRencontre, valJ2, String.valueOf(idSetJ2), String.valueOf(idGameJ2), tvScoreJ2.getText().toString()); //
+                if (secondServiceJ2) {
+                    postMatch.postTwoServiceMatch(idRencontre, valJ2, idSetJ2, idGameJ2, idPointJ2);
+                }
                 toast(view);
-                //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
                     onClickButtonAce(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
@@ -381,7 +404,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (superTieBreak){
                 superTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                 toast(view);
-                //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
                     onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
@@ -396,7 +418,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 toast(view);
-                //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
                     onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
@@ -411,7 +432,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (superTieBreak){
                 superTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                 toast(view);
-                //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
                     onClickButtonFaute(tvScoreJ2, tvScoreJ1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
@@ -426,7 +446,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (superTieBreak){
                 superTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 toast(view);
-                //Ajouter fenetre résumant le score et indiquant quel joueur a gagné avec bouton close pour réinitialiser l'appli
             }else {
                 if (!tieBreak) {
                     onClickButtonFaute(tvScoreJ1, tvScoreJ2, tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1, tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2);
@@ -438,19 +457,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         if (view == button2emeServiceJ1){
-            //Incrémenter dans la bdd la statistique 2eme service pour le joueur
+            secondServiceJ1 = true;
             toast(view);
         }
         if (view == button2emeServiceJ2){
-            //Incrémenter dans la bdd la statistique 2eme service pour le joueur
+            secondServiceJ2 = true;
             toast(view);
         }
         if (view == buttonLetJ1){
-            //Incrémenter dans la bdd la statistique Let pour le joueur
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postLetMatch(idRencontre, valJ1);
             toast(view);
         }
         if (view == buttonLetJ2){
-            //Incrémenter dans la bdd la statistique Let pour le joueur
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postLetMatch(idRencontre, valJ2);
             toast(view);
         }
         if (view == buttonDownJ1){
@@ -587,6 +608,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttonDown.setVisibility(View.VISIBLE);
             buttonCancelDown.setVisibility(View.VISIBLE);
             interactionButtonFalse();
+
             DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
             if (tvChallenge == tvChallengeJ1) {
                 postMatch.postChallengeMatch(idRencontre, valJ1);

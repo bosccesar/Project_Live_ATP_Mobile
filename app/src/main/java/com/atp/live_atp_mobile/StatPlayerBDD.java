@@ -14,6 +14,7 @@ public class StatPlayerBDD {
     public int debreak;
     public int defaite;
     public int exclusion;
+    public int faute;
     public int idJoueur;
     public int sanctionJeu;
     public int sanctionOrdre;
@@ -26,13 +27,14 @@ public class StatPlayerBDD {
 
     }
 
-    public StatPlayerBDD(int abandon, int ace, int breack, int debreak, int defaite, int exclusion, int idJoueur, int sanctionJeu, int sanctionOrdre, int secondService, int service, int serviceReussi, int victoire) {
+    public StatPlayerBDD(int abandon, int ace, int breack, int debreak, int defaite, int exclusion, int faute, int idJoueur, int sanctionJeu, int sanctionOrdre, int secondService, int service, int serviceReussi, int victoire) {
         this.abandon = abandon;
         this.ace = ace;
         this.breack = breack;
         this.debreak = debreak;
         this.defaite = defaite;
         this.exclusion = exclusion;
+        this.faute = faute;
         this.idJoueur = idJoueur;
         this.sanctionJeu = sanctionJeu;
         this.sanctionOrdre = sanctionOrdre;
@@ -49,8 +51,9 @@ public class StatPlayerBDD {
         result.put("defaite", defaite);
         result.put("abandon", abandon);
         result.put("exclusion", exclusion);
+        result.put("faute", faute);
         result.put("sanctionOrdre", sanctionOrdre);
-        result.put("sanctionJeu", sanctionJeu);
+        result.put("service", service);
 
         return result;
     }
