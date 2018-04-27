@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.IllegalFormatCodePointException;
 import java.util.Map;
 
 public class DataPostBDD {
@@ -495,7 +496,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postServiceMatch(final String idPlayer) { //Incrémente service du joueur
+    public void postServiceMatch(final String idPlayer, final boolean twoService, final boolean ace) { //Incrémente service du joueur
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
@@ -510,6 +511,12 @@ public class DataPostBDD {
                         statPlayer = getSnapshot.getValue(StatPlayerBDD.class);
                         if (idPlayer.equals(String.valueOf(statPlayer.idJoueur))) {
                             statPlayer.service++;
+                            if (twoService) {
+                                statPlayer.secondService++;
+                            }
+                            if (ace) {
+                                statPlayer.ace++;
+                            }
                             Map<String, Object> postValuesStat = statPlayer.toMapInteger();
                             statsPlayerPostRef.child(key).updateChildren(postValuesStat);
                         }
@@ -524,7 +531,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postTwoServiceMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final int idPoint) { //Inscrit dans la statsRencontre à secondService l'idJoueur/idSet/idGame/idPoint
+    public void postTwoServiceMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final int idPoint, boolean ace) { //Inscrit dans la statsRencontre à secondService l'idJoueur/idSet/idGame/idPoint
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
@@ -558,7 +565,7 @@ public class DataPostBDD {
             }
         });
 
-        postServiceMatch(idPlayer);
+        postServiceMatch(idPlayer, true, ace);
     }
 
     public void postAceMatch(final String idMatch, final String idPlayer, final String idSet, final String idGame, final String libelle) { //Crée un point (set/jeu/point) dans la statsRencontre et dans ce point la mettre ace/service a true et incrémente les stats ace/service dans la statsJoueur
@@ -578,10 +585,12 @@ public class DataPostBDD {
                         if (idMatch.equals(String.valueOf(statMatch.idRencontre))) {
                             Iterable<DataSnapshot> iterableSet = dataSnapshot.child(keyMatch).child("set").getChildren(); //Recuperation de l'ensemble des set
                             StatMatchBDD statMatchSet;
+                            int verifFor = 0; //Permet de déterminer si on est rentré dans le if de la boucle for pour déterminer si on ajoute un nouveau set
                             for (DataSnapshot getSnapshotSet : iterableSet) {
                                 String keySet = getSnapshot.getKey();
                                 statMatchSet = getSnapshotSet.getValue(StatMatchBDD.class);
                                 if (idSet.equals(String.valueOf(statMatchSet.idSet)) && idPlayer.equals(String.valueOf(statMatchSet.idJoueur))) {
+                                    verifFor = verifFor + 1;
                                     Iterable<DataSnapshot> iterableGame = dataSnapshot.child(keyMatch).child("set").child(keySet).child("jeu").getChildren(); //Recuperation de l'ensemble des jeux
                                     StatMatchBDD statMatchGame;
                                     for (DataSnapshot getSnapshotGame : iterableGame) {
@@ -593,13 +602,33 @@ public class DataPostBDD {
                                             for (DataSnapshot getSnapshotPoint : iterablePoint) {
                                                 countKey = countKey + 1;
                                             }
-                                            DatabaseReference PointPostRef = statsMatchPostRef.child(keyMatch).child("point");
+                                            DatabaseReference pointPostRef = statsMatchPostRef.child(keyMatch).child("set").child(keySet).child("jeu").child(keyGame).child("point");
                                             StatMatchBDD postStat = new StatMatchBDD(true, libelle, true);
                                             Map<String, Object> postValuesStat = postStat.toMapAce();
-                                            PointPostRef.child(String.valueOf(countKey)).updateChildren(postValuesStat);
+                                            pointPostRef.child(String.valueOf(countKey)).updateChildren(postValuesStat);
+                                        }else {
+
                                         }
                                     }
                                 }
+                            }
+                            if (verifFor == 0) {
+                                //Insert l'idPlayer dans le set nouvellement généré (si un id d'un set existe deja on incrémente le chiffre de l'id)
+                                Iterable<DataSnapshot> iterableNewSet = dataSnapshot.child(keyMatch).child("set").getChildren(); //Recuperation de l'ensemble des set
+                                long countKey = 0;
+                                for (DataSnapshot getSnapshotNewSet : iterableNewSet) {
+                                    countKey = countKey + 1;
+                                }
+                                DatabaseReference setPostRef = statsMatchPostRef.child(keyMatch).child("set");
+                                StatMatchBDD postStatSet = new StatMatchBDD(Integer.parseInt(idPlayer));
+                                Map<String, Object> postValuesStatSet = postStatSet.toMapPlayer();
+                                setPostRef.child(String.valueOf(countKey)).updateChildren(postValuesStatSet);
+
+                                //Insert le point dans l'arborescence du set nouvellement généré
+                                DatabaseReference PointPostRef = statsMatchPostRef.child(keyMatch).child("set").child(String.valueOf(countKey)).child("jeu").child(String.valueOf(0)).child("point");
+                                StatMatchBDD postStat = new StatMatchBDD(true, libelle, true);
+                                Map<String, Object> postValuesStat = postStat.toMapAce();
+                                PointPostRef.child(String.valueOf(0)).updateChildren(postValuesStat);
                             }
                         }
                     }
@@ -612,31 +641,6 @@ public class DataPostBDD {
             }
         });
 
-        //Incrément ace et service du joueur
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
-        statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Récupération de l'ensemble des stats
-                if (iterable != null) {
-                    StatPlayerBDD statPlayer;
-                    for (DataSnapshot getSnapshot : iterable) {
-                        String key = getSnapshot.getKey();
-                        statPlayer = getSnapshot.getValue(StatPlayerBDD.class);
-                        if (idPlayer.equals(String.valueOf(statPlayer.idJoueur))) {
-                            statPlayer.ace++;
-                            statPlayer.service++;
-                            Map<String, Object> postValuesStat = statPlayer.toMapInteger();
-                            statsPlayerPostRef.child(key).updateChildren(postValuesStat);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        postServiceMatch(idPlayer, false, true);
     }
 }

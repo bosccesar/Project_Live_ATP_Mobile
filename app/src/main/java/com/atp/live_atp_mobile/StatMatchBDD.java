@@ -16,10 +16,8 @@ public class StatMatchBDD {
     public boolean out;
     public int idRencontre;
     public int nombreService;
-    public int valeur;
     public boolean ace;
     public String libelle;
-    public boolean secondService;
     public boolean service;
     public int idVainqueur;
     public int idPerdant;
@@ -36,7 +34,7 @@ public class StatMatchBDD {
 
     }
 
-    public StatMatchBDD(int idJeu, int idJoueur, int idSet, boolean filet, int idPoint, boolean out, int idRencontre, int nombreService, int valeur, boolean ace, String libelle, boolean secondService, boolean service, boolean pauseExceptionnelle, String chronometre, boolean abandon, boolean exclusion, int idJoueurforfait, int idJoueurExclusion, int pauseToilettes, int pauseSoigneurs) {
+    public StatMatchBDD(int idJeu, int idJoueur, int idSet, boolean filet, int idPoint, boolean out, int idRencontre, int nombreService, boolean ace, String libelle, boolean service, boolean pauseExceptionnelle, String chronometre, boolean abandon, boolean exclusion, int idJoueurforfait, int idJoueurExclusion, int pauseToilettes, int pauseSoigneurs) {
         this.idJeu = idJeu;
         this.idJoueur = idJoueur;
         this.idSet = idSet;
@@ -45,10 +43,8 @@ public class StatMatchBDD {
         this.out = out;
         this.idRencontre = idRencontre;
         this.nombreService = nombreService;
-        this.valeur = valeur;
         this.ace = ace;
         this.libelle = libelle;
-        this.secondService = secondService;
         this.service = service;
         this.pauseExceptionnelle = pauseExceptionnelle;
         this.chronometre = chronometre;
@@ -164,6 +160,9 @@ public class StatMatchBDD {
     public Map<String, Object> toMapTwoService() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("idJoueur", idJoueur);
+        result.put("idSet", idSet);
+        result.put("idJeu", idJeu);
+        result.put("idPoint", idPoint);
 
         return result;
     }

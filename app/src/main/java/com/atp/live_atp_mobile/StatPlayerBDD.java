@@ -54,6 +54,8 @@ public class StatPlayerBDD {
         result.put("faute", faute);
         result.put("sanctionOrdre", sanctionOrdre);
         result.put("service", service);
+        result.put("secondService", secondService);
+        result.put("ace", ace);
 
         return result;
     }
