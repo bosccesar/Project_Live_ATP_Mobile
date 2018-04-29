@@ -293,6 +293,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Démarrage du match
         if (view == buttonStart){
             startChronometer();
+            tvSet1J1.setTextColor(-16777216); //Met le texte en transparent
+            tvSet1J2.setTextColor(-16777216); //Met le texte en transparent
         }
         if (view == buttonBreak){
             SharedPreferences.Editor editor = sharedpreferencesMainActivity.edit();
