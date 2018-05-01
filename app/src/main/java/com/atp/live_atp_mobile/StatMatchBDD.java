@@ -84,6 +84,28 @@ public class StatMatchBDD {
         }
     }
 
+    public StatMatchBDD(int idJoueur, int idSet, int idGame, int idPoint, boolean filet, boolean out) {
+        if (filet) {
+            this.filet = filet;
+            this.idJoueur = idJoueur;
+            this.idSet = idSet;
+            this.idJeu = idGame;
+            this.idPoint = idPoint;
+        }else if (out) {
+            this.out = out;
+            this.idJoueur = idJoueur;
+            this.idSet = idSet;
+            this.idJeu = idGame;
+            this.idPoint = idPoint;
+        }
+    }
+
+    public StatMatchBDD(int idJoueur, int idSet, int idGame) {
+        this.idJoueur = idJoueur;
+        this.idSet = idSet;
+        this.idJeu = idGame;
+    }
+
     public StatMatchBDD(int idJoueur, int idSet, int idGame, int idPoint) {
         this.idJoueur = idJoueur;
         this.idSet = idSet;
@@ -101,6 +123,7 @@ public class StatMatchBDD {
         HashMap<String, Object> result = new HashMap<>();
         result.put("pauseToilettes", pauseToilettes);
         result.put("pauseSoigneurs", pauseSoigneurs);
+        result.put("nombreService   ", nombreService);
 
         return result;
     }
@@ -157,6 +180,16 @@ public class StatMatchBDD {
     }
 
     @Exclude
+    public Map<String, Object> toMapDetailsOfPoint() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("idJoueur", idJoueur);
+        result.put("idSet", idSet);
+        result.put("idJeu", idJeu);
+
+        return result;
+    }
+
+    @Exclude
     public Map<String, Object> toMapTwoService() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("idJoueur", idJoueur);
@@ -173,6 +206,30 @@ public class StatMatchBDD {
         result.put("ace", ace);
         result.put("libelle", libelle);
         result.put("service", service);
+
+        return result;
+    }
+
+    @Exclude
+    public Map<String, Object> toMapNet() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("filet", filet);
+        result.put("idJoueur", idJoueur);
+        result.put("idSet", idSet);
+        result.put("idJeu", idJeu);
+        result.put("idPoint", idPoint);
+
+        return result;
+    }
+
+    @Exclude
+    public Map<String, Object> toMapOut() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("out", out);
+        result.put("idJoueur", idJoueur);
+        result.put("idSet", idSet);
+        result.put("idJeu", idJeu);
+        result.put("idPoint", idPoint);
 
         return result;
     }

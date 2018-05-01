@@ -10,7 +10,8 @@ import java.util.Map;
 public class StatPlayerBDD {
     public int abandon;
     public int ace;
-    public int breack;
+    public int avantage;
+    public int breack; //Avec un "c" car "break" est un mot-clé de java android
     public int debreak;
     public int defaite;
     public int exclusion;
@@ -27,9 +28,10 @@ public class StatPlayerBDD {
 
     }
 
-    public StatPlayerBDD(int abandon, int ace, int breack, int debreak, int defaite, int exclusion, int faute, int idJoueur, int sanctionJeu, int sanctionOrdre, int secondService, int service, int serviceReussi, int victoire) {
+    public StatPlayerBDD(int abandon, int ace, int avantage, int breack, int debreak, int defaite, int exclusion, int faute, int idJoueur, int sanctionJeu, int sanctionOrdre, int secondService, int service, int serviceReussi, int victoire) {
         this.abandon = abandon;
         this.ace = ace;
+        this.avantage = avantage;
         this.breack = breack;
         this.debreak = debreak;
         this.defaite = defaite;
@@ -56,6 +58,9 @@ public class StatPlayerBDD {
         result.put("service", service);
         result.put("secondService", secondService);
         result.put("ace", ace);
+        result.put("avantage", avantage);
+        result.put("breack", breack);
+        result.put("debreak", debreak);
 
         return result;
     }

@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean twoSetWin;
     private boolean secondServiceJ1; //Permet de savoir s'il y a eu un 2eme service pour le joueur1
     private boolean secondServiceJ2; //Permet de savoir s'il y a eu un 2eme service pour le joueur2
+    private boolean serviceJ1;
+    private boolean serviceJ2;
     private int countNbService;
     private int numSet;
     private int idPointJ1;
@@ -329,6 +331,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     onClickButtonScoreUpTieBreak(tvScoreJ1, tvScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
                 }
             }
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postScoreMatch(idRencontre, valJ1, String.valueOf(idSetJ1), String.valueOf(idGameJ1), tvScoreJ1.getText().toString(), false, serviceJ1); //Point normal donc ace a false et service dépend du tour du joueur à servir
+            if (secondServiceJ1) {
+                postMatch.postTwoServiceMatch(idRencontre, valJ1, idSetJ1, idGameJ1, idPointJ1);
+                secondServiceJ1 = false;
+                secondServiceJ2 = false;
+            }
+            if (serviceJ1) {
+                postMatch.postServiceMatch(idRencontre, valJ1, false, false);
+            }
         }
         if (view == buttonJ2){
             if (superTieBreak){
@@ -344,6 +356,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                 }
+            }
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postScoreMatch(idRencontre, valJ2, String.valueOf(idSetJ2), String.valueOf(idGameJ2), tvScoreJ2.getText().toString(), false, serviceJ2); //Point normal donc ace a false et service dépend du tour du joueur à servir
+            if (secondServiceJ2) {
+                postMatch.postTwoServiceMatch(idRencontre, valJ2, idSetJ2, idGameJ2, idPointJ2);
+                secondServiceJ1 = false;
+                secondServiceJ2 = false;
+            }
+            if (serviceJ2) {
+                postMatch.postServiceMatch(idRencontre, valJ2, false, false);
             }
         }
         if (view == buttonAceJ1){
@@ -365,13 +387,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
             DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postScoreMatch(idRencontre, valJ1, String.valueOf(idSetJ1), String.valueOf(idGameJ1), tvScoreJ1.getText().toString(), true, true); //Ace et service a true car le point marqué est un ace donc le service est par défaut a true
             if (secondServiceJ1) {
-                postMatch.postTwoServiceMatch(idRencontre, valJ1, idSetJ1, idGameJ1, idPointJ1, true);
+                postMatch.postTwoServiceMatch(idRencontre, valJ1, idSetJ1, idGameJ1, idPointJ1);
                 secondServiceJ1 = false;
                 secondServiceJ2 = false;
-            }else {
-                postMatch.postAceMatch(idRencontre, valJ1, String.valueOf(idSetJ1), String.valueOf(idGameJ1), tvScoreJ1.getText().toString());
             }
+            postMatch.postServiceMatch(idRencontre, valJ1, false, true);
         }
         if (view == buttonAceJ2){
             if (superTieBreak){
@@ -392,13 +414,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
             DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postScoreMatch(idRencontre, valJ2, String.valueOf(idSetJ2), String.valueOf(idGameJ2), tvScoreJ2.getText().toString(), true, true); //Ace et service a true car le point marqué est un ace donc le service est par défaut a true
             if (secondServiceJ2) {
-                postMatch.postTwoServiceMatch(idRencontre, valJ2, idSetJ2, idGameJ2, idPointJ2, true);
+                postMatch.postTwoServiceMatch(idRencontre, valJ2, idSetJ2, idGameJ2, idPointJ2);
                 secondServiceJ1 = false;
                 secondServiceJ2 = false;
-            }else {
-                postMatch.postAceMatch(idRencontre, valJ2, String.valueOf(idSetJ2), String.valueOf(idGameJ2), tvScoreJ2.getText().toString());
             }
+            postMatch.postServiceMatch(idRencontre, valJ2, false, true);
         }
         //Challenge
         if (view == buttonChallengeJ1){
@@ -420,6 +442,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     onClickButtonScoreUpTieBreak(tvScoreJ2, tvScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
                     toast(view);
                 }
+            }
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postScoreMatch(idRencontre, valJ2, String.valueOf(idSetJ2), String.valueOf(idGameJ2), tvScoreJ2.getText().toString(), false, serviceJ2); //Point normal donc ace a false et service dépend du tour du joueur à servir
+            if (secondServiceJ2) {
+                postMatch.postTwoServiceMatch(idRencontre, valJ2, idSetJ2, idGameJ2, idPointJ2);
+            }
+            secondServiceJ1 = false;
+            secondServiceJ2 = false;
+            if (serviceJ2) {
+                postMatch.postServiceMatch(idRencontre, valJ2, false, false);
             }
         }
         if (view == buttonOutJ2){
@@ -466,10 +498,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view == button2emeServiceJ1){
             secondServiceJ1 = true;
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postServiceMatch(idRencontre, valJ1, true, false);
             toast(view);
         }
         if (view == button2emeServiceJ2){
             secondServiceJ2 = true;
+            DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+            postMatch.postServiceMatch(idRencontre, valJ2, true, false);
             toast(view);
         }
         if (view == buttonLetJ1){
@@ -572,13 +608,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (tvScoreJ2.getText().toString().equals("15") && tvSet1J2.getText().toString().equals("0")){
                     buttonChallengeJ1.setEnabled(true);
                 }
+                if (tvScore == tvScoreJ1) {
+                    idPointJ1 = idPointJ1 + 1;
+                }else if (tvScore == tvScoreJ2) {
+                    idPointJ2 = idPointJ2 + 1;
+                }
             }else if (tabPoint[pos] == presentIntVal && pos == 3){
                 if (presentIntValAdv == -1){ //Le joueur met un point alors que l'adversaire avait un avantage -> remise à 40 pour les 2
                     tvScore.setText(String.valueOf(presentIntVal)); //Remise à 40 pour le joueur
                     tvScoreAdv.setText(String.valueOf(presentIntVal)); //Remise à 40 pour l'adversaire en utilisant la valeur du joueur
+                    if (tvScore == tvScoreJ1) {
+                        idPointJ1 = idPointJ1 + 1;
+                    }else if (tvScore == tvScoreJ2) {
+                        idPointJ2 = idPointJ2 + 1;
+                    }
                 }else if(presentIntValAdv == 40){ //Le joueur met un point alors qu'ils sont à égalité -> avantage pour lui
                     tvScore.setText(R.string.advantage); //Avantage pour le joueur
-                    //Incrémenter dans la bdd la statistique avantage pour le joueur
+                    DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
+                    if (tvScore == tvScoreJ1) {
+                        postMatch.postAvantageBreakOrDebreakMatch(idRencontre, valJ1, idSetJ1, idGameJ1, "avantage");
+                    }else if (tvScore == tvScoreJ2) {
+                        postMatch.postAvantageBreakOrDebreakMatch(idRencontre, valJ2, idSetJ2, idGameJ2, "avantage");
+                    }
+                    if (tvScore == tvScoreJ1) {
+                        idPointJ1 = idPointJ1 + 1;
+                    }else if (tvScore == tvScoreJ2) {
+                        idPointJ2 = idPointJ2 + 1;
+                    }
                 }else{ //Le joueur adverse n'a ni 40 ni avantage (0 ou 15 ou 30) donc le joueur gagne le point
                     tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score précédent
                     tvPreviousScoreJ2 = tvScoreJ2.getText().toString(); //Garde en mémoire le score précédent
@@ -590,6 +646,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }else if (tvScore == tvScoreJ2) {
                         idGameJ2 = idGameJ2 + 1;
                     }
+                    idPointJ1 = 0;
+                    idPointJ2 = 0;
                     onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
                 }
             }else if (tabPoint[pos] == presentIntVal && pos == 4){
@@ -602,6 +660,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }else if (tvScore == tvScoreJ2) {
                     idGameJ2 = idGameJ2 + 1;
                 }
+                idPointJ1 = 0;
+                idPointJ2 = 0;
                 onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
             }
         }
@@ -613,8 +673,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onClickButtonFaute(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Clique sur Ace pour ajouter des points sur le service sans touche de la part de l'adversaire
         onClickButtonScoreUp(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv);
-        //Incrémentation des out dans la table Statistique de la base de données associé à l'Id du joueur correspondant
-        //Incrémentation des filet dans la table Statistique de la base de données associé à l'Id du joueur correspondant
     }
 
     public void onClickButtonIncrementationChallenge(TextView tvChallenge, Button buttonDown, Button buttonCancelDown){ //Compte le nombre de challenge effectué par joueur. 3 challenge max par joueur
@@ -930,6 +988,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             button2emeServiceJ2.setVisibility(View.VISIBLE);
             buttonLetJ1.setVisibility(View.INVISIBLE);
             buttonLetJ2.setVisibility(View.VISIBLE);
+            serviceJ1 = false;
+            serviceJ2 = true;
         }else if (ballServiceJ1.getVisibility() == View.INVISIBLE){
             firstServiceTieBreak = "J1";
             ballServiceJ1.setVisibility(View.VISIBLE);
@@ -938,6 +998,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             button2emeServiceJ2.setVisibility(View.INVISIBLE);
             buttonLetJ1.setVisibility(View.VISIBLE);
             buttonLetJ2.setVisibility(View.INVISIBLE);
+            serviceJ1 = true;
+            serviceJ2 = false;
         }
     }
 
@@ -950,6 +1012,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button2emeServiceJ2.setVisibility(View.VISIBLE);
                 buttonLetJ1.setVisibility(View.INVISIBLE);
                 buttonLetJ2.setVisibility(View.VISIBLE);
+                serviceJ1 = false;
+                serviceJ2 = true;
             }else if (ballServiceJ1.getVisibility() == View.INVISIBLE){
                 ballServiceJ1.setVisibility(View.VISIBLE);
                 ballServiceJ2.setVisibility(View.INVISIBLE);
@@ -957,6 +1021,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button2emeServiceJ2.setVisibility(View.INVISIBLE);
                 buttonLetJ1.setVisibility(View.VISIBLE);
                 buttonLetJ2.setVisibility(View.INVISIBLE);
+                serviceJ1 = true;
+                serviceJ2 = false;
             }
         }
     }
@@ -970,6 +1036,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button2emeServiceJ2.setVisibility(View.VISIBLE);
                 buttonLetJ1.setVisibility(View.INVISIBLE);
                 buttonLetJ2.setVisibility(View.VISIBLE);
+                serviceJ1 = false;
+                serviceJ2 = true;
             } else if (ballServiceJ1.getVisibility() == View.INVISIBLE) {
                 ballServiceJ1.setVisibility(View.VISIBLE);
                 ballServiceJ2.setVisibility(View.INVISIBLE);
@@ -977,6 +1045,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 button2emeServiceJ2.setVisibility(View.INVISIBLE);
                 buttonLetJ1.setVisibility(View.VISIBLE);
                 buttonLetJ2.setVisibility(View.INVISIBLE);
+                serviceJ1 = true;
+                serviceJ2 = false;
             }
         }else if (countNbService % 2 == 0) {
             if (ballServiceJ1.getVisibility() == View.VISIBLE) { //Si on revient au point d'avant le changement de service ne compte pas
@@ -1144,18 +1214,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void breaker(TextView tvScore){
+        DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
         if (tvScore == tvScoreJ1 && ballServiceJ2.isShown()){
             isBreak = true;
-            //Incrémentation du break dans la table Joueur de la base de données associé à l'Id du joueur correspondant
+            postMatch.postAvantageBreakOrDebreakMatch(idRencontre, valJ1, idSetJ1, idGameJ1, "breack");
         }else if (tvScore == tvScoreJ2 && ballServiceJ1.isShown() && isBreak){
-            //Incrémentation du debreak dans la table Joueur de la base de données associé à l'Id du joueur correspondant
+            postMatch.postAvantageBreakOrDebreakMatch(idRencontre, valJ2, idSetJ2, idGameJ2, "debreak");
             isBreak = false;
         }
         if (tvScore == tvScoreJ2 && ballServiceJ1.isShown()){
             isBreak = true;
-            //Incrémentation du break dans la table Joueur de la base de données associé à l'Id du joueur correspondant
+            postMatch.postAvantageBreakOrDebreakMatch(idRencontre, valJ2, idSetJ2, idGameJ2, "breack");
         }else if (tvScore == tvScoreJ1 && ballServiceJ2.isShown() && isBreak){
-            //Incrémentation du debreak dans la table Joueur de la base de données associé à l'Id du joueur correspondant
+            postMatch.postAvantageBreakOrDebreakMatch(idRencontre, valJ1, idSetJ1, idGameJ1, "debreak");
             isBreak = false;
         }
     }
