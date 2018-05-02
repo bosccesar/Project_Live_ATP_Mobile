@@ -123,7 +123,7 @@ public class StatMatchBDD {
         HashMap<String, Object> result = new HashMap<>();
         result.put("pauseToilettes", pauseToilettes);
         result.put("pauseSoigneurs", pauseSoigneurs);
-        result.put("nombreService   ", nombreService);
+        result.put("nombreService", nombreService);
 
         return result;
     }

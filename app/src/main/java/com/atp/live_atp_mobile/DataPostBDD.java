@@ -525,7 +525,7 @@ public class DataPostBDD {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //A voir Mettre un message si probleme (se décrémente sans raison alors qu'au dessus ça s'incrémente bien)
             }
         });
 

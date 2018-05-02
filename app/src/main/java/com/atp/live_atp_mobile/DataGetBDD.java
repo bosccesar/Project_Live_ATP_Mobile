@@ -89,7 +89,7 @@ public class DataGetBDD implements Observer{
         Toast.makeText(context, latitude + " | " + longitude + " | " + currentDate, Toast.LENGTH_LONG).show(); //Verification de la bonne recuperation des coordonnees gps du jour actuel
 
         DatabaseReference tournamentRef = database.getReference("tournoi"); //Selectionne la table cible
-        tournamentRef.addValueEventListener(new ValueEventListener() {
+        tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des tournois
@@ -134,7 +134,7 @@ public class DataGetBDD implements Observer{
     public void loadModelUserFromFirebase() { //Appel get de l'arbitre pour comparer avec le login et password renseigne sur l'authentification
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userRef = database.getReference("arbitre"); //Selectionne la table arbitre
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des arbitres
@@ -180,7 +180,7 @@ public class DataGetBDD implements Observer{
     public void loadModelMatchFromFirebase(String idRencontre) { //Appel get de la rencontre
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference matchRef = database.getReference("rencontre").child(idRencontre); //Selectionne la table rencontre pour récuperer le tour en fonction de l'idRencontre récupéré
-        matchRef.addValueEventListener(new ValueEventListener() {
+        matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 MatchBDD matchBDD = dataSnapshot.getValue(MatchBDD.class);
@@ -220,7 +220,7 @@ public class DataGetBDD implements Observer{
             e.printStackTrace();
         }
         DatabaseReference matchRef = database.getReference("rencontre").child(idRencontre); //Selectionne la table rencontre en fonction de l'idRencontre récupéré pour vérifier si c'est le bon match
-        matchRef.addValueEventListener(new ValueEventListener() {
+        matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 MatchBDD matchBDD = dataSnapshot.getValue(MatchBDD.class);
@@ -256,7 +256,7 @@ public class DataGetBDD implements Observer{
     public void loadModelStateTournamentFromFirebase(int id) { //Appel get du tour du tournoi en fonction de l'idTour
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference stateTournamentRef = database.getReference("tour").child(String.valueOf(id)); //Selectionne la table tour pour récuperer le nom du tour en fonction de l'idTour récupéré
-        stateTournamentRef.addValueEventListener(new ValueEventListener() {
+        stateTournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 StateBDD stateBDD = dataSnapshot.getValue(StateBDD.class);
@@ -275,7 +275,7 @@ public class DataGetBDD implements Observer{
     public void loadModelCategoryFromFirebase(final boolean equipe, final int idTeam1, final int idTeam2, final int player1, final int player2, int idCategory) { //Appel get de la categorie en fonction de la categorie du tableau
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference categoryRef = database.getReference("categorie").child(String.valueOf(idCategory)); //Selectionne la table category pour récuperer le nom de la categorie en fonction de l'idCategorie récupéré
-        categoryRef.addValueEventListener(new ValueEventListener() {
+        categoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 CategoryBDD categoryBDD = dataSnapshot.getValue(CategoryBDD.class);
@@ -302,7 +302,7 @@ public class DataGetBDD implements Observer{
             player1Ref = database.getReference("joueurFemme").child(String.valueOf(idPlayer1)); //Selectionne la table joueurFemme en fonction de l'idPlayer1 récupéré
             player2Ref = database.getReference("joueurFemme").child(String.valueOf(idPlayer2)); //Selectionne la table joueurFemme en fonction de l'idPlayer2 récupéré
         }
-        player1Ref.addValueEventListener(new ValueEventListener() {
+        player1Ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (category.equals("Simple messieurs")) {
@@ -323,7 +323,7 @@ public class DataGetBDD implements Observer{
 
             }
         });
-        player2Ref.addValueEventListener(new ValueEventListener() {
+        player2Ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (category.equals("Simple messieurs")) {
@@ -351,7 +351,7 @@ public class DataGetBDD implements Observer{
         if (!category.equals("Double mixte")) {
             final DatabaseReference team1Ref = database.getReference("equipe").child(String.valueOf(idTeam1)); //Selectionne la table equipe avec l'idTeam correspondant
             DatabaseReference team2Ref = database.getReference("equipe").child(String.valueOf(idTeam2)); //Selectionne la table equipe avec l'idTeam correspondant
-            team1Ref.addValueEventListener(new ValueEventListener() {
+            team1Ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     TeamBDD teamBDD = dataSnapshot.getValue(TeamBDD.class);
@@ -365,7 +365,7 @@ public class DataGetBDD implements Observer{
 
                 }
             });
-            team2Ref.addValueEventListener(new ValueEventListener() {
+            team2Ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     TeamBDD teamBDD = dataSnapshot.getValue(TeamBDD.class);
@@ -382,7 +382,7 @@ public class DataGetBDD implements Observer{
         }else {
             final DatabaseReference team1Ref = database.getReference("equipe").child(String.valueOf(idTeam1)); //Selectionne la table equipe avec l'idTeam correspondant
             DatabaseReference team2Ref = database.getReference("equipe").child(String.valueOf(idTeam2)); //Selectionne la table equipe avec l'idTeam correspondant
-            team1Ref.addValueEventListener(new ValueEventListener() {
+            team1Ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     TeamBDD teamBDD = dataSnapshot.getValue(TeamBDD.class);
@@ -396,7 +396,7 @@ public class DataGetBDD implements Observer{
 
                 }
             });
-            team2Ref.addValueEventListener(new ValueEventListener() {
+            team2Ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     TeamBDD teamBDD = dataSnapshot.getValue(TeamBDD.class);
@@ -416,7 +416,7 @@ public class DataGetBDD implements Observer{
     public void loadCodeCountryFromFirebase(final String codeJ1, final String codeJ2) { //Appel get des drapeaux des pays
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference countryRef = database.getReference("pays"); //Selectionne la table cible
-        countryRef.addValueEventListener(new ValueEventListener() {
+        countryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des pays
@@ -444,7 +444,7 @@ public class DataGetBDD implements Observer{
             }
         });
 
-        countryRef.addValueEventListener(new ValueEventListener() {
+        countryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Recuperation de l'ensemble des pays
