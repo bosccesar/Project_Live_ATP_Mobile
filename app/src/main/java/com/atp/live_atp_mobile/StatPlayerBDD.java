@@ -21,14 +21,13 @@ public class StatPlayerBDD {
     public int sanctionOrdre;
     public int secondService;
     public int service;
-    public int serviceReussi;
     public int victoire;
 
     public StatPlayerBDD() {
 
     }
 
-    public StatPlayerBDD(int abandon, int ace, int avantage, int breack, int debreak, int defaite, int exclusion, int faute, int idJoueur, int sanctionJeu, int sanctionOrdre, int secondService, int service, int serviceReussi, int victoire) {
+    public StatPlayerBDD(int abandon, int ace, int avantage, int breack, int debreak, int defaite, int exclusion, int faute, int idJoueur, int sanctionJeu, int sanctionOrdre, int secondService, int service, int victoire) {
         this.abandon = abandon;
         this.ace = ace;
         this.avantage = avantage;
@@ -42,7 +41,6 @@ public class StatPlayerBDD {
         this.sanctionOrdre = sanctionOrdre;
         this.secondService = secondService;
         this.service = service;
-        this.serviceReussi = serviceReussi;
         this.victoire = victoire;
     }
 
