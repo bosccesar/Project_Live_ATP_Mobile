@@ -51,12 +51,33 @@ public class StatPlayerBDD {
         result.put("defaite", defaite);
         result.put("abandon", abandon);
         result.put("exclusion", exclusion);
-        result.put("faute", faute);
         result.put("sanctionOrdre", sanctionOrdre);
         result.put("service", service);
         result.put("secondService", secondService);
+
+        return result;
+    }
+
+    @Exclude
+    public Map<String, Object> toMapIntegerAdvantageOrAce() {
+        HashMap<String, Object> result = new HashMap<>();
         result.put("ace", ace);
         result.put("avantage", avantage);
+
+        return result;
+    }
+
+    @Exclude
+    public Map<String, Object> toMapIntegerFault() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("faute", faute);
+
+        return result;
+    }
+
+    @Exclude
+    public Map<String, Object> toMapIntegerBreakDebreak() {
+        HashMap<String, Object> result = new HashMap<>();
         result.put("breack", breack);
         result.put("debreak", debreak);
 

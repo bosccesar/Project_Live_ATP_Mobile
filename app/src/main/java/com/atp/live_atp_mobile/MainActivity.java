@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean tieBreak;
     private boolean superTieBreak;
     private boolean previousTieBreak;
-    private boolean isBreak;
+    private boolean isBreakJ1;
+    private boolean isBreakJ2;
     private boolean finalTieBreak;
     private boolean advertissement; //Permet de savoir si la sanctionActivity a ete appelé
     private boolean twoSetWin;
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Joueurs
         this.tvJ1 = (TextView) findViewById(R.id.textJ1);
         this.tvJ2 = (TextView) findViewById(R.id.textJ2);
-        //Drapeau nationalite
+        //Drapeau pays
         this.nationalityJ1 = (ImageView) findViewById(R.id.imageViewNationalityJ1);
         this.nationalityJ2 = (ImageView) findViewById(R.id.imageViewNationalityJ2);
 
@@ -222,7 +223,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.serviceJ1 = true;
         this.serviceJ2 = false;
         this.countNbService = 0;
-        this.isBreak = false;
+        this.isBreakJ1 = false;
+        this.isBreakJ2 = false;
         this.firstServiceTieBreak = "";
         this.ballServiceJ2.setVisibility(View.INVISIBLE);
         this.button2emeServiceJ2.setVisibility(View.INVISIBLE);
@@ -305,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editor.apply();
             Intent intent = new Intent(MainActivity.this, BreakActivity.class);
             startActivity(intent);
+            advertissement = false;
         }
         if (view == buttonAdvertissement){
             Intent intent = new Intent(MainActivity.this, SanctionActivity.class);
@@ -384,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             secondServiceJ2 = false;
             button2emeServiceJ1.setEnabled(true);
             button2emeServiceJ2.setEnabled(true);
-            postMatch.postAvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "ace");
+            postMatch.postAvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "ace", category);
         }
         if (view == buttonAceJ2){
             if (superTieBreak){
@@ -410,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             secondServiceJ2 = false;
             button2emeServiceJ1.setEnabled(true);
             button2emeServiceJ2.setEnabled(true);
-            postMatch.postAvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "ace");
+            postMatch.postAvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "ace", category);
         }
         //Challenge
         if (view == buttonChallengeJ1){
@@ -439,7 +442,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             secondServiceJ2 = false;
             button2emeServiceJ1.setEnabled(true);
             button2emeServiceJ2.setEnabled(true);
-            postMatch.postMistakeMatch(idRencontre, valJ1, idSet, idGame, idPoint, "out");
+            postMatch.postMistakeMatch(idRencontre, valJ1, idSet, idGame, idPoint, "out", category);
         }
         if (view == buttonOutJ2){
             if (superTieBreak){
@@ -460,7 +463,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             secondServiceJ2 = false;
             button2emeServiceJ1.setEnabled(true);
             button2emeServiceJ2.setEnabled(true);
-            postMatch.postMistakeMatch(idRencontre, valJ2, idSet, idGame, idPoint, "out");
+            postMatch.postMistakeMatch(idRencontre, valJ2, idSet, idGame, idPoint, "out", category);
         }
         if (view == buttonNetJ1){
             if (superTieBreak){
@@ -481,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             secondServiceJ2 = false;
             button2emeServiceJ1.setEnabled(true);
             button2emeServiceJ2.setEnabled(true);
-            postMatch.postMistakeMatch(idRencontre, valJ1, idSet, idGame, idPoint, "filet");
+            postMatch.postMistakeMatch(idRencontre, valJ1, idSet, idGame, idPoint, "filet", category);
         }
         if (view == buttonNetJ2){
             if (superTieBreak){
@@ -502,19 +505,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             secondServiceJ2 = false;
             button2emeServiceJ1.setEnabled(true);
             button2emeServiceJ2.setEnabled(true);
-            postMatch.postMistakeMatch(idRencontre, valJ2, idSet, idGame, idPoint, "filet");
+            postMatch.postMistakeMatch(idRencontre, valJ2, idSet, idGame, idPoint, "filet", category);
         }
         if (view == button2emeServiceJ1){
             secondServiceJ1 = true;
             DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
-            postMatch.postServiceMatch(idRencontre, valJ1, true);
+            postMatch.postServiceMatch(idRencontre, valJ1, true, category);
             toast(view);
             button2emeServiceJ1.setEnabled(false);
         }
         if (view == button2emeServiceJ2){
             secondServiceJ2 = true;
             DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
-            postMatch.postServiceMatch(idRencontre, valJ2, true);
+            postMatch.postServiceMatch(idRencontre, valJ2, true, category);
             toast(view);
             button2emeServiceJ2.setEnabled(false);
         }
@@ -628,9 +631,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScore.setText(R.string.advantage); //Avantage pour le joueur
                     DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
                     if (tvScore == tvScoreJ1) {
-                        postMatch.postAvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "avantage");
+                        postMatch.postAvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "avantage", category);
                     }else if (tvScore == tvScoreJ2) {
-                        postMatch.postAvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "avantage");
+                        postMatch.postAvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "avantage", category);
                     }
                     idPoint = idPoint + 1;
                 }else{ //Le joueur adverse n'a ni 40 ni avantage (0 ou 15 ou 30) donc le joueur gagne le point
@@ -702,6 +705,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int intValSet3Adv = Integer.parseInt(valStrSet3Adv);
         int intValSet4Adv = Integer.parseInt(valStrSet4Adv);
         int intValSet5Adv = Integer.parseInt(valStrSet5Adv);
+        boolean valResetIsBreak = false;
 
         if ((twoSetWin && !finalTieBreak && numSet == 3) || (!twoSetWin && !finalTieBreak && numSet == 5)) {
             if (numSet == 5){
@@ -747,6 +751,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScoreSet1.setTypeface(null, Typeface.BOLD);
                     incremementationSetTotal(tvScore);
                     numSet++;
+                    valResetIsBreak = true;
                 }
             } else if (intValSet2 < 7 && numSet == 2) {
                 tvScoreSet2.setTextColor(-16777216); //Met le texte en noir
@@ -759,6 +764,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScoreSet2.setTypeface(null, Typeface.BOLD);
                     incremementationSetTotal(tvScore);
                     numSet++;
+                    valResetIsBreak = true;
                 }
                 if ((tvScoreSetTotalJ1.getText().toString().equals("1") && tvScoreSetTotalJ2.getText().toString().equals("1")) && rulesSuperTieBreak()) { //Si un set partout dans les doubles (sauf double messieurs) alors ça déclenche le super tie break
                     transformSuperTieBreak(tvScore, tvScoreAdv);
@@ -774,6 +780,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScoreSet3.setTypeface(null, Typeface.BOLD);
                     incremementationSetTotal(tvScore);
                     numSet++;
+                    valResetIsBreak = true;
                 }
             } else if (intValSet4 < 7 && numSet == 4) {
                 tvScoreSet4.setTextColor(-16777216); //Met le texte en noir
@@ -786,6 +793,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScoreSet4.setTypeface(null, Typeface.BOLD);
                     incremementationSetTotal(tvScore);
                     numSet++;
+                    valResetIsBreak = true;
                 }
             } else if (intValSet5 < 7 && numSet == 5) {
                 tvScoreSet5.setTextColor(-16777216); //Met le texte en noir
@@ -798,11 +806,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScoreSet5.setTypeface(null, Typeface.BOLD);
                     incremementationSetTotal(tvScore);
                     numSet++;
+                    valResetIsBreak = true;
                 }
             }
             countNbService++;
             serviceChange();
-            breaker(tvScore);
+            breaker(tvScore, valResetIsBreak);
         }
     }
 
@@ -1219,21 +1228,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonDown.setVisibility(View.INVISIBLE);
     }
 
-    private void breaker(TextView tvScore){
+    private void breaker(TextView tvScore, boolean valResetIsBreak){
+        int ballServiceJ1Visibility = ballServiceJ1.getVisibility(); //0 = non visible, 4 = visible
+        int ballServiceJ2Visibility = ballServiceJ2.getVisibility(); //0 = non visible, 4 = visible
         DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
-        if (tvScore == tvScoreJ1 && ballServiceJ2.isShown()){
-            isBreak = true;
-            postMatch.postBreakOrDebreakMatch(idRencontre, valJ1, idSet, idGame, "breack");
-        }else if (tvScore == tvScoreJ2 && ballServiceJ1.isShown() && isBreak){
-            postMatch.postBreakOrDebreakMatch(idRencontre, valJ2, idSet, idGame, "debreak");
-            isBreak = false;
+        if (tvScore == tvScoreJ1 && ballServiceJ2Visibility == 4 && !isBreakJ2){
+            isBreakJ1 = true;
+            isBreakJ2 = false;
+            postMatch.postBreakOrDebreakMatch(idRencontre, valJ1, idSet, idGame, "breack", category);
+        }else if (tvScore == tvScoreJ2 && ballServiceJ1Visibility == 4 && isBreakJ1){
+            postMatch.postBreakOrDebreakMatch(idRencontre, valJ2, idSet, idGame, "debreak", category);
         }
-        if (tvScore == tvScoreJ2 && ballServiceJ1.isShown()){
-            isBreak = true;
-            postMatch.postBreakOrDebreakMatch(idRencontre, valJ2, idSet, idGame, "breack");
-        }else if (tvScore == tvScoreJ1 && ballServiceJ2.isShown() && isBreak){
-            postMatch.postBreakOrDebreakMatch(idRencontre, valJ1, idSet, idGame, "debreak");
-            isBreak = false;
+        if (tvScore == tvScoreJ2 && ballServiceJ1Visibility == 4 && !isBreakJ1){
+            isBreakJ1 = false;
+            isBreakJ2 = true;
+            postMatch.postBreakOrDebreakMatch(idRencontre, valJ2, idSet, idGame, "breack", category);
+        }else if (tvScore == tvScoreJ1 && ballServiceJ2Visibility == 4 && isBreakJ2){
+            postMatch.postBreakOrDebreakMatch(idRencontre, valJ1, idSet, idGame, "debreak", category);
+        }
+        if (tvScore == tvScoreJ1 && ballServiceJ1Visibility == 4 || tvScore == tvScoreJ2 && ballServiceJ2Visibility == 4) {
+            isBreakJ1 = false;
+            isBreakJ2 = false;
+        }
+        if (valResetIsBreak) {
+            isBreakJ1 = false;
+            isBreakJ2 = false;
         }
     }
 
@@ -1424,10 +1443,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (serviceJ1) {
             postMatch.postScoreMatch(idRencontre, valJ1, String.valueOf(idSet), String.valueOf(idGame), tvScoreJ1.getText().toString(), tvScoreJ2.getText().toString());
-            postMatch.postServiceMatch(idRencontre, valJ1, false);
+            postMatch.postServiceMatch(idRencontre, valJ1, false, category);
         }else if (serviceJ2) {
             postMatch.postScoreMatch(idRencontre, valJ2, String.valueOf(idSet), String.valueOf(idGame), tvScoreJ1.getText().toString(), tvScoreJ2.getText().toString());
-            postMatch.postServiceMatch(idRencontre, valJ2, false);
+            postMatch.postServiceMatch(idRencontre, valJ2, false, category);
         }
     }
 }

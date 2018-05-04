@@ -30,6 +30,7 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
     private String valJ1;
     private String valJ2;
     private String chronometer;
+    private String category;
 
     public static final String PLAYERSANCTION= "PlayerSanction";
     public static final String PlayerSanction = "PlayerSanction";
@@ -56,6 +57,11 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
         fillTextView();
 
         this.idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
+        if (AuthenticationActivity.login.equals("admin")){
+            this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.CategoryAdmin, null); //Récuperation de la category en mode admin
+        }else {
+            this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Category, null); //Récuperation de la category pour évaluer s'il y a super tie-break et 2 ou 3 set gangants
+        }
         this.valJ1 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null);
         this.valJ2 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null);
 
@@ -115,7 +121,7 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
                 if (sanctionSelect == tvSanction1){
                     //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 1
                     DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
-                    postMatch.postSanctionOrderMatch(idRencontre, valJ1);
+                    postMatch.postSanctionOrderMatch(idRencontre, valJ1, category);
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction2){
                     //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 1
@@ -124,13 +130,13 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
                     editor.putString(IdSanction, "sanction2");
                     editor.apply();
                     DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
-                    postMatch.postSanctionGameMatch(idRencontre, valJ1);
+                    postMatch.postSanctionGameMatch(idRencontre, valJ1, category);
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction3){
                     //Appel post à la BDD pour inscrire l'exclusion
                     DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
                     postMatch.postEndMatch(idRencontre);
-                    postMatch.postSanctionExclusionMatch(idRencontre, valJ1, valJ2);
+                    postMatch.postSanctionExclusionMatch(idRencontre, valJ1, valJ2, category);
                     postMatch.postTimeMatch(idRencontre, chronometer);
                     Intent intent = new Intent(SanctionActivity.this, AuthenticationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -141,7 +147,7 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
                 if (sanctionSelect == tvSanction1){
                     //Appel post à la BDD pour inscrire le rappel a l'ordre via l'id du joueur 2
                     DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
-                    postMatch.postSanctionOrderMatch(idRencontre, valJ2);
+                    postMatch.postSanctionOrderMatch(idRencontre, valJ2, category);
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction2){
                     //Appel post à la BDD pour inscrire la sanction jeu via l'id du joueur 2
@@ -149,13 +155,13 @@ public class SanctionActivity extends AppCompatActivity implements View.OnClickL
                     editor.putString(SanctionGame, "true");
                     editor.apply();
                     DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
-                    postMatch.postSanctionGameMatch(idRencontre, valJ2);
+                    postMatch.postSanctionGameMatch(idRencontre, valJ2, category);
                     SanctionActivity.this.finish();
                 }else if (sanctionSelect == tvSanction3){
                     //Appel post à la BDD pour inscrire l'exclusion
                     DataPostBDD postMatch = new DataPostBDD(SanctionActivity.this);
                     postMatch.postEndMatch(idRencontre);
-                    postMatch.postSanctionExclusionMatch(idRencontre, valJ2, valJ1);
+                    postMatch.postSanctionExclusionMatch(idRencontre, valJ2, valJ1, category);
                     postMatch.postTimeMatch(idRencontre, chronometer);
                     Intent intent = new Intent(SanctionActivity.this, AuthenticationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

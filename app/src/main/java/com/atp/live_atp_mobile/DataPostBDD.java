@@ -27,7 +27,7 @@ public class DataPostBDD {
         MatchPostRef.updateChildren(postValueMatch);
     }
 
-    public void postStatsEndMatch(final String idMatch, final String idWinner, final String idLooser) { //Ajoute le vainqueur et le perdant de la rencontre, incrémente les stats des 2 joueurs (défaite et victoires)
+    public void postStatsEndMatch(final String idMatch, final String idWinner, final String idLooser, String category) { //Ajoute le vainqueur et le perdant de la rencontre, incrémente les stats des 2 joueurs (défaite et victoires)
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         //Ajoute le vainqueur et le perdant de la rencontre dans la table statsRencontre
@@ -56,8 +56,13 @@ public class DataPostBDD {
             }
         });
 
-        //Incrémente stats des 2 joueurs dans la table statJoueur
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +151,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postStatsAbortMatch(final String idMatch, final String idAbort, final String idOtherPlayer) { //La stat abandon a true et ajoute le joueur qui abandonne, incrémente les stats des 2 joueurs (abandon, victoire et victoires)
+    public void postStatsAbortMatch(final String idMatch, final String idAbort, final String idOtherPlayer, String category) { //La stat abandon a true et ajoute le joueur qui abandonne, incrémente les stats des 2 joueurs (abandon, victoire et victoires)
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         //La stat abandon a true et ajoute le joueur qui abandonne dans la table statsRencontre
@@ -175,8 +180,13 @@ public class DataPostBDD {
             }
         });
 
-        //Incrémente stats des 2 joueurs dans la table statsJoueur
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -241,7 +251,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postSanctionOrderMatch(final String idMatch, final String idPlayer) { //Inscrit dans la statsRencontre à sanctionOrdre l'id du joueur et incrémente sanctionOrdre du joueur
+    public void postSanctionOrderMatch(final String idMatch, final String idPlayer, String category) { //Inscrit dans la statsRencontre à sanctionOrdre l'id du joueur et incrémente sanctionOrdre du joueur
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
@@ -276,7 +286,13 @@ public class DataPostBDD {
         });
 
         //Incrémente sanctionOrdre du joueur
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -302,7 +318,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postSanctionGameMatch(final String idMatch, final String idPlayer) { //Inscrit dans la statsRencontre à sanctionJeu l'id du joueur et incrémente sanctionJeu du joueur
+    public void postSanctionGameMatch(final String idMatch, final String idPlayer, String category) { //Inscrit dans la statsRencontre à sanctionJeu l'id du joueur et incrémente sanctionJeu du joueur
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
@@ -337,7 +353,13 @@ public class DataPostBDD {
         });
 
         //Incrémente sanctionJeu du joueur
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -363,7 +385,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postSanctionExclusionMatch(final String idMatch, final String idExcluded, final String idOtherPlayer) { //Inscrit dans la statsRencontre à sanctionExclusion l'id du joueur et incrémente exclusion du joueur
+    public void postSanctionExclusionMatch(final String idMatch, final String idExcluded, final String idOtherPlayer, String category) { //Inscrit dans la statsRencontre à sanctionExclusion l'id du joueur et incrémente exclusion du joueur
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         //La stat abandon a true et ajoute le joueur qui abandonne dans la table statsRencontre
@@ -393,7 +415,13 @@ public class DataPostBDD {
         });
 
         //Incrémente stats des 2 joueurs dans la table statsJoueur
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -495,10 +523,16 @@ public class DataPostBDD {
         });
     }
 
-    public void postServiceMatch(final String idMatch, final String idPlayer, final boolean twoService) { //Incrémente service du joueur
+    public void postServiceMatch(final String idMatch, final String idPlayer, final boolean twoService, String category) { //Incrémente service du joueur
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -662,7 +696,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postBreakOrDebreakMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final String natureOfStat) {
+    public void postBreakOrDebreakMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final String natureOfStat, String category) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
@@ -696,7 +730,13 @@ public class DataPostBDD {
             }
         });
 
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -713,7 +753,7 @@ public class DataPostBDD {
                             if (natureOfStat.equals("debreak")) {
                                 statPlayer.debreak++;
                             }
-                            Map<String, Object> postValuesStat = statPlayer.toMapInteger();
+                            Map<String, Object> postValuesStat = statPlayer.toMapIntegerBreakDebreak();
                             statsPlayerPostRef.child(key).updateChildren(postValuesStat);
                         }
                     }
@@ -727,7 +767,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postAvantageOrAceMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final int idPoint, final String avantageOrAce) {
+    public void postAvantageOrAceMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final int idPoint, final String avantageOrAce, String category) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
@@ -761,7 +801,13 @@ public class DataPostBDD {
             }
         });
 
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -778,7 +824,7 @@ public class DataPostBDD {
                             if (avantageOrAce.equals("ace")) {
                                 statPlayer.ace++;
                             }
-                            Map<String, Object> postValuesStat = statPlayer.toMapInteger();
+                            Map<String, Object> postValuesStat = statPlayer.toMapIntegerAdvantageOrAce();
                             statsPlayerPostRef.child(key).updateChildren(postValuesStat);
                         }
                     }
@@ -792,7 +838,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postMistakeMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final int idPoint, final String natureOfMistake) {
+    public void postMistakeMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final int idPoint, final String natureOfMistake, String category) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
@@ -832,7 +878,13 @@ public class DataPostBDD {
             }
         });
 
-        final DatabaseReference statsPlayerPostRef = database.getReference("statsJoueur");
+        DatabaseReference refDefault = database.getReference();
+        if (category.equals("Simple messieurs")) {
+            refDefault = database.getReference("statsJoueurHomme");
+        }else if (category.equals("Simple dames")) {
+            refDefault = database.getReference("statsJoueurFemme");
+        }
+        final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -844,7 +896,7 @@ public class DataPostBDD {
                         statPlayer = getSnapshot.getValue(StatPlayerBDD.class);
                         if (idPlayer.equals(String.valueOf(statPlayer.idJoueur))) {
                             statPlayer.faute++;
-                            Map<String, Object> postValuesStat = statPlayer.toMapInteger();
+                            Map<String, Object> postValuesStat = statPlayer.toMapIntegerFault();
                             statsPlayerPostRef.child(key).updateChildren(postValuesStat);
                         }
                     }

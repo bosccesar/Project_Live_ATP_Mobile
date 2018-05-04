@@ -19,6 +19,7 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
     private Button buttonMatchEnd;
     private String idRencontre;
     private String chronometer;
+    private String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,11 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
         this.buttonMatchEnd = (Button) findViewById(R.id.buttonEndMatch);
 
         this.idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
+        if (AuthenticationActivity.login.equals("admin")){
+            this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.CategoryAdmin, null); //Récuperation de la category en mode admin
+        }else {
+            this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Category, null); //Récuperation de la category pour évaluer s'il y a super tie-break et 2 ou 3 set gangants
+        }
 
         fillTextView();
 
@@ -46,7 +52,7 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
             //Appel post à la BDD pour inscrire l'id des joueurs dans statsRencontre + inscrire le temps du match
             DataPostBDD postMatch = new DataPostBDD(EndMatchActivity.this);
             postMatch.postEndMatch(idRencontre);
-            postMatch.postStatsEndMatch(idRencontre, winner, looser);
+            postMatch.postStatsEndMatch(idRencontre, winner, looser, category);
             postMatch.postTimeMatch(idRencontre, chronometer);
             Intent intent = new Intent(EndMatchActivity.this, AuthenticationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -24,6 +24,7 @@ public class AbortActivity extends AppCompatActivity implements View.OnClickList
     private String valJ2;
     private String idRencontre;
     private String chronometer;
+    private String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,11 @@ public class AbortActivity extends AppCompatActivity implements View.OnClickList
         fillTextView();
 
         this.idRencontre = AuthenticationActivity.sharedpreferencesAuthentication.getString(AuthenticationActivity.IdRencontre, null);
+        if (AuthenticationActivity.login.equals("admin")){
+            this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.CategoryAdmin, null); //Récuperation de la category en mode admin
+        }else {
+            this.category = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.Category, null); //Récuperation de la category pour évaluer s'il y a super tie-break et 2 ou 3 set gangants
+        }
         this.valJ1 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null);
         this.valJ2 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null);
 
@@ -69,7 +75,7 @@ public class AbortActivity extends AppCompatActivity implements View.OnClickList
                 //Appel post à la BDD pour inscrire l'abandon via l'id du joueur 1 au travers du string juste au dessus
                 DataPostBDD postMatch = new DataPostBDD(AbortActivity.this);
                 postMatch.postEndMatch(idRencontre);
-                postMatch.postStatsAbortMatch(idRencontre, valJ1, valJ2);
+                postMatch.postStatsAbortMatch(idRencontre, valJ1, valJ2, category);
                 postMatch.postTimeMatch(idRencontre, chronometer);
 
                 Intent intent = new Intent(AbortActivity.this, AuthenticationActivity.class);
@@ -80,7 +86,7 @@ public class AbortActivity extends AppCompatActivity implements View.OnClickList
                 //Appel post à la BDD pour inscrire l'abandon via l'id du joueur 2 au travers du string juste au dessus
                 DataPostBDD postMatch = new DataPostBDD(AbortActivity.this);
                 postMatch.postEndMatch(idRencontre);
-                postMatch.postStatsAbortMatch(idRencontre, valJ2, valJ1);
+                postMatch.postStatsAbortMatch(idRencontre, valJ2, valJ1, category);
                 postMatch.postTimeMatch(idRencontre, chronometer);
 
                 Intent intent = new Intent(AbortActivity.this, AuthenticationActivity.class);
