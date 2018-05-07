@@ -29,12 +29,13 @@ public class StatMatchBDD {
     public int pauseToilettes;
     public int pauseSoigneurs;
     public int idJoueurService;
+    public boolean valide;
 
     public StatMatchBDD() {
 
     }
 
-    public StatMatchBDD(int idJeu, int idJoueur, int idSet, boolean filet, int idPoint, boolean out, int idRencontre, int nombreService, String libelleJ1, String libelleJ2, boolean pauseExceptionnelle, String chronometre, boolean abandon, boolean exclusion, int idJoueurforfait, int idJoueurExclusion, int pauseToilettes, int pauseSoigneurs, int idJoueurService) {
+    public StatMatchBDD(int idJeu, int idJoueur, int idSet, boolean filet, int idPoint, boolean out, int idRencontre, int nombreService, String libelleJ1, String libelleJ2, boolean pauseExceptionnelle, String chronometre, boolean abandon, boolean exclusion, int idJoueurforfait, int idJoueurExclusion, int pauseToilettes, int pauseSoigneurs, int idJoueurService, boolean valide) {
         this.idJeu = idJeu;
         this.idJoueur = idJoueur;
         this.idSet = idSet;
@@ -54,6 +55,7 @@ public class StatMatchBDD {
         this.pauseToilettes = pauseToilettes;
         this.pauseSoigneurs = pauseSoigneurs;
         this.idJoueurService = idJoueurService;
+        this.valide = valide;
     }
 
     public StatMatchBDD(boolean pauseExceptionnelle) {
@@ -66,6 +68,11 @@ public class StatMatchBDD {
 
     public StatMatchBDD(int idJoueur) {
         this.idJoueur = idJoueur;
+    }
+
+    public StatMatchBDD(int idJoueur, boolean valide) {
+        this.idJoueur = idJoueur;
+        this.valide = valide;
     }
 
     public StatMatchBDD(String idJoueurService, String libelleJ1, String libelleJ2) {
@@ -175,6 +182,15 @@ public class StatMatchBDD {
     public Map<String, Object> toMapPlayer() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("idJoueur", idJoueur);
+
+        return result;
+    }
+
+    @Exclude
+    public Map<String, Object> toMapChallenge() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("idJoueur", idJoueur);
+        result.put("valide", valide);
 
         return result;
     }

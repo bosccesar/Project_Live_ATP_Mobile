@@ -453,7 +453,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postChallengeMatch(final String idMatch, final String idPlayer) { //Inscrit dans la statsRencontre à challenge l'id du joueur
+    public void postChallengeMatch(final String idMatch, final String idPlayer, final boolean valid) { //Inscrit dans la statsRencontre à challenge l'id du joueur
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
@@ -468,14 +468,25 @@ public class DataPostBDD {
                         statMatch = getSnapshot.getValue(StatMatchBDD.class);
                         if (idMatch.equals(String.valueOf(statMatch.idRencontre))) {
                             Iterable<DataSnapshot> iterableChallenge = dataSnapshot.child(key).child("challenge").getChildren();
-                            long countKey = 0;
-                            for (DataSnapshot getSnapshotChallenge : iterableChallenge) {
-                                countKey = countKey + 1;
+                            if (valid) {
+                                long countKey = 0;
+                                for (DataSnapshot getSnapshotChallenge : iterableChallenge) {
+                                    countKey = countKey + 1;
+                                }
+                                DatabaseReference challengePostRef = statsMatchPostRef.child(key).child("challenge");
+                                StatMatchBDD postStat = new StatMatchBDD(Integer.parseInt(idPlayer), true);
+                                Map<String, Object> postValuesStat = postStat.toMapChallenge();
+                                challengePostRef.child(String.valueOf(countKey - 1)).updateChildren(postValuesStat);
+                            }else {
+                                long countKey = 0;
+                                for (DataSnapshot getSnapshotChallenge : iterableChallenge) {
+                                    countKey = countKey + 1;
+                                }
+                                DatabaseReference challengePostRef = statsMatchPostRef.child(key).child("challenge");
+                                StatMatchBDD postStat = new StatMatchBDD(Integer.parseInt(idPlayer), false);
+                                Map<String, Object> postValuesStat = postStat.toMapChallenge();
+                                challengePostRef.child(String.valueOf(countKey)).updateChildren(postValuesStat);
                             }
-                            DatabaseReference challengePostRef = statsMatchPostRef.child(key).child("challenge");
-                            StatMatchBDD postStat = new StatMatchBDD(Integer.parseInt(idPlayer));
-                            Map<String, Object> postValuesStat = postStat.toMapPlayer();
-                            challengePostRef.child(String.valueOf(countKey)).updateChildren(postValuesStat);
                         }
                     }
                 }
@@ -767,7 +778,7 @@ public class DataPostBDD {
         });
     }
 
-    public void postAvantageOrAceMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final int idPoint, final String avantageOrAce, String category) {
+    public void postAdvantageOrAceMatch(final String idMatch, final String idPlayer, final int idSet, final int idGame, final int idPoint, final String avantageOrAce, String category) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
@@ -898,6 +909,102 @@ public class DataPostBDD {
                             statPlayer.faute++;
                             Map<String, Object> postValuesStat = statPlayer.toMapIntegerFault();
                             statsPlayerPostRef.child(key).updateChildren(postValuesStat);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void deletePointMatch(final String idMatch, final String idSet, final String idGame, final String idPoint) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        final DatabaseReference statsMatchPostRef = database.getReference("statsRencontre");
+        statsMatchPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Récupération de l'ensemble des stats
+                if (iterable != null) {
+                    StatMatchBDD statMatch;
+                    for (DataSnapshot getSnapshot : iterable) {
+                        String keyMatch = getSnapshot.getKey();
+                        statMatch = getSnapshot.getValue(StatMatchBDD.class);
+                        if (idMatch.equals(String.valueOf(statMatch.idRencontre))) {
+                            DatabaseReference deleteScoreRef = statsMatchPostRef.child(keyMatch).child("set").child(idSet).child("jeu").child(idGame).child("point").child(idPoint);
+                            deleteScoreRef.removeValue();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        statsMatchPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> iterable = dataSnapshot.getChildren(); //Récupération de l'ensemble des stats
+                if (iterable != null) {
+                    StatMatchBDD statMatch;
+                    for (DataSnapshot getSnapshot : iterable) {
+                        String keyMatch = getSnapshot.getKey();
+                        statMatch = getSnapshot.getValue(StatMatchBDD.class);
+                        if (idMatch.equals(String.valueOf(statMatch.idRencontre))) {
+                            Iterable<DataSnapshot> iterableAce = dataSnapshot.child(keyMatch).child("ace").getChildren(); //Recuperation de l'ensemble des ace
+                            Iterable<DataSnapshot> iterableAdvantage = dataSnapshot.child(keyMatch).child("avantage").getChildren(); //Recuperation de l'ensemble des avantages
+                            Iterable<DataSnapshot> iterableFault = dataSnapshot.child(keyMatch).child("faute").getChildren(); //Recuperation de l'ensemble des fautes
+                            Iterable<DataSnapshot> iterableBreak = dataSnapshot.child(keyMatch).child("breack").getChildren(); //Recuperation de l'ensemble des break
+                            Iterable<DataSnapshot> iterableDebreak = dataSnapshot.child(keyMatch).child("debreak").getChildren(); //Recuperation de l'ensemble des debreak
+                            StatMatchBDD statDelete;
+                            for (DataSnapshot getSnapshotAce : iterableAce) {
+                                String keyAce = getSnapshotAce.getKey();
+                                statDelete = getSnapshotAce.getValue(StatMatchBDD.class);
+                                if (idSet.equals(String.valueOf(statDelete.idSet)) && idGame.equals(String.valueOf(statDelete.idJeu)) && idPoint.equals(String.valueOf(statDelete.idPoint))) {
+                                    DatabaseReference deleteAceRef = statsMatchPostRef.child(keyMatch).child("ace").child(keyAce);
+                                    deleteAceRef.removeValue();
+                                }
+                            }
+                            for (DataSnapshot getSnapshotAdvantage : iterableAdvantage) {
+                                String keyAdvantage = getSnapshotAdvantage.getKey();
+                                statDelete = getSnapshotAdvantage.getValue(StatMatchBDD.class);
+                                if (idSet.equals(String.valueOf(statDelete.idSet)) && idGame.equals(String.valueOf(statDelete.idJeu)) && idPoint.equals(String.valueOf(statDelete.idPoint))) {
+                                    DatabaseReference deleteAdvantageRef = statsMatchPostRef.child(keyMatch).child("avantage").child(keyAdvantage);
+                                    deleteAdvantageRef.removeValue();
+                                }
+                            }
+                            for (DataSnapshot getSnapshotFault : iterableFault) {
+                                String keyFault = getSnapshotFault.getKey();
+                                statDelete = getSnapshotFault.getValue(StatMatchBDD.class);
+                                if (idSet.equals(String.valueOf(statDelete.idSet)) && idGame.equals(String.valueOf(statDelete.idJeu)) && idPoint.equals(String.valueOf(statDelete.idPoint))) {
+                                    DatabaseReference deleteFaultRef = statsMatchPostRef.child(keyMatch).child("faute").child(keyFault);
+                                    deleteFaultRef.removeValue();
+                                }
+                            }
+
+                            for (DataSnapshot getSnapshotBreak : iterableBreak) {
+                                String keyBreak = getSnapshotBreak.getKey();
+                                statDelete = getSnapshotBreak.getValue(StatMatchBDD.class);
+                                if (idSet.equals(String.valueOf(statDelete.idSet)) && idGame.equals(String.valueOf(statDelete.idJeu))) {
+                                    DatabaseReference deleteBreakRef = statsMatchPostRef.child(keyMatch).child("breack").child(keyBreak);
+                                    deleteBreakRef.removeValue();
+                                }
+                            }
+                            for (DataSnapshot getSnapshotDebreak : iterableDebreak) {
+                                String keyDebreak = getSnapshotDebreak.getKey();
+                                statDelete = getSnapshotDebreak.getValue(StatMatchBDD.class);
+                                if (idSet.equals(String.valueOf(statDelete.idSet)) && idGame.equals(String.valueOf(statDelete.idJeu))) {
+                                    DatabaseReference deleteDebreakRef = statsMatchPostRef.child(keyMatch).child("debreak").child(keyDebreak);
+                                    deleteDebreakRef.removeValue();
+                                }
+                            }
                         }
                     }
                 }

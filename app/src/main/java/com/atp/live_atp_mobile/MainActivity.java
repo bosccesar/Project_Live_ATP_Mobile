@@ -94,7 +94,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int countNbService;
     private int numSet;
     private int idPoint;
+    private int idPointPrevious;
     private int idGame;
+    private int idGamePrevious;
     private int idSet;
     private String tvPreviousScoreJ1;
     private String tvPreviousScoreJ2;
@@ -256,7 +258,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.valJ2 = ServiceActivity.sharedpreferencesService.getString(ServiceActivity.IdPlayer2, null);
         this.idSet = 0;
         this.idGame = 0;
+        this.idGamePrevious = 0;
         this.idPoint = 0;
+        this.idPointPrevious = 0;
         this.secondServiceJ1 = false;
         this.secondServiceJ2 = false;
         this.gameSanctionNoBreak = false;
@@ -541,9 +545,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view == buttonDownJ1){
             onClickButtonScoreDown(tvScoreJ1, tvScoreJ2, buttonDownJ1, buttonCancelDownJ1, tvChallengeJ2, tvChallengeJ1, buttonChallengeJ2, buttonChallengeJ1, tvPreviousScoreJ1, tvPreviousScoreJ2, verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1));
+            DataPostBDD deleteMatch = new DataPostBDD(MainActivity.this);
+            deleteMatch.deletePointMatch(idRencontre, String.valueOf(idSet), String.valueOf(idGame), String.valueOf(idPoint));
+            deleteMatch.postChallengeMatch(idRencontre, valJ2, true);
         }
         if (view == buttonDownJ2){
             onClickButtonScoreDown(tvScoreJ2, tvScoreJ1, buttonDownJ2, buttonCancelDownJ2, tvChallengeJ1, tvChallengeJ2, buttonChallengeJ1, buttonChallengeJ2, tvPreviousScoreJ2, tvPreviousScoreJ1, verifSetFinish(tvSet1J2, tvSet2J2, tvSet3J2, tvSet4J2, tvSet5J2));
+            DataPostBDD deleteMatch = new DataPostBDD(MainActivity.this);
+            deleteMatch.deletePointMatch(idRencontre, String.valueOf(idSet), String.valueOf(idGame), String.valueOf(idPoint));
+            deleteMatch.postChallengeMatch(idRencontre, valJ1, true);
         }
         if (view == buttonCancelDownJ1){
             onClickButtonScoreCancelDown(buttonCancelDownJ1, buttonDownJ1, tvChallengeJ2, tvChallengeJ1, buttonChallengeJ2, buttonChallengeJ1);
@@ -631,21 +641,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     buttonChallengeJ1.setEnabled(true);
                 }
                 postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
+                idPointPrevious = idPoint;
                 idPoint = idPoint + 1;
             }else if (tabPoint[pos] == presentIntVal && pos == 3){
                 if (presentIntValAdv == -1){ //Le joueur met un point alors que l'adversaire avait un avantage -> remise à 40 pour les 2
                     tvScore.setText(String.valueOf(presentIntVal)); //Remise à 40 pour le joueur
                     tvScoreAdv.setText(String.valueOf(presentIntVal)); //Remise à 40 pour l'adversaire en utilisant la valeur du joueur
                     postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
+                    idPointPrevious = idPoint;
                     idPoint = idPoint + 1;
                 }else if(presentIntValAdv == 40){ //Le joueur met un point alors qu'ils sont à égalité -> avantage pour lui
                     tvScore.setText(R.string.advantage); //Avantage pour le joueur
                     if (tvScore == tvScoreJ1) {
-                        postMatch.postAvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "avantage", category);
+                        postMatch.postAdvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "avantage", category);
                     }else if (tvScore == tvScoreJ2) {
-                        postMatch.postAvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "avantage", category);
+                        postMatch.postAdvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "avantage", category);
                     }
                     postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
+                    idPointPrevious = idPoint;
                     idPoint = idPoint + 1;
                 }else{ //Le joueur adverse n'a ni 40 ni avantage (0 ou 15 ou 30) donc le joueur gagne le point
                     tvPreviousScoreJ1 = tvScoreJ1.getText().toString(); //Garde en mémoire le score précédent
@@ -654,8 +667,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvScoreAdv.setText(R.string.startGame);
                     tvTieBreak.setVisibility(View.INVISIBLE);
                     postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
-                    idGame = idGame + 1;
-                    idPoint = 0;
                     onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
                 }
             }else if (tabPoint[pos] == presentIntVal && pos == 4){
@@ -664,8 +675,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvScore.setText(R.string.startGame);
                 tvScoreAdv.setText(R.string.startGame);
                 postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
-                idGame = idGame + 1;
-                idPoint = 0;
                 onClickButtonIncrementationSet(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv); //Incrémentation du nombre de jeu du set correspondant car le jeu est gagné
             }
         }
@@ -674,9 +683,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClickButtonAce(TextView tvScore, TextView tvScoreAdv, TextView tvScoreSet1, TextView tvScoreSet2, TextView tvScoreSet3, TextView tvScoreSet4, TextView tvScoreSet5, TextView tvScoreSet1Adv, TextView tvScoreSet2Adv, TextView tvScoreSet3Adv, TextView tvScoreSet4Adv, TextView tvScoreSet5Adv){ //Clique sur Ace pour ajouter des points sur le service sans touche de la part de l'adversaire
         DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
         if (tvScore == tvScoreJ1) {
-            postMatch.postAvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "ace", category);
+            postMatch.postAdvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "ace", category);
         }else if (tvScore == tvScoreJ2) {
-            postMatch.postAvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "ace", category);
+            postMatch.postAdvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "ace", category);
         }
         onClickButtonScoreUp(tvScore, tvScoreAdv, tvScoreSet1, tvScoreSet2, tvScoreSet3, tvScoreSet4, tvScoreSet5, tvScoreSet1Adv, tvScoreSet2Adv, tvScoreSet3Adv, tvScoreSet4Adv, tvScoreSet5Adv);
     }
@@ -706,9 +715,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             DataPostBDD postMatch = new DataPostBDD(MainActivity.this);
             if (tvChallenge == tvChallengeJ1) {
-                postMatch.postChallengeMatch(idRencontre, valJ1);
+                postMatch.postChallengeMatch(idRencontre, valJ1, false);
             }else if (tvChallenge == tvChallengeJ2) {
-                postMatch.postChallengeMatch(idRencontre, valJ2);
+                postMatch.postChallengeMatch(idRencontre, valJ2, false);
             }
         }
     }
@@ -842,6 +851,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             serviceChange();
             breaker(tvScore, valResetIsBreak);
         }
+        idGamePrevious = idGame;
+        idGame = idGame + 1;
+        idPointPrevious = idPoint;
+        idPoint = 0;
     }
 
     public void incremementationSetTotal(TextView tvScore){ //Incrémente le nombre de set gagnés du joueur
@@ -863,6 +876,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonChallengeJ1.setEnabled(true);
         buttonChallengeJ2.setEnabled(true);
         //On passe au set suivant donc on réinitialise l'idJeu
+        idGamePrevious = idGame;
         idGame = 0;
         gameOver();
     }
@@ -911,6 +925,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScore.setText(String.valueOf(intVal + 1));
             postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
             postAceOrFaultPoint(tvScore, postMatch);
+            idPointPrevious = idPoint;
             idPoint = idPoint + 1;
         }else if (intVal > 5 && intValAdv > 5){
             if (intVal == intValAdv + 1){ //Si on a une différence de 2 points
@@ -926,6 +941,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tieBreak = false;
                 previousTieBreak = true;
                 tvScoreSet.setTypeface(null, Typeface.BOLD);
+                idPointPrevious = idPoint;
                 idPoint = 0;
                 incremementationSetTotal(tvScore);
                 numSet++;
@@ -941,6 +957,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvScore.setText(String.valueOf(intVal + 1));
                 postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
                 postAceOrFaultPoint(tvScore, postMatch);
+                idPointPrevious = idPoint;
                 idPoint = idPoint + 1;
                 serviceChangeTieBreak();
             }
@@ -957,6 +974,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tieBreak = false;
             previousTieBreak = true;
             tvScoreSet.setTypeface(null, Typeface.BOLD);
+            idPointPrevious = idPoint;
             idPoint = 0;
             incremementationSetTotal(tvScore);
             numSet++;
@@ -1176,9 +1194,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (tvScoreStr.equals("00") && !previousTieBreak){
             tvScore.setText(String.valueOf(tvPreviousScore));
             tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
+            idGame = idGamePrevious;
+            idPoint = idPointPrevious;
             decremementationSetTotal(buttonDown);
             if ((numSet > 1 && intScoreSet == 0)) { //Permet de revenir au set précédent pour le décrémenter après qu'un jeu ait été gagné sans tie-break
                 numSet -= 1;
+                idSet = idSet - 1;
             }
             if (buttonDown == buttonDownJ1){
                 tvScoreSet = verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
@@ -1193,6 +1214,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if (tvScoreStr.equals("00") && previousTieBreak) {
             tvScore.setText(String.valueOf(tvPreviousScore));
             tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
+            idSet = idSet - 1;
+            idGame = idGamePrevious;
+            idPoint = idPointPrevious;
             if (buttonDown == buttonDownJ1){
                 decremementationSetTotal(buttonDown);
                 numSet -= 1;
@@ -1215,17 +1239,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvTieBreak.setVisibility(View.VISIBLE);
         }else if (tvScoreStr.equals("15")){
             tvScore.setText(String.valueOf("00"));
+            idPoint = idPointPrevious;
         }else if (tvScoreStr.equals("30")){
             tvScore.setText(String.valueOf("15"));
+            idPoint = idPointPrevious;
         }else if (tvScoreStr.equals("40")){
             tvScore.setText(String.valueOf("30"));
+            idPoint = idPointPrevious;
         }else if (tvScoreStr.equals("AV")){
             tvScore.setText(String.valueOf("40"));
+            idPoint = idPointPrevious;
         }else {
             int intScore = Integer.parseInt(tvScoreStr);
             if (tvScoreStr.equals("0")){
                 tvScore.setText(String.valueOf(tvPreviousScore));
                 tvScoreAdv.setText(String.valueOf(tvPreviousScoreAdv));
+                idGame = idGamePrevious;
+                idPoint = idPointPrevious;
                 if (buttonDown == buttonDownJ1){
                     tvScoreSet = verifSetFinish(tvSet1J1, tvSet2J1, tvSet3J1, tvSet4J1, tvSet5J1);
                 }else if (buttonDown == buttonDownJ2){
@@ -1241,6 +1271,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvTieBreak.setVisibility(View.INVISIBLE);
             }else {
                 tvScore.setText(String.valueOf(intScore - 1)); //Décrémente le score du tie break
+                idPoint = idPointPrevious;
             }
         }
         interactionButtonTrue();
@@ -1372,6 +1403,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvScoreSet.setText(String.valueOf(intValSet + 1));
             postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
             postAceOrFaultPoint(tvScore, postMatch);
+            idPointPrevious = idPoint;
             idPoint = idPoint + 1;
         }else if (intVal > 8 && intValAdv > 8){
             if (intVal == intValAdv + 1){ //Si on a une différence de 2 points
@@ -1384,6 +1416,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvTieBreak.setVisibility(View.INVISIBLE);
                 superTieBreak = false;
                 tvScoreSet.setTypeface(null, Typeface.BOLD);
+                idPointPrevious = idPoint;
                 idPoint = 0;
                 incremementationSetTotal(tvScore);
             }else {
@@ -1391,6 +1424,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvScore.setText(String.valueOf(intVal + 1));
                 postScorePoint(idRencontre, valJ1, valJ2, idSet, idGame, idPoint, postMatch);
                 postAceOrFaultPoint(tvScore, postMatch);
+                idPointPrevious = idPoint;
                 idPoint = idPoint + 1;
                 serviceChangeTieBreak();
             }
@@ -1404,6 +1438,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tvTieBreak.setVisibility(View.INVISIBLE);
             superTieBreak = false;
             tvScoreSet.setTypeface(null, Typeface.BOLD);
+            idPointPrevious = idPoint;
             idPoint = 0;
             incremementationSetTotal(tvScore);
         }
@@ -1515,9 +1550,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void postAceOrFaultPoint(TextView tvScore, DataPostBDD postMatch) {
         if (postSuperOrTieBreakAce && tvScore == tvScoreJ1) {
-            postMatch.postAvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "ace", category);
+            postMatch.postAdvantageOrAceMatch(idRencontre, valJ1, idSet, idGame, idPoint, "ace", category);
         }else if (postSuperOrTieBreakAce && tvScore == tvScoreJ2) {
-            postMatch.postAvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "ace", category);
+            postMatch.postAdvantageOrAceMatch(idRencontre, valJ2, idSet, idGame, idPoint, "ace", category);
         }else if (postSuperOrTieBreakOut && tvScore == tvScoreJ1) {
             postMatch.postMistakeMatch(idRencontre, valJ2, idSet, idGame, idPoint, "out", category);
         }else if (postSuperOrTieBreakOut && tvScore == tvScoreJ2) {
