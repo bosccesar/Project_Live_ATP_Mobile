@@ -11,7 +11,7 @@ The score tracking andoid app for the tennis referee
 ## 2 - Installer sdk
 Tools -> Android -> Sdk Manager
 <br/>Checker la checkbox "Android API 27 si non cochée"
-<br/>Checker la checkbox "Android 7.1.1 (Nougat) API Level 25"
+<br/>Checker la checkbox "Android 8.1 (Oreo) API Level 27"
 * Si erreur lancement émulateur à cause de l'HAXM (voir log), onglet SDK Tools :
  1. Décocher "Intel x86 Emulator Accelerator (HAXM installer)" et appliquer les modifs 
  2. Recochez "Intel x86 Emulator Accelerator (HAXM installer)" et appliquer les modifs
@@ -22,7 +22,7 @@ Tools -> Android -> Sdk Manager
 * New Hardware Profile
 * Modifier le "screen size" (pouces de la tablette), la résolution, la ram, checker "Has Hardware Buttons" suivant les specs
 * Next
-* Download "Nougat API Level 25"
+* Download "Oreo API Level 27"
 * Next
 * Orientation Landscape
 * Show advanced Settings
