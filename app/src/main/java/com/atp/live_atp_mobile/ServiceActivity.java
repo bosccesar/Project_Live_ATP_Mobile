@@ -36,10 +36,6 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     public static final String CategoryAdmin = "categoryAdmin";
     public static final String CodeJ1 = "codeJ1";
     public static final String CodeJ2 = "codeJ2";
-    public static final String Player1Team1 = "player1Team1";
-    public static final String Player2Team1 = "player2Team1";
-    public static final String Player1Team2 = "player1Team2";
-    public static final String Player2Team2 = "player2Team2";
 
     public static SharedPreferences sharedpreferencesService;
 
@@ -100,10 +96,6 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                 editor.putString(IdPlayer2, sharedpreferencesService.getString(ServiceActivity.IdPlayer1, null));
                 editor.putString(CodeJ1, sharedpreferencesService.getString(ServiceActivity.CodeJ2, null));
                 editor.putString(CodeJ2, sharedpreferencesService.getString(ServiceActivity.CodeJ1, null));
-                editor.putString(Player1Team1, sharedpreferencesService.getString(ServiceActivity.Player1Team2, null));
-                editor.putString(Player2Team1, sharedpreferencesService.getString(ServiceActivity.Player2Team2, null));
-                editor.putString(Player1Team2, sharedpreferencesService.getString(ServiceActivity.Player1Team1, null));
-                editor.putString(Player2Team2, sharedpreferencesService.getString(ServiceActivity.Player2Team1, null));
                 editor.apply();
                 Intent intent = new Intent(ServiceActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -112,7 +104,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void displayTournament(){
-        //Récupérer le nom du tournoi depuis l'activity précédente
+        //Récupére le nom du tournoi depuis l'activity précédente
         tvTournament.setText(sharedpreferencesAuthentication.getString(AuthenticationActivity.Tournament, null));
     }
 
@@ -147,7 +139,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putString(Category, nameCategory);
                     editor.apply();
                     if (equipe) {
-                        displayBDD.loadModelTeamFromFirebase(idTeam1, idTeam2, nameCategory); //Appel pour récupérer la team en passant leur idTeam et la categorie
+                        displayBDD.loadModelTeamFromFirebase(idTeam1, idTeam2); //Appel pour récupérer la team en passant leur idTeam et la categorie
                     }else {
                         displayBDD.loadModelPlayersFromFirebase(player1, player2, nameCategory); //Appel pour récupérer les joueurs en passant leur id et la categorie
                     }
@@ -180,25 +172,23 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
                     editor.apply();
                 }
                 @Override
-                public void onCallbackTeam1(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
+                public void onCallbackTeam1(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam, int idTeam) {
                     tvJ1.setText(nameTeam); //Affichage final de la team 1
                     if (tvJ1.getText().length() > 15){
                         tvJ1.setTextSize(28);
                     }
                     editor.putString(CodeJ1, codeNationality);
-                    editor.putString(Player1Team1, String.valueOf(idPlayer1));
-                    editor.putString(Player2Team1, String.valueOf(idPlayer2));
+                    editor.putString(IdPlayer1, String.valueOf(idTeam));
                     editor.apply();
                 }
                 @Override
-                public void onCallbackTeam2(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
+                public void onCallbackTeam2(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam, int idTeam) {
                     tvJ2.setText(nameTeam); //Affichage final de la team 2
                     if (tvJ2.getText().length() > 15){
                         tvJ2.setTextSize(28);
                     }
                     editor.putString(CodeJ2, codeNationality);
-                    editor.putString(Player1Team2, String.valueOf(idPlayer1));
-                    editor.putString(Player2Team2, String.valueOf(idPlayer2));
+                    editor.putString(IdPlayer2, String.valueOf(idTeam));
                     editor.apply();
                 }
             });

@@ -25,9 +25,9 @@ public abstract class MyCallback {
     }
     void onCallbackPlayer2(int idPlayer2, String firstNamePlayer, String lastNamePlayer, String codeNationality) {
     }
-    void onCallbackTeam1(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
+    void onCallbackTeam1(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam, int idTeam) {
     }
-    void onCallbackTeam2(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam) {
+    void onCallbackTeam2(String codeNationality, int idPlayer1, int idPlayer2, String nameTeam, int idTeam) {
     }
     void onCallbackCodeCountryJ1(String libelleCode) {
     }

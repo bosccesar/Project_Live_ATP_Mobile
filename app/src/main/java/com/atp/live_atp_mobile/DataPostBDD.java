@@ -61,6 +61,8 @@ public class DataPostBDD {
             refDefault = database.getReference("statsJoueurHomme");
         }else if (category.equals("Simple dames")) {
             refDefault = database.getReference("statsJoueurFemme");
+        }else {
+            refDefault = database.getReference("statsEquipe");
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -181,10 +183,16 @@ public class DataPostBDD {
         });
 
         DatabaseReference refDefault = database.getReference();
-        if (category.equals("Simple messieurs")) {
-            refDefault = database.getReference("statsJoueurHomme");
-        }else if (category.equals("Simple dames")) {
-            refDefault = database.getReference("statsJoueurFemme");
+        switch (category) {
+            case "Simple messieurs":
+                refDefault = database.getReference("statsJoueurHomme");
+                break;
+            case "Simple dames":
+                refDefault = database.getReference("statsJoueurFemme");
+                break;
+            default:
+                refDefault = database.getReference("statsEquipe");
+                break;
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -287,10 +295,16 @@ public class DataPostBDD {
 
         //Incrémente sanctionOrdre du joueur
         DatabaseReference refDefault = database.getReference();
-        if (category.equals("Simple messieurs")) {
-            refDefault = database.getReference("statsJoueurHomme");
-        }else if (category.equals("Simple dames")) {
-            refDefault = database.getReference("statsJoueurFemme");
+        switch (category) {
+            case "Simple messieurs":
+                refDefault = database.getReference("statsJoueurHomme");
+                break;
+            case "Simple dames":
+                refDefault = database.getReference("statsJoueurFemme");
+                break;
+            default:
+                refDefault = database.getReference("statsEquipe");
+                break;
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -354,10 +368,16 @@ public class DataPostBDD {
 
         //Incrémente sanctionJeu du joueur
         DatabaseReference refDefault = database.getReference();
-        if (category.equals("Simple messieurs")) {
-            refDefault = database.getReference("statsJoueurHomme");
-        }else if (category.equals("Simple dames")) {
-            refDefault = database.getReference("statsJoueurFemme");
+        switch (category) {
+            case "Simple messieurs":
+                refDefault = database.getReference("statsJoueurHomme");
+                break;
+            case "Simple dames":
+                refDefault = database.getReference("statsJoueurFemme");
+                break;
+            default:
+                refDefault = database.getReference("statsEquipe");
+                break;
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -416,10 +436,16 @@ public class DataPostBDD {
 
         //Incrémente stats des 2 joueurs dans la table statsJoueur
         DatabaseReference refDefault = database.getReference();
-        if (category.equals("Simple messieurs")) {
-            refDefault = database.getReference("statsJoueurHomme");
-        }else if (category.equals("Simple dames")) {
-            refDefault = database.getReference("statsJoueurFemme");
+        switch (category) {
+            case "Simple messieurs":
+                refDefault = database.getReference("statsJoueurHomme");
+                break;
+            case "Simple dames":
+                refDefault = database.getReference("statsJoueurFemme");
+                break;
+            default:
+                refDefault = database.getReference("statsEquipe");
+                break;
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -538,10 +564,16 @@ public class DataPostBDD {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference refDefault = database.getReference();
-        if (category.equals("Simple messieurs")) {
-            refDefault = database.getReference("statsJoueurHomme");
-        }else if (category.equals("Simple dames")) {
-            refDefault = database.getReference("statsJoueurFemme");
+        switch (category) {
+            case "Simple messieurs":
+                refDefault = database.getReference("statsJoueurHomme");
+                break;
+            case "Simple dames":
+                refDefault = database.getReference("statsJoueurFemme");
+                break;
+            default:
+                refDefault = database.getReference("statsEquipe");
+                break;
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -742,10 +774,16 @@ public class DataPostBDD {
         });
 
         DatabaseReference refDefault = database.getReference();
-        if (category.equals("Simple messieurs")) {
-            refDefault = database.getReference("statsJoueurHomme");
-        }else if (category.equals("Simple dames")) {
-            refDefault = database.getReference("statsJoueurFemme");
+        switch (category) {
+            case "Simple messieurs":
+                refDefault = database.getReference("statsJoueurHomme");
+                break;
+            case "Simple dames":
+                refDefault = database.getReference("statsJoueurFemme");
+                break;
+            default:
+                refDefault = database.getReference("statsEquipe");
+                break;
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -813,10 +851,16 @@ public class DataPostBDD {
         });
 
         DatabaseReference refDefault = database.getReference();
-        if (category.equals("Simple messieurs")) {
-            refDefault = database.getReference("statsJoueurHomme");
-        }else if (category.equals("Simple dames")) {
-            refDefault = database.getReference("statsJoueurFemme");
+        switch (category) {
+            case "Simple messieurs":
+                refDefault = database.getReference("statsJoueurHomme");
+                break;
+            case "Simple dames":
+                refDefault = database.getReference("statsJoueurFemme");
+                break;
+            default:
+                refDefault = database.getReference("statsEquipe");
+                break;
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -890,10 +934,16 @@ public class DataPostBDD {
         });
 
         DatabaseReference refDefault = database.getReference();
-        if (category.equals("Simple messieurs")) {
-            refDefault = database.getReference("statsJoueurHomme");
-        }else if (category.equals("Simple dames")) {
-            refDefault = database.getReference("statsJoueurFemme");
+        switch (category) {
+            case "Simple messieurs":
+                refDefault = database.getReference("statsJoueurHomme");
+                break;
+            case "Simple dames":
+                refDefault = database.getReference("statsJoueurFemme");
+                break;
+            default:
+                refDefault = database.getReference("statsEquipe");
+                break;
         }
         final DatabaseReference statsPlayerPostRef = refDefault;
         statsPlayerPostRef.addListenerForSingleValueEvent(new ValueEventListener() {
