@@ -1,15 +1,19 @@
 package com.atp.live_atp_mobile;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
-public class PermissionGps extends Activity {
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
+public class PermissionGps extends AppCompatActivity {
+
+    private boolean permissionGps;
+
     private void createGpsDisabledAlert() {
-        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
         localBuilder
                 .setMessage("Le GPS est inactif, voulez-vous l'activer ?")
                 .setCancelable(false)
@@ -17,6 +21,7 @@ public class PermissionGps extends Activity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                                 PermissionGps.this.showGpsOptions();
+                                permissionGps = true;
                             }
                         }
                 );
@@ -32,13 +37,25 @@ public class PermissionGps extends Activity {
     }
 
     private void showGpsOptions() {
-        startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-        finish();
-        Toast.makeText(this, "Après avoir activé la position, redémarrer l'application", Toast.LENGTH_LONG).show();
+        startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS").addFlags(FLAG_ACTIVITY_NEW_TASK));
     }
 
-    protected void onCreate(Bundle paramBundle) {
-        super.onCreate(paramBundle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        this.permissionGps = false;
+
         createGpsDisabledAlert();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (permissionGps) {
+            Intent intent = new Intent(PermissionGps.this, AuthenticationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            startActivity(intent);
+        }
     }
 }

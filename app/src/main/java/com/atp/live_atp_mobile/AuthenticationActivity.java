@@ -57,6 +57,12 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        displayTournament();
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == vue){
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
