@@ -47,6 +47,9 @@
 
         <activity android:name=".CloseAppActivity" >
         </activity>
+
+        <activity android:name=".PermissionGps" >
+        </activity>
     </application>
 
 </manifest>

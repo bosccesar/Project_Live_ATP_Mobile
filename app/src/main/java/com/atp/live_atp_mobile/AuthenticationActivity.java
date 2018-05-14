@@ -81,6 +81,7 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
             @Override
             public void onCallbackTournament(String value, String dateTournament) { //Nom et date du tournoi récupérés de la bdd
                 if (value.equals("No Tournament")){
+                    tvTournament.setText(value);
                     editLogin.setEnabled(false);
                     editPassword.setEnabled(false);
                     submit.setEnabled(false);

@@ -62,7 +62,7 @@ public class DataGetBDD implements Observer{
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         //int day = calendar.get(Calendar.DAY_OF_MONTH);
-        //int month = calendar.get(Calendar.MONTH) + 1; //Les mois vont de 0 à 11 (janvier à decembre) donc on incremente le mois de 1
+        //int month = calendar.get(Calendar.MONTH) + 1; //Les mois vont de 0 à 11 (janvier à décembre) donc on incremente le mois de 1
         int year = calendar.get(Calendar.YEAR);
 
         //Donnees de test

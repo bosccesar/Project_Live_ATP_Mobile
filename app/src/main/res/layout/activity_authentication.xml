@@ -73,7 +73,7 @@
         android:ems="10"
         android:imeOptions="actionNext"
         android:inputType="textPersonName"
-        android:text="@string/admin"
+        android:text="@string/authentDefault"
         app:layout_constraintStart_toEndOf="@+id/textViewLogin"
         app:layout_constraintTop_toBottomOf="@+id/textViewTournament" />
 
@@ -87,7 +87,7 @@
         android:ems="10"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
-        android:text="@string/admin"
+        android:text="@string/authentPasswordDefault"
         app:layout_constraintStart_toEndOf="@+id/textViewPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextLogin" />
 

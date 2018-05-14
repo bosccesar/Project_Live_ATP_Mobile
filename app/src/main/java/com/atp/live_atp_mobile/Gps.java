@@ -2,9 +2,11 @@ package com.atp.live_atp_mobile;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +31,8 @@ public class Gps extends Observable implements LocationListener,
 
     private double latitude;
     private double longitude;
+    private long minute;
+    private float metre;
     private Context context;
     private Activity activity;
     private GoogleApiClient googleApiClient;
@@ -61,6 +65,25 @@ public class Gps extends Observable implements LocationListener,
         {
             Toast.makeText(context, "Permission Location is not granted. Please go in android parameters -> Apps -> Project_Live_ATP -> Permissions -> Turn on Location", Toast.LENGTH_LONG).show();
         }else {
+            // Récupère le locationManager qui gère la localisation
+            LocationManager locManager;
+            locManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+            // Test si le gps est activé ou non
+            if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                // on lance notre activity (qui est une dialog)
+                Intent localIntent = new Intent(context, PermissionGps.class);
+                localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(localIntent);
+            }
+
+            //Ensuite on demande a ecouter la localisation (dans la classe qui implémente le LocationListener
+            this.minute = 1;
+            this.metre = 1;
+            if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, this.minute, this.metre, this);
+            } else {
+                locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, this.minute, this.metre, this);
+            }
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context); //myLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
