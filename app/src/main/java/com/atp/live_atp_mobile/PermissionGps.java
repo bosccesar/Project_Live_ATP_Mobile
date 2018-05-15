@@ -10,7 +10,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class PermissionGps extends AppCompatActivity {
 
-    private boolean permissionGps;
+    public static boolean permissionGps;
 
     private void createGpsDisabledAlert() {
         final AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
@@ -29,6 +29,7 @@ public class PermissionGps extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                         paramDialogInterface.cancel();
+                        permissionGps = true;
                         PermissionGps.this.finish();
                     }
                 }
@@ -43,7 +44,7 @@ public class PermissionGps extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.permissionGps = false;
+        permissionGps = false;
 
         createGpsDisabledAlert();
     }
@@ -56,6 +57,7 @@ public class PermissionGps extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();
             startActivity(intent);
+            permissionGps = false;
         }
     }
 }

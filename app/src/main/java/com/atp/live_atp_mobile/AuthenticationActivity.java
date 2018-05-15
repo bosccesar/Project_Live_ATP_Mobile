@@ -59,7 +59,11 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
     @Override
     protected void onResume() {
         super.onResume();
-        displayTournament();
+
+        if (PermissionGps.permissionGps) {
+            displayTournament();
+            PermissionGps.permissionGps = false;
+        }
     }
 
     @Override

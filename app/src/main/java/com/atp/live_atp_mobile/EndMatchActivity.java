@@ -2,7 +2,9 @@ package com.atp.live_atp_mobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,7 +50,8 @@ public class EndMatchActivity extends AppCompatActivity implements View.OnClickL
         if (v == buttonMatchEnd){
             String winner = MainActivity.sharedpreferencesMainActivity.getString(MainActivity.IdPlayerWin, null);
             String looser = MainActivity.sharedpreferencesMainActivity.getString(MainActivity.IdPlayerLoose, null);
-            this.chronometer = String.valueOf(MainActivity.timer);
+            long timer = SystemClock.elapsedRealtime() - MainActivity.timer.getBase() - 3600000;
+            this.chronometer = (String) DateFormat.format("HH:mm:ss", timer);
             //Appel post à la BDD pour inscrire l'id des joueurs dans statsRencontre + inscrire le temps du match
             DataPostBDD postMatch = new DataPostBDD(EndMatchActivity.this);
             postMatch.postEndMatch(idRencontre);

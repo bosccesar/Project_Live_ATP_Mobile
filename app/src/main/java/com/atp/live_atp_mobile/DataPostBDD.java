@@ -140,7 +140,7 @@ public class DataPostBDD {
                         if (idMatch.equals(String.valueOf(statMatch.idRencontre))) {
                             StatMatchBDD postStat = new StatMatchBDD(timeMatch);
                             Map<String, Object> postValuesStat = postStat.toMapChronometer();
-                            statsMatchPostRef.child(key).updateChildren(postValuesStat); //Ajoute pauseExceptionnelle sans supprimer les autres données
+                            statsMatchPostRef.child(key).updateChildren(postValuesStat);
                         }
                     }
                 }
