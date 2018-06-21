@@ -424,7 +424,7 @@
         app:layout_constraintStart_toEndOf="@+id/buttonAceJ1"
         app:layout_constraintTop_toBottomOf="@+id/textScoreJ1"
         app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@mipmap/bouton_incrementation2" />
+        app:srcCompat="@mipmap/bouton_incrementation" />
 
     <ImageView
         android:id="@+id/imageButtonModifPointJ2"
@@ -436,7 +436,7 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonAceJ2"
         app:layout_constraintTop_toBottomOf="@+id/textScoreJ2"
         app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@mipmap/bouton_incrementation2" />
+        app:srcCompat="@mipmap/bouton_incrementation" />
 
     <Button
         android:id="@+id/buttonOutJ1"
