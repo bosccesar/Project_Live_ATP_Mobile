@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonDownJ2;
     private Button buttonCancelDownJ1;
     private Button buttonCancelDownJ2;
-    private ImageButton buttonJ1;
-    private ImageButton buttonJ2;
+    private ImageView buttonJ1;
+    private ImageView buttonJ2;
     private ImageButton buttonBreak;
     private ImageButton buttonAdvertissement;
     private ImageButton buttonClose;
@@ -145,8 +145,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         timer = (Chronometer) findViewById(R.id.chronometerMain);
 
         //Score
-        this.buttonJ1 = (ImageButton) findViewById(R.id.imageButtonModifPointJ1);
-        this.buttonJ2 = (ImageButton) findViewById(R.id.imageButtonModifPointJ2);
+        this.buttonJ1 = (ImageView) findViewById(R.id.imageButtonModifPointJ1);
+        this.buttonJ2 = (ImageView) findViewById(R.id.imageButtonModifPointJ2);
         this.tvScoreJ1 = (TextView) findViewById(R.id.textScoreJ1);
         this.tvScoreJ2 = (TextView) findViewById(R.id.textScoreJ2);
         this.tvPreviousScoreJ1 = "";

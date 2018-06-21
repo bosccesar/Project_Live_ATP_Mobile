@@ -414,7 +414,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/bouton_pause" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonModifPointJ1"
         android:contentDescription="@string/modifPoint"
         android:layout_width="106dp"
@@ -424,9 +424,9 @@
         app:layout_constraintStart_toEndOf="@+id/buttonAceJ1"
         app:layout_constraintTop_toBottomOf="@+id/textScoreJ1"
         app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@mipmap/bouton_plus_moins" />
+        app:srcCompat="@mipmap/bouton_incrementation2" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageButtonModifPointJ2"
         android:contentDescription="@string/modifPoint"
         android:layout_width="106dp"
@@ -436,13 +436,13 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonAceJ2"
         app:layout_constraintTop_toBottomOf="@+id/textScoreJ2"
         app:layout_constraintVertical_chainStyle="spread_inside"
-        app:srcCompat="@mipmap/bouton_plus_moins" />
+        app:srcCompat="@mipmap/bouton_incrementation2" />
 
     <Button
         android:id="@+id/buttonOutJ1"
-        android:layout_width="110dp"
+        android:layout_width="75dp"
         android:layout_height="45dp"
-        android:layout_marginStart="208dp"
+        android:layout_marginStart="226dp"
         android:layout_marginTop="2dp"
         android:text="@string/out"
         app:layout_constraintStart_toStartOf="parent"
@@ -450,9 +450,9 @@
 
     <Button
         android:id="@+id/buttonOutJ2"
-        android:layout_width="110dp"
+        android:layout_width="75dp"
         android:layout_height="45dp"
-        android:layout_marginEnd="208dp"
+        android:layout_marginEnd="226dp"
         android:layout_marginTop="2dp"
         android:text="@string/out"
         app:layout_constraintEnd_toEndOf="parent"
@@ -460,9 +460,9 @@
 
     <Button
         android:id="@+id/buttonFiletJ1"
-        android:layout_width="110dp"
+        android:layout_width="75dp"
         android:layout_height="45dp"
-        android:layout_marginStart="208dp"
+        android:layout_marginStart="226dp"
         android:layout_marginTop="3dp"
         android:text="@string/filet"
         app:layout_constraintStart_toStartOf="parent"
@@ -470,9 +470,9 @@
 
     <Button
         android:id="@+id/buttonFiletJ2"
-        android:layout_width="110dp"
+        android:layout_width="75dp"
         android:layout_height="45dp"
-        android:layout_marginEnd="208dp"
+        android:layout_marginEnd="226dp"
         android:layout_marginTop="3dp"
         android:text="@string/filet"
         app:layout_constraintEnd_toEndOf="parent"
