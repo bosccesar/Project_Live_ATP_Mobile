@@ -1,5 +1,5 @@
 ﻿# Project_Live_ATP_Mobile
-The score tracking andoid app for the tennis referee
+The score tracking android app for the tennis referee
  
 ## 0 - Hardware lié au projet
 **Galaxy Tab A 10.1"**
