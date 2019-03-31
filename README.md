@@ -41,3 +41,6 @@ Tools -> Android -> Sdk Manager
 [Personnalisation](http://angrytools.com/android/button/)
 
 ## 6 - Enjoy
+For easy test my application use the admin mode :
+- Login : admin
+- Password : admin
