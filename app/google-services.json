@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "272741883274",
-    "firebase_url": "https://teniscroustillant.firebaseio.com",
-    "project_id": "teniscroustillant",
-    "storage_bucket": "teniscroustillant.appspot.com"
+    "project_number": "516087086159",
+    "firebase_url": "https://live-atp.firebaseio.com",
+    "project_id": "live-atp",
+    "storage_bucket": "live-atp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:272741883274:android:99de97b3c4360110",
+        "mobilesdk_app_id": "1:516087086159:android:99de97b3c4360110",
         "android_client_info": {
           "package_name": "com.atp.project_live_atp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "272741883274-mn9n73kcm045hf69bb54sknoe64gip1v.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.atp.project_live_atp",
-            "certificate_hash": "5d43fd0c6dfe8d4bc036d7dc1e9ed21abe06fdfe"
-          }
-        },
-        {
-          "client_id": "272741883274-a0eor1k3alic7n281pit7vvjhrr78gb9.apps.googleusercontent.com",
+          "client_id": "516087086159-4j7ukchj3plj7d1cd9fu2bp7nimljhki.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDb2dmX2z1g9L3cGBAQAbzhsHImkiqCbfw"
+          "current_key": "AIzaSyB4Fzd9UcFJCBuWh1sMA2rdItLR2XMDzUM"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "272741883274-a0eor1k3alic7n281pit7vvjhrr78gb9.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
