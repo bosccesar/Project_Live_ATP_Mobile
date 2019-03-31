@@ -112,6 +112,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
         final SharedPreferences.Editor editor = sharedpreferencesService.edit();
         SharedPreferences.Editor editorAdmin = sharedpreferencesAuthentication.edit();
         if (modeAdmin()){
+            String tournament= "Admin mode";
             String resultState= "8e de finale";
             String resultCategory = "Simple messieurs";
             String player1 = "A.MURRAY";
@@ -122,6 +123,7 @@ public class ServiceActivity extends AppCompatActivity implements View.OnClickLi
             editorAdmin.putString(IdRencontre, "2");
             editor.apply();
             editorAdmin.apply();
+            tvTournament.setText(tournament);
             tvStateTournament.setText(resultState);
             tvCategory.setText(resultCategory);
             tvJ1.setText(player1);

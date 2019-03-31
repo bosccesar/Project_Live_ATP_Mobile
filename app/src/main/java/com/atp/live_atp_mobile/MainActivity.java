@@ -605,7 +605,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         interactionButtonTrue();
         timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             public void onChronometerTick(Chronometer cArg) {
-                long t = SystemClock.elapsedRealtime() - cArg.getBase() - 3600000; //Le chrono démarre à 01:00:00, on lui soustrait l'heure pour démarrer à 00:00:00
+                long t = SystemClock.elapsedRealtime() - cArg.getBase() - 3600000; //Le chrono démarre à 01:00:00, on lui soustrait l'heure pour démarrer à 00:00:00 à GMT-Madrid
                 cArg.setText(DateFormat.format("HH:mm:ss", t));
             }
         });
@@ -1336,45 +1336,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private boolean rulesLastSetTournament(){ //En fonction du tournoi, si Grand Chelem pas de tie break dans le dernier set
-        if (Tournament.getTournamentByName(tournament).grandChelem()){ //Si tournoi du Grand Chelem
-            if (tournament.equals(Tournament.US_OPEN.toString())) {
-                finalTieBreak = true;
-            }else{
-                finalTieBreak = false;
+        if (!AuthenticationActivity.login.equals("admin")) {
+            if (Tournament.getTournamentByName(tournament).grandChelem()) { //Si tournoi du Grand Chelem
+                if (tournament.equals(Tournament.US_OPEN.toString())) {
+                    finalTieBreak = true;
+                } else {
+                    finalTieBreak = false;
+                }
+            } else { //Tournoi en dehors du Grand Chelem
+                if (tournament.equals(Tournament.DAVIS_CUP.toString())) { //Coupe Davis n'existe qu'en simple messieurs et double messieurs, et toujours tie break final au cinquieme set
+                    finalTieBreak = true;
+                } else {
+                    finalTieBreak = false;
+                }
             }
-        }else { //Tournoi en dehors du Grand Chelem
-            if (tournament.equals(Tournament.DAVIS_CUP.toString())) { //Coupe Davis n'existe qu'en simple messieurs et double messieurs, et toujours tie break final au cinquieme set
-                finalTieBreak = true;
-            }else {
-                finalTieBreak = false;
-            }
+        } else {
+            finalTieBreak = false; //En mode Admin choix arbitraire de ne pas mettre de ti-break dans le dernier set
         }
         return finalTieBreak;
     }
 
     private boolean rulesSetWinTournament(){ //En fonction du tournoi, si Grand Chelem 3 set gagnants, sinon 2
-        if (Tournament.getTournamentByName(tournament).grandChelem()){ //Si tournoi du Grand Chelem
-            if (category.equals(Category.SIMPLE_MESSIEURS.toString()) || (category.equals(Category.DOUBLE_MESSIEURS.toString()) && tournament.equals(Tournament.WIMBELDON.toString()))) {  //Si Simple messieurs ou (double messieurs et Wimbledon)
-                twoSetWin = false; //3 set gagnants (5 set max) renvoi false
-            }else{
-                twoSetWin = true; //2 set gagnants (3 set max) renvoi true
+        if (!AuthenticationActivity.login.equals("admin")) {
+            if (Tournament.getTournamentByName(tournament).grandChelem()) { //Si tournoi du Grand Chelem
+                if (category.equals(Category.SIMPLE_MESSIEURS.toString()) || (category.equals(Category.DOUBLE_MESSIEURS.toString()) && tournament.equals(Tournament.WIMBELDON.toString()))) {  //Si Simple messieurs ou (double messieurs et Wimbledon)
+                    twoSetWin = false; //3 set gagnants (5 set max) renvoi false
+                } else {
+                    twoSetWin = true; //2 set gagnants (3 set max) renvoi true
+                }
+            } else { //Tournoi en dehors du Grand Chelem
+                if (tournament.equals(Tournament.DAVIS_CUP.toString()) && (category.equals(Category.SIMPLE_MESSIEURS.toString()) || category.equals(Category.DOUBLE_MESSIEURS.toString()))) {
+                    twoSetWin = false; //3 set gagnants (5 set max) renvoi false
+                } else {
+                    twoSetWin = true; // 2 set gagnants (3 set max) renvoi true
+                }
             }
-        }else { //Tournoi en dehors du Grand Chelem
-            if (tournament.equals(Tournament.DAVIS_CUP.toString()) && (category.equals(Category.SIMPLE_MESSIEURS.toString()) || category.equals(Category.DOUBLE_MESSIEURS.toString()))) {
-                twoSetWin = false; //3 set gagnants (5 set max) renvoi false
-            }else {
-                twoSetWin = true; // 2 set gagnants (3 set max) renvoi true
-            }
+        }else {
+            twoSetWin = false; //En mode Admin choix arbitraire d'avoir 3 set commen en Grand Chelem
         }
         return twoSetWin;
     }
 
     private boolean rulesSuperTieBreak(){
-        if ((Tournament.getTournamentByName(tournament).grandChelem() && category.equals(Category.DOUBLE_MIXTE.toString())) || (!Tournament.getTournamentByName(tournament).grandChelem() && Category.getTypeByName(category).getType() == 2)){ //Super tie break dans le dernier set pour double mixte en Grand Chelem ou tous les doubles hors Grand Chelem
-            if (tournament.equals(Tournament.DAVIS_CUP.toString()) && category.equals(Category.DOUBLE_MESSIEURS.toString())) { //sauf la Coupe Davis pour le double messieurs
-                superTieBreak = false;
-            }else {
-                superTieBreak = true;
+        if (!AuthenticationActivity.login.equals("admin")) {
+            if ((Tournament.getTournamentByName(tournament).grandChelem() && category.equals(Category.DOUBLE_MIXTE.toString())) || (!Tournament.getTournamentByName(tournament).grandChelem() && Category.getTypeByName(category).getType() == 2)) { //Super tie break dans le dernier set pour double mixte en Grand Chelem ou tous les doubles hors Grand Chelem
+                if (tournament.equals(Tournament.DAVIS_CUP.toString()) && category.equals(Category.DOUBLE_MESSIEURS.toString())) { //sauf la Coupe Davis pour le double messieurs
+                    superTieBreak = false;
+                } else {
+                    superTieBreak = true;
+                }
+            }
+            else {
+                superTieBreak = false; //En mode Admin choix arbitraire de ne pas mettre de super ti-break dans le dernier set
             }
         }
         return superTieBreak;

@@ -92,9 +92,6 @@ public class AuthenticationActivity extends AppCompatActivity implements View.On
             public void onCallbackTournament(String value, String dateTournament) { //Nom et date du tournoi récupérés de la bdd
                 if (value.equals("No Tournament")){
                     tvTournament.setText(value);
-                    editLogin.setEnabled(false);
-                    editPassword.setEnabled(false);
-                    submit.setEnabled(false);
                     SharedPreferences.Editor editor = sharedpreferencesAuthentication.edit();
                     editor.putString(Tournament, "No Tournament"); //Insertion du resultat de la requete dans la sauvegarde
                     editor.apply();

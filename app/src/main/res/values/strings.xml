@@ -24,8 +24,8 @@
     <string name="loginHint">Login</string>
     <string name="password">Password :</string>
     <string name="passwordHint">Password</string>
-    <string name="authentDefault">guillaume</string>
-    <string name="authentPasswordDefault">password</string>
+    <string name="authentDefault"></string>
+    <string name="authentPasswordDefault"></string>
     <string name="submit">Submit</string>
     <string name="close">Close</string>
     <string name="advertissement">Advertissement</string>
